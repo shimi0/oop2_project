@@ -5,7 +5,8 @@
 class Movable : public GameObject
 {
 public:
-	Movable();
+	Movable(const AnimationData& data, Direction dir, sf::Sprite& sprite);
+	virtual ~Movable() = 0 {}
 
 
 private:

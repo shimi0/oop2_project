@@ -11,16 +11,31 @@ Level::Level(sf::RenderWindow& window)
 
 void Level::run()
 {
-	m_player.loadPlayer();
+	// Define the gravity vector
+	b2Vec2 gravity(0.0f, 10.0f);
+	auto world = std::make_unique<b2World>(gravity);
+
+	auto bodyDef = b2BodyDef();
+	// Define the gravity vector
+	m_player.loadPlayer(world, bodyDef);
+
+
 	while (m_window.isOpen())
 	{
+		world->Step(1.0f / 60.0f, 8, 3);
 		m_window.clear(sf::Color::Black);
 		m_board.draw();
+		m_player.draw(m_window);
 		m_window.display();
 		sf::Event event;
 		while (m_window.pollEvent(event))
+		{
 			if (event.type == sf::Event::Closed)
 				m_window.close();
+
+			if (event.type == sf::Event::KeyReleased)
+				m_player.processKeyInput(event);
+		}
 
 
 	}

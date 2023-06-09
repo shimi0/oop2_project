@@ -1,6 +1,6 @@
 #include "Movable.h"
 
-Movable::Movable()
-	:GameObject()
+Movable::Movable(const AnimationData& data, Direction dir, sf::Sprite& sprite)
+	:GameObject(data, dir, sprite)
 {
 }

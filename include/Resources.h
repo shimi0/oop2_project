@@ -12,7 +12,7 @@ public:
     enum Objects
     {
         BackGroundClassic,
-        RedGhost,
+        DoodleClassic,
         Pacman,
         Max,
     };

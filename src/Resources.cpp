@@ -26,32 +26,29 @@ namespace
         return classicBG;
     }
 
-    AnimationData redGhostData()
+    AnimationData doodleClassicData()
     {
-        const auto size = sf::Vector2i(40, 40);
-        const auto initSpace = sf::Vector2i(1, 2);
-        const auto middleSpace = sf::Vector2i(0, 10);
+        const auto size = sf::Vector2i(124, 120);
+        const auto initSpace = sf::Vector2i(640, 0);
+        const auto middleSpace = sf::Vector2i(0, 0);
 
-        auto redGhost = AnimationData{};
+        auto doodleClassic = AnimationData{};
         auto currentStart = initSpace;
 
         auto nextStart = [&]()
         {
             currentStart += middleSpace;
-            currentStart.y += size.y;
+            currentStart.x += size.x;
             return currentStart;
         };
 
-        redGhost.m_data[Direction::Right].emplace_back(currentStart, size);
-        redGhost.m_data[Direction::Right].emplace_back(nextStart(), size);
-        redGhost.m_data[Direction::Down].emplace_back(nextStart(), size);
-        redGhost.m_data[Direction::Down].emplace_back(nextStart(), size);
-        redGhost.m_data[Direction::Left].emplace_back(nextStart(), size);
-        redGhost.m_data[Direction::Left].emplace_back(nextStart(), size);
-        redGhost.m_data[Direction::Up].emplace_back(nextStart(), size);
-        redGhost.m_data[Direction::Up].emplace_back(nextStart(), size);
+        doodleClassic.m_data[Direction::Right].emplace_back(currentStart, size);
+        doodleClassic.m_data[Direction::Right].emplace_back(nextStart(), size);
+        doodleClassic.m_data[Direction::Left].emplace_back(nextStart(), size);
+        doodleClassic.m_data[Direction::Left].emplace_back(nextStart(), size);
+        doodleClassic.m_data[Direction::Up].emplace_back(nextStart(), size);
 
-        return redGhost;
+        return doodleClassic;
     }
 
     AnimationData pacmanData()
@@ -104,5 +101,5 @@ Resources::Resources()
 
     m_data[BackGroundClassic] = backGrounClassicdData();
     m_data[Pacman] = pacmanData();
-    m_data[RedGhost] = redGhostData();
+    m_data[DoodleClassic] = doodleClassicData();
 }
