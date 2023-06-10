@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "macros.h"
 #include "box2d/box2d.h"
+#include "SimplePlatform.h"
 
 class Level
 {
@@ -14,10 +15,10 @@ public:
 
 	void run();
 
-
 private:
 
 	sf::RenderWindow& m_window;
 	Board m_board;
+	SimplePlatform m_platform;		//temp
 	Player m_player;
 };

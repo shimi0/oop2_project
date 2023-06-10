@@ -51,36 +51,18 @@ namespace
         return doodleClassic;
     }
 
-    AnimationData pacmanData()
+    AnimationData greenPlatform()
     {
-        const auto size = sf::Vector2i(40, 40);
-        const auto initSpace = sf::Vector2i(851, 2);
-        const auto middleSpace = sf::Vector2i(0, 10);
+        const auto size = sf::Vector2i(116, 34);
+        const auto initSpace = sf::Vector2i(1288, 0);
+        const auto middleSpace = sf::Vector2i(0, 0);
 
-        auto pacman = AnimationData{};
+        auto greenPlatform = AnimationData{};
         auto currentStart = initSpace;
 
-        auto nextStart = [&]()
-        {
-            currentStart += middleSpace;
-            currentStart.y += size.y;
-            return currentStart;
-        };
+        greenPlatform.m_data[Direction::Stay].emplace_back(currentStart, size);
 
-        pacman.m_data[Direction::Right].emplace_back(currentStart, size);
-        pacman.m_data[Direction::Right].emplace_back(nextStart(), size);
-        pacman.m_data[Direction::Right].emplace_back(nextStart(), size);
-        pacman.m_data[Direction::Down].emplace_back(nextStart(), size);
-        pacman.m_data[Direction::Down].emplace_back(nextStart(), size);
-        pacman.m_data[Direction::Down].emplace_back(nextStart(), size);
-        pacman.m_data[Direction::Left].emplace_back(nextStart(), size);
-        pacman.m_data[Direction::Left].emplace_back(nextStart(), size);
-        pacman.m_data[Direction::Left].emplace_back(nextStart(), size);
-        pacman.m_data[Direction::Up].emplace_back(nextStart(), size);
-        pacman.m_data[Direction::Up].emplace_back(nextStart(), size);
-        pacman.m_data[Direction::Up].emplace_back(nextStart(), size);
-
-        return pacman;
+        return greenPlatform;
     }
 }
 
@@ -100,6 +82,6 @@ Resources::Resources()
     }
 
     m_data[BackGroundClassic] = backGrounClassicdData();
-    m_data[Pacman] = pacmanData();
+    m_data[GreenPlatform] = greenPlatform();
     m_data[DoodleClassic] = doodleClassicData();
 }

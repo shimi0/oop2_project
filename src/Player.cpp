@@ -1,23 +1,28 @@
 #include "Player.h"
 
 Player::Player()
-	:Movable(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite)
+	:Movable(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite),
+	GameObject(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite)
 {
 }
 
-void Player::loadPlayer(std::unique_ptr<b2World>& world, b2BodyDef& bodydef)
+
+void Player::loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef)
 {
 	bodydef.type = b2_dynamicBody;
-	bodydef.position.Set(40.f / SCALE, 40.f / SCALE);
-	setPosition({ 0,0 });
-	m_playerBody = world->CreateBody(&bodydef);
+	bodydef.position.Set(sfmlToBox2D(600.f), sfmlToBox2D(600.f));
+	
+	m_objectBody = world->CreateBody(&bodydef);
 
 	b2PolygonShape playerBox;
-	playerBox.SetAsBox(20.0f / SCALE, 20.0f / SCALE);
+	auto box = sfmlToBox2D(m_sprite.getGlobalBounds().width, m_sprite.getGlobalBounds().height);
+	playerBox.SetAsBox(box.x, box.y);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &playerBox;
 	fixtureDef.density = 1.0f;
-	m_playerBody->CreateFixture(&fixtureDef);
+	m_objectBody->CreateFixture(&fixtureDef);
+
+	setPosition(box2DToSFML(m_objectBody->GetPosition()));
 
 }
 

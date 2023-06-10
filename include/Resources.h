@@ -13,7 +13,7 @@ public:
     {
         BackGroundClassic,
         DoodleClassic,
-        Pacman,
+        GreenPlatform,
         Max,
     };
 

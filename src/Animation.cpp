@@ -22,7 +22,7 @@ void Animation::direction(Direction dir)
     update();
 }
 
-void Animation::update(sf::Time delta)
+void Animation::updateBasedOnTime(sf::Time delta)
 {
     m_elapsed += delta;
     if (m_elapsed >= AnimationTime)
@@ -32,6 +32,13 @@ void Animation::update(sf::Time delta)
         m_index %= m_data.m_data.find(m_dir)->second.size();
         update();
     }
+}
+
+void Animation::updateBasedOnCommand()
+{
+    ++m_index;
+    m_index %= m_data.m_data.find(m_dir)->second.size();
+    update();
 }
 
 void Animation::update()
