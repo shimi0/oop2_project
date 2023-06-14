@@ -2,6 +2,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "Level.h"
+#include "DataReader.h"
 
 class Game
 {
@@ -15,5 +16,6 @@ public:
 private:
 
 	sf::RenderWindow& m_window;
+	DataReader m_dataReader;
 
 };

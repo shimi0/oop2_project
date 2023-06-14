@@ -5,6 +5,11 @@
 #include "Direction.h"
 #include "SFML/Graphics.hpp"
 #include "box2d/box2d.h"
+#include "CordinatesConverter.h"
+#include <iostream>
+
+class Platform;
+class Player;
 
 class GameObject
 {
@@ -14,6 +19,12 @@ public:
 	virtual ~GameObject() = 0 {}
 	void draw(sf::RenderWindow& m_window);
 	virtual void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) = 0;
+	virtual void handleCollision(GameObject& obj) {};
+
+	bool isSameBody(const b2Body* other) const
+	{
+		return m_objectBody == other;
+	}
 
 protected:
 

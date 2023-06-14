@@ -12,56 +12,62 @@ Level::Level(sf::RenderWindow& window)
 void Level::run()
 {
 	// Define the gravity vector
-	b2Vec2 gravity(0.0f, 10.0f);
+	b2Vec2 gravity(0.0f, 15.0f);
 	auto world = std::make_unique<b2World>(gravity);
+	
+	//collision detection
+	auto contactListener = ContactListener(m_player, m_simplePlatformsVec);
+	world->SetContactListener(&contactListener);
 
 	auto bodyDef = b2BodyDef();
-	// Define the gravity vector
 	m_player.loadObject(world, bodyDef);
 
+	auto clock = sf::Clock();
+	auto deltaTime = clock.restart();
 
-	//temp ground-------------------------------------------------------------
-	// Create the ground body
+	auto pos = sf::Vector2f(600.f, 1024.f * 2);
+	m_simplePlatformsVec.emplace_back(world, bodyDef, pos);
 
-	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(sfmlToBox2D(200.f), sfmlToBox2D(1900.f) ); // Position the ground at the bottom of the window
-	b2Body* groundBody = world->CreateBody(&groundBodyDef);
+	pos = sf::Vector2f(800.f, 1024.f * 2 - 300);
+	m_simplePlatformsVec.emplace_back(world, bodyDef, pos);
 
-	// Create the ground shape
-	b2PolygonShape groundShape;
-	groundShape.SetAsBox(sfmlToBox2D(640.f * 2), sfmlToBox2D(0.01f)); // Set the dimensions of the ground shape
-	
-	// Create the ground fixture
-	b2FixtureDef groundFixtureDef;
-	groundFixtureDef.shape = &groundShape;
-	groundFixtureDef.friction = 0.01f;
-	groundFixtureDef.density = 1.0f;
-	groundBody->CreateFixture(&groundFixtureDef);
-
-	//create 1 platform - temp
-
-	m_platform.loadObject(world, bodyDef);
+	pos = sf::Vector2f(400, 1024.f * 2 - 500);
+	m_simplePlatformsVec.emplace_back(world, bodyDef, pos);
+	//m_platform.loadObject(world, bodyDef);
 
 	while (m_window.isOpen())
 	{
+		deltaTime = clock.restart();
 		world->Step(1.0f / 60.0f, 10, 5);
-		m_window.clear(sf::Color::Black);
-		m_board.draw();
-		m_player.setPosition({ 0,0 });	//temp - make it fall
-		m_player.draw(m_window);
-		m_platform.draw(m_window);
-		m_window.display();
-		sf::Event event;
-		while (m_window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				m_window.close();
-
-			if (event.type == sf::Event::KeyReleased)
-				m_player.processKeyInput(event);
-		}
-
-
+		drawGraphics();
+		m_player.matchSptitePosToBody();
+		m_player.updateAnimation();
+		processEvent(deltaTime);
 	}
-	
+}
+
+//-------------------------------------------
+
+void Level::processEvent(const sf::Time& deltaTime)
+{
+	sf::Event event;
+	while (m_window.pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed)
+			m_window.close();
+		m_player.processKeyInput(event, deltaTime);
+	}
+}
+
+//-------------------------------------------
+
+void Level::drawGraphics()
+{
+	m_window.clear(sf::Color::Black);
+	m_board.draw();
+	m_player.draw(m_window);
+//	m_platform.draw(m_window);
+	for (auto& platform : m_simplePlatformsVec)
+		platform.draw(m_window);
+	m_window.display();
 }

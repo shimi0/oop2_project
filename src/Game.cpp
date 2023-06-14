@@ -11,7 +11,7 @@ Game::Game(sf::RenderWindow& window)
 void Game::run()
 {
 
-	while (true)
+	while (true)	//lvl.isOpen()
 	{
 		Level(m_window).run();
 

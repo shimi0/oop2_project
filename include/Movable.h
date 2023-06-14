@@ -9,6 +9,8 @@ public:
 	virtual ~Movable() = 0 {}
 	virtual void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) override {};
 
+	void matchSptitePosToBody();
 
 private:
+
 };
