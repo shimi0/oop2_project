@@ -14,6 +14,16 @@ SimplePlatform::SimplePlatform(std::unique_ptr<b2World>&world, b2BodyDef & bodyd
 
 //----------------------------------------
 
+static auto registerIt = Factory::instance().registerType(
+	"SimplePlatform",
+	[](std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) -> std::unique_ptr<GameObject>
+	{
+		return std::make_unique<SimplePlatform>(world, bodydef, pos);
+	}
+);
+
+//----------------------------------------
+
 void SimplePlatform::loadObject()
 {
 
@@ -22,7 +32,9 @@ void SimplePlatform::loadObject()
 	m_sprite.setScale({ 2.f,2.f });
 
 	//NOTICE: should be divided by 2. not by 6. but turns out to be to big. dont know why... 
-	auto box = sfmlToBox2D(m_sprite.getGlobalBounds().width / 6, m_sprite.getGlobalBounds().height / 2);
+
+	//Y should be m_sprite.getGlobalBounds().height / 2 for the full platform. curentlly it 0.01
+	auto box = sfmlToBox2D(m_sprite.getGlobalBounds().width / 6, 0.01f);
 	playerBox.SetAsBox(box.x, box.y);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &playerBox;

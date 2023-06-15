@@ -11,6 +11,8 @@ Animation::Animation(const AnimationData& data, Direction dir, sf::Sprite& sprit
     update();
 }
 
+//------------------------------------------------
+
 void Animation::direction(Direction dir)
 {
     if (m_dir == dir || dir == Direction::Stay)
@@ -21,6 +23,8 @@ void Animation::direction(Direction dir)
     m_dir = dir;
     update();
 }
+
+//------------------------------------------------
 
 void Animation::updateBasedOnTime(sf::Time delta)
 {
@@ -34,12 +38,16 @@ void Animation::updateBasedOnTime(sf::Time delta)
     }
 }
 
+//------------------------------------------------
+
 void Animation::updateBasedOnCommand()
 {
     ++m_index;
     m_index %= m_data.m_data.find(m_dir)->second.size();
     update();
 }
+
+//------------------------------------------------
 
 void Animation::update()
 {

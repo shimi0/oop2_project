@@ -3,6 +3,8 @@
 #include "SFML/Graphics.hpp"
 #include "Level.h"
 #include "DataReader.h"
+#include <fstream>
+#include "Factory.h"
 
 class Game
 {
@@ -15,7 +17,9 @@ public:
 
 private:
 
+	void readGameData(Level& level);
+
 	sf::RenderWindow& m_window;
-	DataReader m_dataReader;
+
 
 };

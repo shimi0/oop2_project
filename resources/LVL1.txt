@@ -1,3 +1,5 @@
-SimplePlatform 600 2048
+SimplePlatform 600 1600
 SimplePlatform 800 1600
-SimplePlatform 400 1300
+SimplePlatform 1000 1400
+SimplePlatform 900 1100
+SimplePlatform 300 600

@@ -9,6 +9,7 @@
 #include "box2d/box2d.h"
 #include "SFML/Graphics.hpp"
 #include "CordinatesConverter.h"
+#include "Factory.h"
 
 
 
@@ -16,11 +17,6 @@ class SimplePlatform : public Platform, public Unmovable
 {
 public:
 	SimplePlatform(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
-
-
-	
-	
-
 
 
 

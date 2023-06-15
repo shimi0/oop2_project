@@ -9,19 +9,22 @@
 class ContactListener : public b2ContactListener
 {
 public:
-	ContactListener(Player& player, std::vector<SimplePlatform>& simplePlatforms)
+	ContactListener(Player& player, std::vector<std::unique_ptr<GameObject>>& simplePlatforms)
 	:m_player(player), m_simplePlatdorms(simplePlatforms)
-	{}
-
-	void BeginContact(b2Contact* contact)
+	{}																		//		!!!!!!!!!!!!!!!!!!!!!!!!!!
+																			//		!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//TO_DO: add pre solve function for side - down collision processing----//		!!!!!!!!!!!!!!!!!!!!!!!!!!
+																			//		!!!!!!!!!!!!!!!!!!!!!!!!!!
+	void BeginContact(b2Contact* contact)									//		!!!!!!!!!!!!!!!!!!!!!!!!!!
 	{
 		auto fixtureBodyA = contact->GetFixtureA()->GetBody();
 		auto fixtureBodyB = contact->GetFixtureB()->GetBody();
 	
 		for (auto& platform : m_simplePlatdorms) {
-			if (m_player.isSameBody(fixtureBodyA) && platform.isSameBody(fixtureBodyB))
+			if (m_player.isSameBody(fixtureBodyA) && platform->isSameBody(fixtureBodyB) ||
+				m_player.isSameBody(fixtureBodyB) && platform->isSameBody(fixtureBodyA))
 			{
-				m_player.handleCollision(platform);
+				m_player.handleCollision(*platform);
 			}
 		}
 	}
@@ -29,5 +32,5 @@ public:
 private:
 	Player& m_player;
 
-	std::vector<SimplePlatform>& m_simplePlatdorms;
+	std::vector<std::unique_ptr<GameObject>>& m_simplePlatdorms;
 };

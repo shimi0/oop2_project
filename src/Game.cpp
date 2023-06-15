@@ -3,19 +3,34 @@
 
 Game::Game(sf::RenderWindow& window)
 	:m_window(window)
+{}
+
+//---------------------------
+//catch exceptions
+void Game::run()
 {
+	while (true)	//lvl.isOpen()
+	{
+		auto level = Level(m_window);
+		readGameData(level);
+
+		level.run();
+
+		break;
+	}
 }
 
 //---------------------------
 
-void Game::run()
+void Game::readGameData(Level& level)
 {
+	auto dataReader = DataReader("LVL1.txt");
+	dataReader.openFile();
+	Object object;
 
-	while (true)	//lvl.isOpen()
+	while (!dataReader.isEOF())
 	{
-		Level(m_window).run();
-
-
-		break;
+		object = dataReader.readObject();
+		level.addObject(object.type, object.position);
 	}
 }
