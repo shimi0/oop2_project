@@ -11,11 +11,12 @@ class ContactListener : public b2ContactListener
 public:
 	ContactListener(Player& player, std::vector<std::unique_ptr<GameObject>>& simplePlatforms)
 	:m_player(player), m_simplePlatdorms(simplePlatforms)
-	{}																		//		!!!!!!!!!!!!!!!!!!!!!!!!!!
-																			//		!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//TO_DO: add pre solve function for side - down collision processing----//		!!!!!!!!!!!!!!!!!!!!!!!!!!
-																			//		!!!!!!!!!!!!!!!!!!!!!!!!!!
-	void BeginContact(b2Contact* contact)									//		!!!!!!!!!!!!!!!!!!!!!!!!!!
+	{}																					  //	!!!!!
+																						  //	!!!!!
+	//TO_DO: add pre solve/ Endcontact function for side - down collision processing!!!!! //	!!!!!
+	//			add one way collision!!!												  //	!!!!!
+																						  //	!!!!!
+	void BeginContact(b2Contact* contact)		
 	{
 		auto fixtureBodyA = contact->GetFixtureA()->GetBody();
 		auto fixtureBodyB = contact->GetFixtureB()->GetBody();
@@ -25,8 +26,14 @@ public:
 				m_player.isSameBody(fixtureBodyB) && platform->isSameBody(fixtureBodyA))
 			{
 				m_player.handleCollision(*platform);
+				
 			}
 		}
+	}
+
+	void EndContact(b2Contact* contact)
+	{
+
 	}
 
 private:

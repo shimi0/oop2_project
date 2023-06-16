@@ -2,7 +2,8 @@
 
 Player::Player()
 	:Movable(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite),
-	GameObject(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite)
+	GameObject(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite),
+	m_basePosition(sf::Vector2f(WIN_SIZE_X,WIN_SIZE_Y))
 {}
 
 //------------------------------------------------------------
@@ -17,7 +18,7 @@ void Player::loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef)
 	b2PolygonShape playerBox;
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
 	m_sprite.setScale({ 2.f,2.f });
-	auto box = sfmlToBox2D(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
+	auto box = sfmlToBox2D(m_sprite.getGlobalBounds().width / 2.5, m_sprite.getGlobalBounds().height / 2);
 	playerBox.SetAsBox(box.x, box.y);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &playerBox;

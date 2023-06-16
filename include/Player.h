@@ -25,6 +25,7 @@ public:
     {
         jump();
         m_animation.updateBasedOnCommand();
+        m_basePosition = sf::Vector2f(obj.getPosition());
     }
 
 	Player();
@@ -35,8 +36,16 @@ public:
     void step(const Direction dir, const sf::Time& deltaTime);
 
 	void processKeyInput(const sf::Event& event, const sf::Time& deltaTime);
+
+    sf::Vector2f getBasePosition() const
+    {
+        return m_basePosition;
+    }
  
 
 private:
+
+    //lower number = higher platform
+    sf::Vector2f m_basePosition;
 
 };

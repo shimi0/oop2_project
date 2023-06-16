@@ -26,6 +26,11 @@ public:
 		return m_objectBody == other;
 	}
 
+	sf::Vector2f getPosition() const
+	{
+		return m_sprite.getPosition();
+	}
+
 protected:
 
 	sf::Sprite m_sprite;

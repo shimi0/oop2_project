@@ -24,6 +24,7 @@ public:
 
 private:
 
+	void adjustView(sf::View&);
 	void processEvent(const sf::Time&);
 	void drawGraphics();
 
