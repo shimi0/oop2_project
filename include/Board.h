@@ -10,6 +10,10 @@ public:
 
 	Board(sf::RenderWindow& window);
 	void draw();
+	void updateBGPos(const sf::Vector2f newPos)
+	{
+		m_sprite.setPosition(newPos);
+	}
 
 
 private:

@@ -28,6 +28,11 @@ public:
         m_basePosition = sf::Vector2f(obj.getPosition());
     }
 
+    bool isMovingUp() const
+    {
+        return (m_objectBody->GetLinearVelocity().y < 0.0f);
+    }
+
 	Player();
 	void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) override;
     void jump();

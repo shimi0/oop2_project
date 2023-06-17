@@ -34,10 +34,11 @@ void Level::run()
 	{
 		deltaTime = clock.restart();
 		m_world->Step(1.0f / 60.0f, 10, 5);
+		adjustView(gameView);
 		drawGraphics();
 		m_player.matchSptitePosToBody();
 		m_player.updateAnimation();
-		adjustView(gameView);
+
 		processEvent(deltaTime);
 	}
 }
@@ -46,24 +47,23 @@ void Level::run()
 
 void Level::adjustView(sf::View& gameView)
 {
+	sf::FloatRect viewPort = gameView.getViewport();
 
-	sf::FloatRect viewport = gameView.getViewport();
-
-	// Get the size of the window
 	sf::Vector2u windowSize = m_window.getSize();
 
-	// Calculate the global coordinates of the view
-	sf::Vector2f topLeft = m_window.mapPixelToCoords(sf::Vector2i(viewport.left * windowSize.x, viewport.top * windowSize.y));
+	//calc global coordinates view
+	sf::Vector2f topLeft = m_window.mapPixelToCoords(sf::Vector2i(viewPort.left * windowSize.x, viewPort.top * windowSize.y));
 
-	float player = m_player.getBasePosition().y;
-	
-	if (2000 + topLeft.y > player )
+	float PlayerBasePos = m_player.getBasePosition().y;
+
+	if (2000 + topLeft.y > PlayerBasePos)	//set 2000 and 200, 10 as global macro 
 	{
-		gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + ((player - WIN_SIZE_Y - topLeft.y + 200) / 10));
+		gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + ((PlayerBasePos - WIN_SIZE_Y - topLeft.y + 200) / 10));
+		m_board.updateBGPos(sf::Vector2f(topLeft.x, topLeft.y + ((PlayerBasePos - WIN_SIZE_Y - topLeft.y + 200) / 10)));
 	}
-	
-	
+
 	m_window.setView(gameView);
+	
 
 }
 
