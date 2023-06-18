@@ -12,7 +12,15 @@ void Game::run()
 	while (true)	//lvl.isOpen()
 	{
 		auto level = Level(m_window);
-		readGameData(level);
+		try
+		{
+			readGameData(level);
+		}
+		catch (std::exception& ex)
+		{
+			std::cerr << "Exception: " << ex.what() << '\n';
+			exit(EXIT_FAILURE);
+		}
 
 		level.run();
 

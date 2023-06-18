@@ -5,7 +5,7 @@
 #include "Player.h"
 #include "macros.h"
 #include "box2d/box2d.h"
-#include "SimplePlatform.h"
+#include "StaticPlatform.h"
 #include "ContactListener.h"
 #include <vector>
 
@@ -18,7 +18,20 @@ public:
 	void run();
 	void addObject(std::string type, sf::Vector2f pos)
 	{
-		m_simplePlatformsVec.push_back(Factory::instance().create(type, m_world, m_bodyDef, pos));
+		auto unmovable = Factory<Unmovable>::instance().create(type, m_world, m_bodyDef, pos);
+		if (unmovable)
+		{
+			m_unmovableObjVec.push_back(std::move(unmovable));
+			return;
+		}
+
+		auto movable = Factory<Movable>::instance().create(type, m_world, m_bodyDef, pos);
+		if (movable)
+		{
+			m_movableObjVec.push_back(std::move(movable));
+			return;
+		}
+		throw std::runtime_error(std::string("No factory handles " + type));
 	}
 	
 
@@ -34,6 +47,7 @@ private:
 	Player m_player;
 	std::unique_ptr<b2World> m_world;
 	b2BodyDef m_bodyDef;
-	std::vector<std::unique_ptr<GameObject>> m_simplePlatformsVec;	//uniqe_ptr???
+	std::vector<std::unique_ptr<Movable>> m_movableObjVec;	//uniqe_ptr???
+	std::vector<std::unique_ptr<Unmovable>> m_unmovableObjVec;	//uniqe_ptr???
 
 };

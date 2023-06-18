@@ -37,10 +37,10 @@ void Player::jump()
 
 //------------------------------------------------------------
 
-void Player::step(const Direction dir, const sf::Time& deltaTime)
+void Player::step(const sf::Time& deltaTime)
 {
 	float desiredVelocity = 0.0f;
-	switch (dir)
+	switch (m_direction)
 	{
 		case Direction::Right: desiredVelocity = 6.0f;       break;
 		case Direction::Left:  desiredVelocity = -6.0f;      break;
@@ -62,11 +62,12 @@ void Player::processKeyInput(const sf::Event& event, const sf::Time& deltaTime)
 		switch (event.key.code)
 		{
 			case sf::Keyboard::Right:
-			case sf::Keyboard::D: m_animation.direction(Direction::Right);	step(Direction::Right, deltaTime);	return;
+			case sf::Keyboard::D: m_animation.direction(Direction::Right);	m_direction = Direction::Right; step(deltaTime);	return;
 			case sf::Keyboard::Left:
-			case sf::Keyboard::A: m_animation.direction(Direction::Left);	step(Direction::Left, deltaTime);	return;
-			default:																							return;
-		}
+			case sf::Keyboard::A: m_animation.direction(Direction::Left);	m_direction = Direction::Left; step(deltaTime);		return;
+			default:																											return;
+		}		
 	}
-	step(Direction::Stay, deltaTime);
+	m_direction = Direction::Stay;
+	step(deltaTime);
 }

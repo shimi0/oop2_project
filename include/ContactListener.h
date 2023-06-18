@@ -2,15 +2,17 @@
 
 #include "box2d/box2d.h"
 #include "Player.h"
-#include "SimplePlatform.h"
+#include "StaticPlatform.h"
+#include "Unmovable.h"
+#include "Movable.h"
 #include "GameObject.h"
 #include <vector>
 
 class ContactListener : public b2ContactListener
 {
 public:
-	ContactListener(Player& player, std::vector<std::unique_ptr<GameObject>>& simplePlatforms)
-	:m_player(player), m_simplePlatdorms(simplePlatforms)
+	ContactListener(Player& player, std::vector<std::unique_ptr<Unmovable>>& unmovableObjVec, std::vector<std::unique_ptr<Movable>>& movableObjVec)
+	:m_player(player), m_unmovableObjVec(unmovableObjVec), m_movableObjVec(movableObjVec)
 	{}		
 
 	//NOTICE: had to comment out	"m_flags |= e_enabledFlag;" in "b2_contact.cpp" to avoid multy sub collisions
@@ -21,11 +23,10 @@ public:
 	
 
 		//player - platfrom collision
-		for (auto& platform : m_simplePlatdorms) {
+		for (auto& platform : m_unmovableObjVec) {
 			if (m_player.isSameBody(fixtureBodyA) && platform->isSameBody(fixtureBodyB) ||
 				m_player.isSameBody(fixtureBodyB) && platform->isSameBody(fixtureBodyA))
 			{
-
 				b2WorldManifold worldManiford;
 				contact->GetWorldManifold(&worldManiford); auto collisionNormsl = worldManiford.normal;
 
@@ -36,6 +37,23 @@ public:
 					m_player.handleCollision(*platform);
 			}
 		}
+
+		for (auto& platform : m_movableObjVec) {
+			if (m_player.isSameBody(fixtureBodyA) && platform->isSameBody(fixtureBodyB) ||
+				m_player.isSameBody(fixtureBodyB) && platform->isSameBody(fixtureBodyA))
+			{
+				b2WorldManifold worldManiford;
+				contact->GetWorldManifold(&worldManiford); auto collisionNormsl = worldManiford.normal;
+
+				//if the player is moving up or the collision is with the player body - dont collide (coll shouls be with player's legs only!)
+				if (m_player.isMovingUp() || collisionNormsl.y > 0)
+					contact->SetEnabled(false);
+				else
+					m_player.handleCollision(*platform);
+			}
+		}
+		contact->SetEnabled(false);		//for any other unexpected collision - ignore it. currently for 2 platfroms collision.
+										//	!!!
 	}
 
 	void EndContact(b2Contact* contact)
@@ -46,7 +64,8 @@ public:
 private:
 	Player& m_player;
 
-	std::vector<std::unique_ptr<GameObject>>& m_simplePlatdorms;
+	std::vector<std::unique_ptr<Unmovable>>& m_unmovableObjVec;
+	std::vector<std::unique_ptr<Movable>>& m_movableObjVec;
 };
 
 //---------------------------------------------------------------

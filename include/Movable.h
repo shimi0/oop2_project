@@ -10,7 +10,14 @@ public:
 	virtual void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) override {};
 
 	void matchSptitePosToBody();
+	virtual void step(const sf::Time& deltaTime) = 0;
+
+protected:
+
+	Direction m_direction = Direction::Right;
+
 
 private:
+
 
 };

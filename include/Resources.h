@@ -14,6 +14,8 @@ public:
         BackGroundClassic,
         DoodleClassic,
         GreenPlatform,
+        BluePlatform,
+        FlyingEnemy,
         Max,
     };
 

@@ -13,6 +13,7 @@ enum class ObjectType
     Wall = '#',
 };
 
+template <typename T>
 class Factory
 {
 public:
@@ -22,15 +23,16 @@ public:
         return instance;
     }
 
-    using FuncType = std::unique_ptr<GameObject>(*)(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
+    using FuncType = std::unique_ptr<T>(*)(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
     bool registerType(std::string type, FuncType f)
     {
         m_map.emplace(type, f);
         return true;
     }
 
-    std::unique_ptr<GameObject> create(std::string type, std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) const
+    std::unique_ptr<T> create(std::string type, std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) const
     {
+        if (!m_map.contains(type)) return nullptr;
         return m_map.at(type)(world, bodydef, pos);
     }
 
@@ -40,9 +42,4 @@ private:
     void operator=(const Factory&) = delete;
 
     std::unordered_map<std::string, FuncType> m_map;
-
-    //{
-    //    {"Player", ObjectType::Player },
-    //    { "SimplePlatform", ObjectType::SimplePlatform}
-    //};
 };

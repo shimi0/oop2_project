@@ -1,6 +1,6 @@
-#include "SimplePlatform.h"
+#include "StaticPlatform.h"
 
-SimplePlatform::SimplePlatform(std::unique_ptr<b2World>&world, b2BodyDef & bodydef, const sf::Vector2f& pos)
+StaticPlatform::StaticPlatform(std::unique_ptr<b2World>&world, b2BodyDef & bodydef, const sf::Vector2f& pos)
 	: GameObject(Resources::instance().animationData(Resources::GreenPlatform), Direction::Stay, m_sprite), Platform(),
 	Unmovable(Resources::instance().animationData(Resources::GreenPlatform), Direction::Stay, m_sprite)
 {
@@ -14,24 +14,24 @@ SimplePlatform::SimplePlatform(std::unique_ptr<b2World>&world, b2BodyDef & bodyd
 
 //----------------------------------------
 
-static auto registerIt = Factory::instance().registerType(
-	"SimplePlatform",
-	[](std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) -> std::unique_ptr<GameObject>
+static auto registerIt = Factory<Unmovable>::instance().registerType(
+	"StaticPlatform",
+	[](std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) -> std::unique_ptr<Unmovable>
 	{
-		return std::make_unique<SimplePlatform>(world, bodydef, pos);
+		return std::make_unique<StaticPlatform>(world, bodydef, pos);
 	}
 );
 
 //----------------------------------------
 
-void SimplePlatform::loadObject()
+void StaticPlatform::loadObject()
 {
 
 	b2PolygonShape playerBox;
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
 	m_sprite.setScale({ 2.f,2.f });
 
-	//NOTICE: should be divided by 2. not by 6. but turns out to be to big. dont know why... 
+	//NOTICE: should be divided by 2. not by 6. but turns out to be too big. dont know why... 
 
 	//Y should be m_sprite.getGlobalBounds().height / 2 for the full platform. curentlly it 0.01
 	auto box = sfmlToBox2D(m_sprite.getGlobalBounds().width / 6, 0.01f);

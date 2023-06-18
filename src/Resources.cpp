@@ -64,6 +64,45 @@ namespace
 
         return greenPlatform;
     }
+
+    AnimationData bluePlatform()
+    {
+        const auto size = sf::Vector2i(116, 34);
+        const auto initSpace = sf::Vector2i(1288, 34);
+        const auto middleSpace = sf::Vector2i(0, 0);
+
+        auto greenPlatform = AnimationData{};
+        auto currentStart = initSpace;
+
+        greenPlatform.m_data[Direction::Stay].emplace_back(currentStart, size);
+
+        return greenPlatform;
+    }
+
+    AnimationData flyingEnemy()
+    {
+        const auto size = sf::Vector2i(160, 92);
+        const auto initSpace = sf::Vector2i(1584, 0);
+        const auto middleSpace = sf::Vector2i(0, 0);
+
+        auto flyingEnemy = AnimationData{};
+        auto currentStart = initSpace;
+
+        auto nextStart = [&]()
+        {
+            currentStart += middleSpace;
+            currentStart.x += size.x;
+            return currentStart;
+        };
+
+        flyingEnemy.m_data[Direction::Stay].emplace_back(currentStart, size);
+        flyingEnemy.m_data[Direction::Stay].emplace_back(nextStart(), size);
+        flyingEnemy.m_data[Direction::Stay].emplace_back(nextStart(), size);
+        flyingEnemy.m_data[Direction::Stay].emplace_back(nextStart(), size);
+        flyingEnemy.m_data[Direction::Stay].emplace_back(sf::Vector2i(1580, 92), size);
+
+        return flyingEnemy;
+    }
 }
 
 Resources& Resources::instance()
@@ -82,6 +121,8 @@ Resources::Resources()
     }
 
     m_data[BackGroundClassic] = backGrounClassicdData();
+    m_data[BluePlatform] = bluePlatform();
     m_data[GreenPlatform] = greenPlatform();
     m_data[DoodleClassic] = doodleClassicData();
+    m_data[FlyingEnemy] = flyingEnemy();
 }

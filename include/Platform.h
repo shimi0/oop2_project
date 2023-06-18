@@ -10,10 +10,6 @@ public:
 	Platform();
 	virtual ~Platform() = 0 {}
 
-	virtual void handleCollision(Player& obj)
-	{
-		std::cout << "Sdaa";
-	}
 protected:
 
 

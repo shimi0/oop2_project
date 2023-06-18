@@ -16,7 +16,7 @@ Level::Level(sf::RenderWindow& window)
 void Level::run()
 {
 	//collision detection
-	auto contactListener = ContactListener(m_player, m_simplePlatformsVec);
+	auto contactListener = ContactListener(m_player, m_unmovableObjVec, m_movableObjVec);
 	m_world->SetContactListener(&contactListener);
 
 	//auto bodyDef = b2BodyDef();
@@ -38,7 +38,8 @@ void Level::run()
 		drawGraphics();
 		m_player.matchSptitePosToBody();
 		m_player.updateAnimation();
-
+		for (auto& item : m_movableObjVec)
+			item->step(deltaTime);
 		processEvent(deltaTime);
 	}
 }
@@ -87,8 +88,10 @@ void Level::drawGraphics()
 	m_window.clear(sf::Color::Black);
 	m_board.draw();
 //	m_platform.draw(m_window);
-	for (auto& platform : m_simplePlatformsVec)
-		platform->draw(m_window);
+	for (auto& staticObj : m_unmovableObjVec)
+		staticObj->draw(m_window);
+	for (auto& movableObj : m_movableObjVec)
+		movableObj->draw(m_window);
 	m_player.draw(m_window);
 	m_window.display();
 }

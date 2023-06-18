@@ -38,7 +38,7 @@ public:
     void jump();
 	
 
-    void step(const Direction dir, const sf::Time& deltaTime);
+    void step(const sf::Time& deltaTime);
 
 	void processKeyInput(const sf::Event& event, const sf::Time& deltaTime);
 

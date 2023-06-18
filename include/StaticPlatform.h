@@ -13,10 +13,10 @@
 
 
 
-class SimplePlatform : public Platform, public Unmovable
+class StaticPlatform : public Platform, public Unmovable
 {
 public:
-	SimplePlatform(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
+	StaticPlatform(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
 
 
 

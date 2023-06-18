@@ -3,6 +3,7 @@
 #include "SFML/Graphics.hpp"
 #include "Resources.h"
 #include "Animation.h"
+#include "box2d/box2d.h"
 
 class Board
 {
@@ -23,4 +24,5 @@ private:
 	sf::RenderWindow& m_window;
 	sf::Sprite m_sprite;
 	Animation m_animation;
+	
 };
