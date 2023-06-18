@@ -11,10 +11,19 @@ public:
 
 	void matchSptitePosToBody();
 	virtual void step(const sf::Time& deltaTime) = 0;
+	
 
 protected:
 
+	//object current direction
 	Direction m_direction = Direction::Right;
+
+	//sets new horizontal position based on a desired velocity
+	void updatePositionX(const float& desiredVelocity);
+
+	//sets new vertical position based on a desired velocity
+	void updatePositionY(const float& desiredVelocity);
+
 
 
 private:

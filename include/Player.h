@@ -14,6 +14,8 @@ class Player : public Movable
 {
 public:
 
+    Player();
+
     void updateAnimation()
     {
         if(m_objectBody->GetLinearVelocity().y == 0.f)
@@ -21,25 +23,13 @@ public:
     }
 
 
-    virtual void handleCollision(GameObject& obj)
-    {
-        jump();
-        m_animation.updateBasedOnCommand();
-        m_basePosition = sf::Vector2f(obj.getPosition());
-    }
+    virtual void handleCollision(GameObject& obj);
 
-    bool isMovingUp() const
-    {
-        return (m_objectBody->GetLinearVelocity().y < 0.0f);
-    }
 
-	Player();
+    bool isMovingUp() const;
 	void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) override;
     void jump();
-	
-
     void step(const sf::Time& deltaTime);
-
 	void processKeyInput(const sf::Event& event, const sf::Time& deltaTime);
 
     sf::Vector2f getBasePosition() const
@@ -47,7 +37,6 @@ public:
         return m_basePosition;
     }
  
-
 private:
 
     //lower number = higher platform

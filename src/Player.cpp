@@ -1,10 +1,27 @@
 #include "Player.h"
 
+
 Player::Player()
 	:Movable(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite),
 	GameObject(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite),
 	m_basePosition(sf::Vector2f(WIN_SIZE_X,WIN_SIZE_Y))
 {}
+
+//------------------------------------------------------------
+
+bool Player::isMovingUp() const
+{
+	return (m_objectBody->GetLinearVelocity().y < 0.0f);
+}
+
+//------------------------------------------------------------
+
+void Player::handleCollision(GameObject& obj)
+{
+	jump();
+	m_animation.updateBasedOnCommand();
+	m_basePosition = sf::Vector2f(obj.getPosition());
+}
 
 //------------------------------------------------------------
 
@@ -39,19 +56,16 @@ void Player::jump()
 
 void Player::step(const sf::Time& deltaTime)
 {
-	float desiredVelocity = 0.0f;
+	auto desiredVelocity = b2Vec2(0.0f, 0.0f);
 	switch (m_direction)
 	{
-		case Direction::Right: desiredVelocity = 6.0f;       break;
-		case Direction::Left:  desiredVelocity = -6.0f;      break;
-		case Direction::Stay:  desiredVelocity = 0.0f;       break;
+		case Direction::Right: desiredVelocity.x = 6.0f;       break;
+		case Direction::Left:  desiredVelocity.x = -6.0f;      break;
+		case Direction::Stay:  desiredVelocity.x = 0.0f;       break;
 		default:                                             break;
 	}
+	updatePositionX(desiredVelocity.x);
 
-	b2Vec2 currentVelocity = m_objectBody->GetLinearVelocity();
-	float velocityChange = desiredVelocity - currentVelocity.x;
-	float impulse = m_objectBody->GetMass() * velocityChange;
-	m_objectBody->ApplyLinearImpulseToCenter(b2Vec2(impulse, 0.0f), true);
 }
 
 //------------------------------------------------------------

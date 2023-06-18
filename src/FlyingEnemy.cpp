@@ -60,7 +60,11 @@ void FlyingEnemy::step(const sf::Time& deltaTime)
 	if (box2DToSFML(m_objectBody->GetPosition()).x > (WIN_SIZE_X - 150))
 		m_direction = Direction::Left;
 
-	if (box2DToSFML(m_objectBody->GetPosition()).x > (WIN_SIZE_X - 500) && box2DToSFML(m_objectBody->GetPosition()).x < (WIN_SIZE_X - 499))
+	
+
+	//will randomly change direction in a specific point
+	if ((box2DToSFML(m_objectBody->GetPosition()).x > (WIN_SIZE_X - 500) &&
+		box2DToSFML(m_objectBody->GetPosition()).x < (WIN_SIZE_X - 499)) || m_direction == Direction::Stay)
 	{
 		int num = rand() % 2;
 		switch (num)
@@ -78,10 +82,8 @@ void FlyingEnemy::step(const sf::Time& deltaTime)
 		case Direction::Stay:  desiredVelocity = 0.0f;       break;
 		default:                                             break;
 	}
+
 	m_animation.updateBasedOnTime(deltaTime);
-	b2Vec2 currentVelocity = m_objectBody->GetLinearVelocity();
-	float velocityChange = desiredVelocity - currentVelocity.x;
-	float impulse = m_objectBody->GetMass() * velocityChange;
-	m_objectBody->ApplyLinearImpulseToCenter(b2Vec2(impulse, 0.0f), true);
+	updatePositionX(desiredVelocity);
 	matchSptitePosToBody();
 }
