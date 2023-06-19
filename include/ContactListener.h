@@ -36,9 +36,9 @@ public:
 				float playerBottom = m_player.getPosition().y + (m_player.getGlobalBounds().height / 2);
 		
 				//if the player is moving up or the collision is with the player body - dont collide (coll shouls be with player's legs only!)
-				//if (/**m_player.isMovingUp() ||*/ std::abs(contPointSFML.y - playerBottom) > 40)
-					//contact->SetEnabled(false);	
-				//else
+				if (m_player.isMovingUp() || std::abs(contPointSFML.y - playerBottom) > 40)\
+					contact->SetEnabled(false);	
+				else
 					m_player.handleCollision(*platform);
 			}
 		}
