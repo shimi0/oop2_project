@@ -79,6 +79,19 @@ namespace
         return greenPlatform;
     }
 
+    AnimationData blackHoleEnemy()
+    {
+        const auto size = sf::Vector2i(148, 140);
+        const auto initSpace = sf::Vector2i(1744, 92);
+
+        auto blackHoleEnemy = AnimationData{};
+        auto currentStart = initSpace;
+
+        blackHoleEnemy.m_data[Direction::Stay].emplace_back(currentStart, size);
+
+        return blackHoleEnemy;
+    }
+
     AnimationData flyingEnemy()
     {
         const auto size = sf::Vector2i(160, 92);
@@ -125,4 +138,5 @@ Resources::Resources()
     m_data[GreenPlatform] = greenPlatform();
     m_data[DoodleClassic] = doodleClassicData();
     m_data[FlyingEnemy] = flyingEnemy();
+    m_data[BlackHoleEnemy] = blackHoleEnemy();
 }

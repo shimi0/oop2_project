@@ -54,26 +54,30 @@ void FlyingEnemy::step(const sf::Time& deltaTime)
 {
 	//m_direction = Direction::Right;
 
-	if (box2DToSFML(m_objectBody->GetPosition()).x < 150.f)
+	if (box2DToSFML(m_objectBody->GetPosition()).x < 150.f) {
 		m_direction = Direction::Right;
+		//m_objectBody->SetGravityScale(0.02f);
+	}
 
-	if (box2DToSFML(m_objectBody->GetPosition()).x > (WIN_SIZE_X - 150))
+	if (box2DToSFML(m_objectBody->GetPosition()).x > (WIN_SIZE_X - 150)) {
 		m_direction = Direction::Left;
+	//	m_objectBody->SetGravityScale(-0.02f);
+	}
 
 	
 
 	//will randomly change direction in a specific point
-	if ((box2DToSFML(m_objectBody->GetPosition()).x > (WIN_SIZE_X - 500) &&
-		box2DToSFML(m_objectBody->GetPosition()).x < (WIN_SIZE_X - 499)) || m_direction == Direction::Stay)
-	{
-		int num = rand() % 2;
-		switch (num)
-		{
-		case 0:	m_direction = Direction::Left;	break;
-		case 1: m_direction = Direction::Right;	break;
-		default:								break;
-		}
-	}
+	//if ((box2DToSFML(m_objectBody->GetPosition()).x > (WIN_SIZE_X - 500) &&
+	//	box2DToSFML(m_objectBody->GetPosition()).x < (WIN_SIZE_X - 499)) || m_direction == Direction::Stay)
+	//{
+	//	int num = rand() % 2;
+	//	switch (num)
+	//	{
+	//	case 0:	m_direction = Direction::Left;	break;
+	//	case 1: m_direction = Direction::Right;	break;
+	//	default:								break;
+	//	}
+	//}
 	float desiredVelocity = 0.0f;
 	switch (m_direction)
 	{

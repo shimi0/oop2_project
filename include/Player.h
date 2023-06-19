@@ -3,7 +3,9 @@
 #include <iostream>
 
 #include "Movable.h"
+#include "Unmovable.h"
 #include "Resources.h"
+#include "Platform.h"
 #include "Animation.h"
 #include "macros.h"
 #include "box2d/box2d.h"
@@ -24,6 +26,10 @@ public:
 
 
     virtual void handleCollision(GameObject& obj);
+    virtual void handleCollision(Movable& obj);
+    virtual void handleCollision(Unmovable& obj);
+    virtual void handleCollision(Platform& obj);
+    virtual void handleCollision(BlackHoleEnemy& obj);
 
 
     bool isMovingUp() const;

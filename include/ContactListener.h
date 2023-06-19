@@ -27,13 +27,18 @@ public:
 			if (m_player.isSameBody(fixtureBodyA) && platform->isSameBody(fixtureBodyB) ||
 				m_player.isSameBody(fixtureBodyB) && platform->isSameBody(fixtureBodyA))
 			{
-				b2WorldManifold worldManiford;
-				contact->GetWorldManifold(&worldManiford); auto collisionNormsl = worldManiford.normal;
-
+				b2WorldManifold worldManifold;
+				contact->GetWorldManifold(&worldManifold);
+				b2Vec2 contactPoint = worldManifold.points[0];
+				auto contPointSFML = box2DToSFML(contactPoint);
+				float playerHight = (m_player.getGlobalBounds().height / 2);
+				float playerPos = m_player.getPosition().y;
+				float playerBottom = m_player.getPosition().y + (m_player.getGlobalBounds().height / 2);
+		
 				//if the player is moving up or the collision is with the player body - dont collide (coll shouls be with player's legs only!)
-				if(m_player.isMovingUp() || collisionNormsl.y > 0)	
-					contact->SetEnabled(false);
-				else
+				//if (/**m_player.isMovingUp() ||*/ std::abs(contPointSFML.y - playerBottom) > 40)
+					//contact->SetEnabled(false);	
+				//else
 					m_player.handleCollision(*platform);
 			}
 		}
@@ -52,6 +57,9 @@ public:
 					m_player.handleCollision(*platform);
 			}
 		}
+
+
+
 		contact->SetEnabled(false);		//for any other unexpected collision - ignore it. currently for 2 platfroms collision.
 										//	!!!
 	}

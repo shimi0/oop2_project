@@ -18,9 +18,41 @@ bool Player::isMovingUp() const
 
 void Player::handleCollision(GameObject& obj)
 {
+
+}
+
+//------------------------------------------------------------
+
+void Player::handleCollision(Movable& obj)
+{
+	obj.handleCollision(*this);
+}
+
+//------------------------------------------------------------
+
+void Player::handleCollision(Unmovable& obj)
+{
+	obj.handleCollision(*this);
+}
+
+//------------------------------------------------------------
+
+void Player::handleCollision(Platform& obj)
+{
+	if (isMovingUp())
+		return;
+
 	jump();
 	m_animation.updateBasedOnCommand();
 	m_basePosition = sf::Vector2f(obj.getPosition());
+}
+
+//------------------------------------------------------------
+
+void Player::handleCollision(BlackHoleEnemy& obj)
+{
+	m_objectBody->SetLinearVelocity({ 20,20 });
+	matchSptitePosToBody();
 }
 
 //------------------------------------------------------------
@@ -41,6 +73,7 @@ void Player::loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef)
 	fixtureDef.shape = &playerBox;
 	fixtureDef.density = 2.5f;
 	m_objectBody->CreateFixture(&fixtureDef);
+	matchSptitePosToBody();
 }
 
 //------------------------------------------------------------
