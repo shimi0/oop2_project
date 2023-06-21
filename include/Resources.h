@@ -17,6 +17,7 @@ public:
         BluePlatform,
         BlackHoleEnemy,
         FlyingEnemy,
+        DeathStars,
         Max,
     };
 

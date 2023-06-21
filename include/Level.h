@@ -31,6 +31,13 @@ public:
 			m_movableObjVec.push_back(std::move(movable));
 			return;
 		}
+
+		auto platform = Factory<Platform>::instance().create(type, m_world, m_bodyDef, pos);
+		if (platform)
+		{
+			m_platformVec.push_back(std::move(platform));
+			return;
+		}
 		throw std::runtime_error(std::string("No factory handles " + type));
 	}
 	
@@ -49,5 +56,6 @@ private:
 	b2BodyDef m_bodyDef;
 	std::vector<std::unique_ptr<Movable>> m_movableObjVec;	//uniqe_ptr???
 	std::vector<std::unique_ptr<Unmovable>> m_unmovableObjVec;	//uniqe_ptr???
+	std::vector<std::unique_ptr<Platform>> m_platformVec;	
 
 };

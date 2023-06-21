@@ -29,12 +29,12 @@ void BlackHoleEnemy::loadObject()
 {
 	b2PolygonShape playerBox;
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
-	m_sprite.setScale({ 2.f,2.f });
+	m_sprite.setScale({ 1.3f, 1.3f });
 
 	//NOTICE: should be divided by 2. not by 6. but turns out to be too big. dont know why... 
 
 	//Y should be m_sprite.getGlobalBounds().height / 2 for the full platform. curentlly it 0.01
-	auto box = sfmlToBox2D(m_sprite.getGlobalBounds().width / 2.0f, m_sprite.getGlobalBounds().height / 2.f);
+	auto box = sfmlToBox2D(m_sprite.getGlobalBounds().width / 9.0f, m_sprite.getGlobalBounds().height / 9.f);
 	playerBox.SetAsBox(box.x, box.y);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &playerBox;
@@ -42,9 +42,6 @@ void BlackHoleEnemy::loadObject()
 	fixtureDef.friction = 10.0f;
 	m_objectBody->CreateFixture(&fixtureDef);
 	m_sprite.setPosition(box2DToSFML(m_objectBody->GetPosition()));
-	
-//	m_objectBody->SetGravityScale(0.0f);
-	//m_objectBody.setg
 }
 
 //----------------------------------------
@@ -52,5 +49,5 @@ void BlackHoleEnemy::loadObject()
 void BlackHoleEnemy::handleCollision(Player& obj)
 {
 	std::cout << "d";
-	obj.handleCollision(obj);
+	obj.handleCollision(*this);
 }

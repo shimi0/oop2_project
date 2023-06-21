@@ -50,6 +50,28 @@ namespace
 
         return doodleClassic;
     }
+    AnimationData deathStars()
+    {
+        const auto size = sf::Vector2i(89, 60);
+        const auto initSpace = sf::Vector2i(3090, 0);
+        const auto middleSpace = sf::Vector2i(10, 0);
+
+        auto deathStars = AnimationData{};
+        auto currentStart = initSpace;
+
+        auto nextStart = [&]()
+        {
+            currentStart += middleSpace;
+            currentStart.x += size.x;
+            return currentStart;
+        };
+
+        deathStars.m_data[Direction::Stay].emplace_back(currentStart, size);
+        deathStars.m_data[Direction::Stay].emplace_back(nextStart(), size);
+        deathStars.m_data[Direction::Stay].emplace_back(nextStart(), size);
+
+        return deathStars;
+    }
 
     AnimationData greenPlatform()
     {
@@ -133,6 +155,7 @@ Resources::Resources()
         throw std::runtime_error("Can't load file");
     }
 
+    m_data[DeathStars] = deathStars();
     m_data[BackGroundClassic] = backGrounClassicdData();
     m_data[BluePlatform] = bluePlatform();
     m_data[GreenPlatform] = greenPlatform();

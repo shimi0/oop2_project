@@ -15,8 +15,12 @@ public:
 
 protected:
 
-	//object current direction
-	Direction m_direction = Direction::Right;
+	//object current direction. NOTE: no guard for horizontal to set with vertical...
+	Direction m_directionHorizontal = Direction::Right;
+	Direction m_directionVertical = Direction::Up;
+
+	//any direction
+	Direction m_direction = Direction::Up;
 
 	//sets new horizontal position based on a desired velocity
 	void updatePositionX(const float& desiredVelocity);

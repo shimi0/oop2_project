@@ -9,14 +9,14 @@ StaticPlatform 200 1000
 StaticPlatform 1000 900
 StaticPlatform 400 600
 StaticPlatform 400 0
-FlyingEnemy 500 500
+FlyingEnemy 0 200
 StaticPlatform 1000 600
 StaticPlatform 300 300
 StaticPlatform 1100 300
 StaticPlatform 500 -400
 StaticPlatform 900 300
 StaticPlatform 700 300
-BlackHoleEnemy 800 200
+BlackHoleEnemy 800 -100
 StaticPlatform 1200 -400
 StaticPlatform 300 -800
 StaticPlatform 1000 -800

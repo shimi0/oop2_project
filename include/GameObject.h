@@ -14,6 +14,8 @@ class Movable;
 class Unmovable;
 class Platform;
 class BlackHoleEnemy;
+class Enemy;
+class FlyingEnemy;
 
 class GameObject
 {
@@ -28,7 +30,9 @@ public:
 	virtual void handleCollision(Unmovable& obj) {};
 	virtual void handleCollision(Player& obj) {};
 	virtual void handleCollision(Platform& obj) {};
+	//virtual void handleCollision(Enemy& obj) {};
 	virtual void handleCollision(BlackHoleEnemy& obj) {};
+	virtual void handleCollision(FlyingEnemy& obj) {};
 
 	bool isSameBody(const b2Body* other) const
 	{

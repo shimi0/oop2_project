@@ -4,7 +4,8 @@
 Player::Player()
 	:Movable(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite),
 	GameObject(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite),
-	m_basePosition(sf::Vector2f(WIN_SIZE_X,WIN_SIZE_Y))
+	m_basePosition(sf::Vector2f(WIN_SIZE_X,WIN_SIZE_Y)),
+	m_animationDeathStars(Resources::instance().animationData(Resources::DeathStars), Direction::Stay, m_spriteDeathStars)
 {}
 
 //------------------------------------------------------------
@@ -16,14 +17,10 @@ bool Player::isMovingUp() const
 
 //------------------------------------------------------------
 
-void Player::handleCollision(GameObject& obj)
-{
-
-}
-
 //------------------------------------------------------------
 
-void Player::handleCollision(Movable& obj)
+
+void Player::handleCollision(GameObject& obj)
 {
 	obj.handleCollision(*this);
 }
@@ -51,8 +48,14 @@ void Player::handleCollision(Platform& obj)
 
 void Player::handleCollision(BlackHoleEnemy& obj)
 {
-	m_objectBody->SetLinearVelocity({ 20,20 });
-	matchSptitePosToBody();
+	m_sprite.setPosition(obj.getPosition());
+	m_isDying = true;
+
+}//------------------------------------------------------------
+
+void Player::handleCollision(FlyingEnemy& obj)
+{
+	m_isAlive = false;
 }
 
 //------------------------------------------------------------
@@ -74,12 +77,19 @@ void Player::loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef)
 	fixtureDef.density = 2.5f;
 	m_objectBody->CreateFixture(&fixtureDef);
 	matchSptitePosToBody();
+
+	m_spriteDeathStars.setOrigin(m_spriteDeathStars.getGlobalBounds().width / 2, m_spriteDeathStars.getGlobalBounds().height / 2);
+	m_spriteDeathStars.setScale({ 2.f,2.f });
+
+	
 }
 
 //------------------------------------------------------------
 
 void Player::jump()
 {
+	if (!m_isJumpinAllowed) return;
+
 	b2Vec2 currentVelocity = m_objectBody->GetLinearVelocity();
 	currentVelocity.y = -JUMP_HEIGHT;
 	m_objectBody->SetLinearVelocity(currentVelocity);
@@ -98,7 +108,7 @@ void Player::step(const sf::Time& deltaTime)
 		default:                                             break;
 	}
 	updatePositionX(desiredVelocity.x);
-
+	
 }
 
 //------------------------------------------------------------

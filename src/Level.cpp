@@ -16,7 +16,7 @@ Level::Level(sf::RenderWindow& window)
 void Level::run()
 {
 	//collision detection
-	auto contactListener = ContactListener(m_player, m_unmovableObjVec, m_movableObjVec);
+	auto contactListener = ContactListener(m_player, m_unmovableObjVec, m_movableObjVec, m_platformVec);
 	m_world->SetContactListener(&contactListener);
 
 	//auto bodyDef = b2BodyDef();
@@ -36,11 +36,23 @@ void Level::run()
 		m_world->Step(1.0f / 60.0f, 10, 5);
 		adjustView(gameView);
 		drawGraphics();
-		m_player.matchSptitePosToBody();
+		if(!m_player.isDying())
+			m_player.matchSptitePosToBody();
 		m_player.updateAnimation();
 		for (auto& item : m_movableObjVec)
 			item->step(deltaTime);
 		processEvent(deltaTime);
+
+		
+		if (m_player.isDying())
+			m_player.playDyingBehavior();
+		if (!m_player.isAlive())
+		{ 
+			m_player.starsAnimation(deltaTime);
+			//m_window.close();
+		}
+			
+
 	}
 }
 
@@ -59,8 +71,8 @@ void Level::adjustView(sf::View& gameView)
 
 	if (2000 + topLeft.y > PlayerBasePos)	//set 2000 and 200, 10 as global macro 
 	{
-		gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + ((PlayerBasePos - WIN_SIZE_Y - topLeft.y + 200) / 10));
-		m_board.updateBGPos(sf::Vector2f(topLeft.x, topLeft.y + ((PlayerBasePos - WIN_SIZE_Y - topLeft.y + 200) / 10)));
+		gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + ((PlayerBasePos - WIN_SIZE_Y - topLeft.y + 350) / 10));
+		m_board.updateBGPos(sf::Vector2f(topLeft.x, topLeft.y + ((PlayerBasePos - WIN_SIZE_Y - topLeft.y + 350) / 10)));
 	}
 
 	m_window.setView(gameView);
@@ -87,12 +99,17 @@ void Level::drawGraphics()
 {
 	m_window.clear(sf::Color::Black);
 	m_board.draw();
-//	m_platform.draw(m_window);
+
+	for (auto& platform : m_platformVec)
+		platform->draw(m_window);
 	for (auto& staticObj : m_unmovableObjVec)
 		staticObj->draw(m_window);
 	for (auto& movableObj : m_movableObjVec)
 		movableObj->draw(m_window);
+
 	m_player.draw(m_window);
+	if (!m_player.isAlive())
+		m_player.drawStars(m_window);
 	m_window.display();
 }
 

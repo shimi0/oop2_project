@@ -11,6 +11,9 @@
 #include "box2d/box2d.h"
 #include "SFML/Graphics.hpp"
 #include "CordinatesConverter.h"
+#include "BlackHoleEnemy.h"
+#include "FlyingEnemy.h"
+
 
 class Player : public Movable
 {
@@ -26,12 +29,23 @@ public:
 
 
     virtual void handleCollision(GameObject& obj);
-    virtual void handleCollision(Movable& obj);
+ //   virtual void handleCollision(Movable& obj);
     virtual void handleCollision(Unmovable& obj);
     virtual void handleCollision(Platform& obj);
     virtual void handleCollision(BlackHoleEnemy& obj);
+    virtual void handleCollision(FlyingEnemy& obj);
 
+    void starsAnimation(const sf::Time& deltaTime)
+    {
+        m_animationDeathStars.updateBasedOnTime(deltaTime);
+        m_spriteDeathStars.setPosition(m_sprite.getPosition().x, m_sprite.getGlobalBounds().top);
+    }
 
+    void drawStars(sf::RenderWindow& window)
+    {
+        if(m_wasDying) return;
+        window.draw(m_spriteDeathStars);
+    }
     bool isMovingUp() const;
 	void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) override;
     void jump();
@@ -42,10 +56,40 @@ public:
     {
         return m_basePosition;
     }
+
+    bool isAlive() const
+    {
+        return m_isAlive;
+    }
+
+    bool isDying() const
+    {
+        return m_isDying;
+    }
+    
+    void playDyingBehavior()
+    {
+        m_sprite.rotate(5);
+        m_sprite.scale({ 0.98,0.98 });
+
+        if (m_sprite.getScale().x < 0.1)
+        {
+            m_isAlive = false;
+            m_wasDying = true;
+        }
+    }
  
 private:
 
+    bool m_isJumpinAllowed = true;
     //lower number = higher platform
     sf::Vector2f m_basePosition;
+    bool a = false;
 
+    bool m_isAlive = true;
+    bool m_isDying = false;
+    bool m_wasDying = false;
+
+    sf::Sprite m_spriteDeathStars;
+    Animation m_animationDeathStars;
 };

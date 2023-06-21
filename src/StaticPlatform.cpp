@@ -14,13 +14,14 @@ StaticPlatform::StaticPlatform(std::unique_ptr<b2World>&world, b2BodyDef & bodyd
 
 //----------------------------------------
 
-static auto registerIt = Factory<Unmovable>::instance().registerType(
+static auto registerIt = Factory<Platform>::instance().registerType(
 	"StaticPlatform",
-	[](std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) -> std::unique_ptr<Unmovable>
+	[](std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) -> std::unique_ptr<Platform>
 	{
 		return std::make_unique<StaticPlatform>(world, bodydef, pos);
 	}
 );
+
 
 //----------------------------------------
 

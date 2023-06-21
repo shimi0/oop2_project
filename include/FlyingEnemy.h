@@ -12,6 +12,7 @@
 #include "SFML/Graphics.hpp"
 #include "CordinatesConverter.h"
 #include "Enemy.h"
+#include "Player.h"
 
 class FlyingEnemy : public Enemy, public Movable
 {
@@ -21,11 +22,17 @@ public:
 
    
     virtual void step(const sf::Time& deltaTime) override;
-
+    virtual void handleCollision(Player& obj);
 
 private:
 
     void loadObject();
+
+    void movementBlockingRect();
+    void randomMovement();
+    void setVelocity(const Direction& dir, const char);
+
+    sf::Vector2f m_statrPosition;
 
 
 };

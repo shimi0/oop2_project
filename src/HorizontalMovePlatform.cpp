@@ -38,9 +38,9 @@ void HorizontalMovePlatform::step(const sf::Time& deltaTime)
 
 //----------------------------------------
 
-static auto registerIt = Factory<Movable>::instance().registerType(
+static auto registerIt = Factory<Platform>::instance().registerType(
 	"HorizontalMovePlatform",
-	[](std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) -> std::unique_ptr<Movable>
+	[](std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) -> std::unique_ptr<Platform>
 	{
 		return std::make_unique<HorizontalMovePlatform>(world, bodydef, pos);
 	}
