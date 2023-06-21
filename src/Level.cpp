@@ -69,15 +69,24 @@ void Level::adjustView(sf::View& gameView)
 
 	float PlayerBasePos = m_player.getBasePosition().y;
 
-	if (2000 + topLeft.y > PlayerBasePos)	//set 2000 and 200, 10 as global macro 
+	if (!m_player.isAlive())
+	{
+		static int a = 0;
+		a++;
+		if (a* 18 < WIN_SIZE_Y*2 )	//TO_DO: he update is +18. so it should be until a*18 > WIN_SIZE
+		{
+			gameView.move(0, 18);
+			//	gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + 17);
+				//gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + 20);
+			m_board.updateBGPos(sf::Vector2f(topLeft.x, topLeft.y + 18));
+		}
+	}
+	else if (WIN_SIZE_Y - 350 + topLeft.y > PlayerBasePos)	//set 2000 and 200, 10 as global macro 
 	{
 		gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + ((PlayerBasePos - WIN_SIZE_Y - topLeft.y + 350) / 10));
 		m_board.updateBGPos(sf::Vector2f(topLeft.x, topLeft.y + ((PlayerBasePos - WIN_SIZE_Y - topLeft.y + 350) / 10)));
 	}
-
 	m_window.setView(gameView);
-	
-
 }
 
 //-------------------------------------------
@@ -101,12 +110,16 @@ void Level::drawGraphics()
 	m_board.draw();
 
 	for (auto& platform : m_platformVec)
-		platform->draw(m_window);
+	{
+		//if he died wo dont wanna see the platform while falling down
+		if(platform->getPosition().y < m_player.getBasePosition().y + 650)	//650 shold ne the size under the base platform * 2 or *3
+			platform->draw(m_window);
+	}
 	for (auto& staticObj : m_unmovableObjVec)
 		staticObj->draw(m_window);
 	for (auto& movableObj : m_movableObjVec)
 		movableObj->draw(m_window);
-
+	
 	m_player.draw(m_window);
 	if (!m_player.isAlive())
 		m_player.drawStars(m_window);
