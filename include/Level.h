@@ -13,7 +13,7 @@ class Level
 {
 public:
 
-	Level(sf::RenderWindow& window);
+	Level(sf::RenderWindow& window, Board& board);
 
 	void run();
 	void addObject(std::string type, sf::Vector2f pos)
@@ -48,8 +48,9 @@ private:
 	void processEvent(const sf::Time&);
 	void drawGraphics();
 
+	bool m_lvlRunnig = true;
 	sf::RenderWindow& m_window;
-	Board m_board;
+	Board& m_board;
 	//SimplePlatform m_platform;		//temp
 	Player m_player;
 	std::unique_ptr<b2World> m_world;
@@ -58,4 +59,7 @@ private:
 	std::vector<std::unique_ptr<Unmovable>> m_unmovableObjVec;	//uniqe_ptr???
 	std::vector<std::unique_ptr<Platform>> m_platformVec;	
 
+
+	//in use for a specific operation!
+	int m_windowDropAssister = 0;
 };

@@ -1,7 +1,7 @@
 #include "Level.h"
 
-Level::Level(sf::RenderWindow& window)
-	:m_window(window), m_board(window)
+Level::Level(sf::RenderWindow& window, Board& board)
+	:m_window(window),m_board(board)
 {
 	m_window.create(sf::VideoMode(WIN_SIZE_X, WIN_SIZE_Y), "Doodle Jump"); //exception?
 	m_window.setFramerateLimit(60);
@@ -30,7 +30,7 @@ void Level::run()
 	gameView.setSize(sf::Vector2f(m_window.getSize()));
 	gameView.setCenter(sf::Vector2f(m_window.getSize().x / 2, m_window.getSize().y / 2));
 
-	while (m_window.isOpen())
+	while (m_lvlRunnig)
 	{
 		deltaTime = clock.restart();
 		m_world->Step(1.0f / 60.0f, 10, 5);
@@ -71,15 +71,16 @@ void Level::adjustView(sf::View& gameView)
 
 	if (!m_player.isAlive())
 	{
-		static int a = 0;
-		a++;
-		if (a* 18 < WIN_SIZE_Y*2 )	//TO_DO: he update is +18. so it should be until a*18 > WIN_SIZE
+		m_windowDropAssister++;
+		if (m_windowDropAssister * 18 < WIN_SIZE_Y * 2)	//TO_DO: he update is +18. so it should be until a*18 > WIN_SIZE
 		{
 			gameView.move(0, 18);
 			//	gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + 17);
 				//gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + 20);
 			m_board.updateBGPos(sf::Vector2f(topLeft.x, topLeft.y + 18));
 		}
+		else
+			m_lvlRunnig = false;
 	}
 	else if (WIN_SIZE_Y - 350 + topLeft.y > PlayerBasePos)	//set 2000 and 200, 10 as global macro 
 	{

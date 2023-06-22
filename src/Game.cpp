@@ -2,7 +2,7 @@
 #include "Board.h"
 
 Game::Game(sf::RenderWindow& window)
-	:m_window(window)
+	:m_window(window), m_board(window)
 {}
 
 //---------------------------
@@ -11,7 +11,9 @@ void Game::run()
 {
 	while (true)	//lvl.isOpen()
 	{
-		auto level = Level(m_window);
+		
+		auto level = Level(m_window, m_board);
+		auto gameOver = GameOver(m_window, m_board);
 		try
 		{
 			readGameData(level);
@@ -23,8 +25,12 @@ void Game::run()
 		}
 
 		level.run();
+		auto chosenButton = gameOver.run();
+		if (chosenButton == PlayAgain)
+			continue;
+		if (chosenButton == Menu)
+			break;
 
-		break;
 	}
 }
 

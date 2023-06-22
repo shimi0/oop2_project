@@ -18,6 +18,9 @@ public:
         BlackHoleEnemy,
         FlyingEnemy,
         DeathStars,
+        GameOver,
+        MenuButton,
+        PlayAgainButton,
         Max,
     };
 

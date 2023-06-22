@@ -5,6 +5,7 @@
 #include "DataReader.h"
 #include <fstream>
 #include "Factory.h"
+#include "GameOver.h"
 
 class Game
 {
@@ -21,5 +22,6 @@ private:
 
 	sf::RenderWindow& m_window;
 
+	Board m_board;
 
 };

@@ -4,6 +4,7 @@
 #include "Resources.h"
 #include "Animation.h"
 #include "box2d/box2d.h"
+#include "macros.h"
 
 class Board
 {
@@ -16,7 +17,10 @@ public:
 		m_sprite.setPosition(newPos);
 	}
 
-
+	void resetBoardPosition()
+	{
+		updateBGPos({ 0,0 });
+	}
 private:
 
 	void drawBG();

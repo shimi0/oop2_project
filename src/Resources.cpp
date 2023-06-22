@@ -114,6 +114,47 @@ namespace
         return blackHoleEnemy;
     }
 
+    AnimationData gameOver()
+    {
+        const auto size = sf::Vector2i(425, 150);
+        const auto initSpace = sf::Vector2i(3380, 205);
+
+        auto gameOver = AnimationData{};
+        auto currentStart = initSpace;
+
+        gameOver.m_data[Direction::Stay].emplace_back(currentStart, size);
+
+        return gameOver;
+    }
+
+    AnimationData menuButton()
+    {
+        const auto size = sf::Vector2i(222, 84);
+        const auto initSpace = sf::Vector2i(3380, 96);
+
+        auto menuButton = AnimationData{};
+        auto currentStart = initSpace;
+
+        menuButton.m_data[Direction::Up].emplace_back(currentStart, size);
+        menuButton.m_data[Direction::Down].emplace_back(sf::Vector2i(4625, 0), size);
+
+        return menuButton;
+    }
+
+    AnimationData playAgainButton()
+    {
+        const auto size = sf::Vector2i(222, 92);
+        const auto initSpace = sf::Vector2i(3605, 96);
+
+        auto playAgainButton = AnimationData{};
+        auto currentStart = initSpace;
+
+        playAgainButton.m_data[Direction::Up].emplace_back(currentStart, size);
+        playAgainButton.m_data[Direction::Down].emplace_back(sf::Vector2i(4403, 0), size);
+
+        return playAgainButton;
+    }
+
     AnimationData flyingEnemy()
     {
         const auto size = sf::Vector2i(160, 92);
@@ -162,4 +203,7 @@ Resources::Resources()
     m_data[DoodleClassic] = doodleClassicData();
     m_data[FlyingEnemy] = flyingEnemy();
     m_data[BlackHoleEnemy] = blackHoleEnemy();
+    m_data[GameOver] = gameOver();
+    m_data[MenuButton] = menuButton();
+    m_data[PlayAgainButton] = playAgainButton();
 }
