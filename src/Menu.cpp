@@ -7,4 +7,5 @@ Menu::Menu(sf::RenderWindow& window)
 
 void Menu::run()
 {
+	m_window.setTitle("Doodle Jump - Menu");
 }

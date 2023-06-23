@@ -26,9 +26,9 @@ void Game::run()
 
 		level.run();
 		auto chosenButton = gameOver.run();
-		if (chosenButton == PlayAgain)
+		if (chosenButton == PlayAgainB_)
 			continue;
-		if (chosenButton == Menu)
+		if (chosenButton == MenuB_)
 			break;
 
 	}

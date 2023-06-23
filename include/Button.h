@@ -35,6 +35,16 @@ public:
 		return m_sprite.getGlobalBounds().contains(point);
 	}
 
+	void looseFocus()
+	{
+		m_animation.direction(Direction::Up);
+	}
+
+	void gainFocus()
+	{
+		m_animation.direction(Direction::Down);
+	}
+
 protected:
 
 	sf::Sprite m_sprite;

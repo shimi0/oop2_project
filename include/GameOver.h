@@ -11,8 +11,8 @@
 
 enum chosenButton
 {
-	Menu,
-	PlayAgain,
+	MenuB_,
+	PlayAgainB_,
 };
 
 class GameOver

@@ -39,15 +39,19 @@ void Player::handleCollision(Platform& obj)
 	if (isMovingUp())
 		return;
 
-	jump();
+	jump(1);
 	m_animation.updateBasedOnCommand();
 	m_basePosition = sf::Vector2f(obj.getPosition());
+	//set to false once the player landed on a platform
+	m_isInvulnerable = false;
 }
 
 //------------------------------------------------------------
 
 void Player::handleCollision(BlackHoleEnemy& obj)
 {
+	if (m_isInvulnerable)
+		return;
 	m_sprite.setPosition(obj.getPosition());
 	m_isDying = true;
 
@@ -55,7 +59,17 @@ void Player::handleCollision(BlackHoleEnemy& obj)
 
 void Player::handleCollision(FlyingEnemy& obj)
 {
-	m_isAlive = false;
+	if(!m_isInvulnerable)
+		m_isAlive = false;
+}
+
+//------------------------------------------------------------
+
+void Player::handleCollision(SpringGift& obj)
+{
+	jump(2.5f);
+	m_isInvulnerable = true;
+	m_animation.updateBasedOnCommand();
 }
 
 //------------------------------------------------------------
@@ -63,7 +77,7 @@ void Player::handleCollision(FlyingEnemy& obj)
 void Player::loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef)
 {
 	bodydef.type = b2_dynamicBody;
-	bodydef.position.Set(sfmlToBox2D(600.f), sfmlToBox2D(600.f));
+	bodydef.position.Set(sfmlToBox2D(400.0f), sfmlToBox2D(1500.f));
 	
 	m_objectBody = world->CreateBody(&bodydef);
 
@@ -86,12 +100,12 @@ void Player::loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef)
 
 //------------------------------------------------------------
 
-void Player::jump()
+void Player::jump(const float jumpHeightAmount)
 {
 	if (!m_isJumpinAllowed) return;
 
 	b2Vec2 currentVelocity = m_objectBody->GetLinearVelocity();
-	currentVelocity.y = -JUMP_HEIGHT;
+	currentVelocity.y = -JUMP_HEIGHT * jumpHeightAmount;	
 	m_objectBody->SetLinearVelocity(currentVelocity);
 }
 

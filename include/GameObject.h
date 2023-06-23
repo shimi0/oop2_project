@@ -16,6 +16,7 @@ class Platform;
 class BlackHoleEnemy;
 class Enemy;
 class FlyingEnemy;
+class SpringGift;
 
 class GameObject
 {
@@ -30,6 +31,7 @@ public:
 	virtual void handleCollision(Unmovable& obj) {};
 	virtual void handleCollision(Player& obj) {};
 	virtual void handleCollision(Platform& obj) {};
+	virtual void handleCollision(SpringGift& obj) {};
 	//virtual void handleCollision(Enemy& obj) {};
 	virtual void handleCollision(BlackHoleEnemy& obj) {};
 	virtual void handleCollision(FlyingEnemy& obj) {};

@@ -13,6 +13,7 @@
 #include "CordinatesConverter.h"
 #include "BlackHoleEnemy.h"
 #include "FlyingEnemy.h"
+#include "SpringGift.h"
 
 
 class Player : public Movable
@@ -23,8 +24,10 @@ public:
 
     void updateAnimation()
     {
-        if(m_objectBody->GetLinearVelocity().y == 0.f)
+        if (m_objectBody->GetLinearVelocity().y == 0.f)
+        {
             m_animation.updateBasedOnCommand();
+        }
     }
 
 
@@ -34,6 +37,7 @@ public:
     virtual void handleCollision(Platform& obj);
     virtual void handleCollision(BlackHoleEnemy& obj);
     virtual void handleCollision(FlyingEnemy& obj);
+    virtual void handleCollision(SpringGift& obj);
 
     void starsAnimation(const sf::Time& deltaTime)
     {
@@ -48,7 +52,7 @@ public:
     }
     bool isMovingUp() const;
 	void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) override;
-    void jump();
+    void jump(const float jumpHeightAmount);
     void step(const sf::Time& deltaTime);
 	void processKeyInput(const sf::Event& event, const sf::Time& deltaTime);
 
@@ -89,6 +93,7 @@ private:
     bool m_isAlive = true;
     bool m_isDying = false;
     bool m_wasDying = false;
+    bool m_isInvulnerable = false;
 
     sf::Sprite m_spriteDeathStars;
     Animation m_animationDeathStars;

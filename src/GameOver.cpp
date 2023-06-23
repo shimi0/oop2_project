@@ -38,13 +38,13 @@ chosenButton GameOver::run()
 				{
 					m_menuButton.press();
 					m_playAgainButton.release();
-					return Menu;
+					return MenuB_;
 				}
 				else if (m_playAgainButton.contains(location))
 				{
 					m_playAgainButton.press();
 					m_menuButton.release();
-					return PlayAgain;
+					return PlayAgainB_;
 				}
 				else
 				{
@@ -53,12 +53,27 @@ chosenButton GameOver::run()
 				}
 
 			}
-
-			/*if (event.type == sf::Event::MouseMoved)
+			
+			if (event.type == sf::Event::MouseMoved)
 			{
+				auto location = m_window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
 
-
-			}*/
+				if (m_menuButton.contains(location))
+				{
+					m_menuButton.gainFocus();
+					m_playAgainButton.looseFocus();
+				}
+				else if (m_playAgainButton.contains(location))
+				{
+					m_playAgainButton.gainFocus();
+					m_menuButton.looseFocus();
+				}
+				else
+				{
+					m_menuButton.looseFocus();
+					m_playAgainButton.looseFocus();
+				}
+			}
 		}
 
 	}

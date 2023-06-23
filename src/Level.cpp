@@ -3,9 +3,6 @@
 Level::Level(sf::RenderWindow& window, Board& board)
 	:m_window(window),m_board(board)
 {
-	m_window.create(sf::VideoMode(WIN_SIZE_X, WIN_SIZE_Y), "Doodle Jump"); //exception?
-	m_window.setFramerateLimit(60);
-
 	// Define the gravity vector
 	b2Vec2 gravity(0.0f, 15.0f);
 	m_world = std::make_unique<b2World>(gravity);
@@ -69,7 +66,7 @@ void Level::adjustView(sf::View& gameView)
 
 	float PlayerBasePos = m_player.getBasePosition().y;
 
-	if (!m_player.isAlive())
+	if (!m_player.isAlive())	//Playing the falling down illusion after collidong with an enemy
 	{
 		m_windowDropAssister++;
 		if (m_windowDropAssister * 18 < WIN_SIZE_Y * 2)	//TO_DO: he update is +18. so it should be until a*18 > WIN_SIZE
@@ -82,10 +79,20 @@ void Level::adjustView(sf::View& gameView)
 		else
 			m_lvlRunnig = false;
 	}
-	else if (WIN_SIZE_Y - 350 + topLeft.y > PlayerBasePos)	//set 2000 and 200, 10 as global macro 
+	else if (WIN_SIZE_Y - 350 + topLeft.y > PlayerBasePos)	//set 2000 and 200, 10 as global macro //move the window up every time the player steps on a new platform
 	{
 		gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + ((PlayerBasePos - WIN_SIZE_Y - topLeft.y + 350) / 10));
 		m_board.updateBGPos(sf::Vector2f(topLeft.x, topLeft.y + ((PlayerBasePos - WIN_SIZE_Y - topLeft.y + 350) / 10)));
+	}
+
+	//will be used in a case the player reached the middle of the screen without landing on any new base platform.
+	//(may accure by jumping off a spring etc.) in this case, the windoe will move up with him.
+	if (m_player.getPosition().y < topLeft.y + WIN_SIZE_Y/2 && m_player.isAlive())
+	{
+		 auto playerP = m_player.getPosition().y;
+		 //if(playerP +)
+		gameView.setCenter(gameView.getCenter().x, m_player.getPosition().y);
+		m_board.updateBGPos(sf::Vector2f(topLeft.x,m_player.getPosition().y - WIN_SIZE_Y/2));
 	}
 	m_window.setView(gameView);
 }

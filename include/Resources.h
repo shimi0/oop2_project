@@ -21,6 +21,7 @@ public:
         GameOver,
         MenuButton,
         PlayAgainButton,
+        SpringGift,
         Max,
     };
 

@@ -4,6 +4,7 @@ StaticPlatform 1100 1600
 StaticPlatform 200 1600
 StaticPlatform 800 1600
 StaticPlatform 400 1600
+SpringGift 600 1220
 StaticPlatform 400 1300
 StaticPlatform 200 1000
 StaticPlatform 1000 900

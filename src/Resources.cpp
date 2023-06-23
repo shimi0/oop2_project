@@ -155,6 +155,20 @@ namespace
         return playAgainButton;
     }
 
+    AnimationData springGift()
+    {
+        const auto size = sf::Vector2i(34, 55);
+        const auto initSpace = sf::Vector2i(2096, 166);
+
+        auto springGift = AnimationData{};
+        auto currentStart = initSpace;
+
+        springGift.m_data[Direction::Down].emplace_back(currentStart, size);
+        springGift.m_data[Direction::Up].emplace_back(sf::Vector2i(2096, 230) , size);
+
+        return springGift;
+    }
+
     AnimationData flyingEnemy()
     {
         const auto size = sf::Vector2i(160, 92);
@@ -206,4 +220,5 @@ Resources::Resources()
     m_data[GameOver] = gameOver();
     m_data[MenuButton] = menuButton();
     m_data[PlayAgainButton] = playAgainButton();
+    m_data[SpringGift] = springGift();
 }
