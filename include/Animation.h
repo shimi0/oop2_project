@@ -19,6 +19,11 @@ public:
 
    // updates the sprite to show the next frame in the animation
     void updateBasedOnCommand();
+
+    bool isEndOfAnimation()
+    {
+        return m_data.m_data.find(m_dir)->second.size() - 1 == m_index;
+    }
 private:
     // Update the sprite to take the correct part of the texture,
     // based on current dir and index

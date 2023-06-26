@@ -1,11 +1,11 @@
-#include "SpringGift.h"
+#include "PropellerHat.h"
 
-SpringGift::SpringGift(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos)
-	:Gift(Resources::instance().animationData(Resources::SpringGift), Direction::Down, m_sprite),
-	Unmovable(Resources::instance().animationData(Resources::SpringGift), Direction::Down, m_sprite),
-	GameObject(Resources::instance().animationData(Resources::SpringGift), Direction::Down, m_sprite)
+PropellerHat::PropellerHat(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos)
+	:Gift(Resources::instance().animationData(Resources::PropellerHat), Direction::Stay, m_sprite),
+	GameObject(Resources::instance().animationData(Resources::PropellerHat), Direction::Stay, m_sprite),
+	Movable(Resources::instance().animationData(Resources::PropellerHat), Direction::Stay, m_sprite)
 {
-	bodydef.type = b2_staticBody;
+	bodydef.type = b2_dynamicBody;
 	bodydef.position.Set(sfmlToBox2D(pos.x), sfmlToBox2D(pos.y));
 
 	m_objectBody = world->CreateBody(&bodydef);
@@ -15,26 +15,29 @@ SpringGift::SpringGift(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, cons
 
 //----------------------------------------
 
-void SpringGift::handleCollision(Player& obj)
+void PropellerHat::handleCollision(Player& obj)
 {
 	m_animation.direction(Direction::Up);
+	m_isInUse = true;
+	m_clock.restart();
 	obj.handleCollision(*this);
-}
+	m_playerGlobalBounds = obj.getGlobalBounds();
 
+}
 
 //----------------------------------------
 
-static auto registerIt = Factory<Unmovable>::instance().registerType(
-	"SpringGift",
-	[](std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) -> std::unique_ptr<Unmovable>
+static auto registerIt = Factory<Movable>::instance().registerType(
+	"PropellerHat",
+	[](std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) -> std::unique_ptr<Movable>
 	{
-		return std::make_unique<SpringGift>(world, bodydef, pos);
+		return std::make_unique<PropellerHat>(world, bodydef, pos);
 	}
 );
 
 //----------------------------------------
 
-void SpringGift::loadObject()
+void PropellerHat::loadObject()
 {
 	b2PolygonShape playerBox;
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
@@ -47,8 +50,6 @@ void SpringGift::loadObject()
 	playerBox.SetAsBox(box.x, box.y);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &playerBox;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 10.0f;
 	m_objectBody->CreateFixture(&fixtureDef);
 
 	m_sprite.setPosition(box2DToSFML(m_objectBody->GetPosition()));

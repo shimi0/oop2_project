@@ -1,9 +1,9 @@
-#include "SpringGift.h"
+#include "JetPack.h"
 
-SpringGift::SpringGift(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos)
-	:Gift(Resources::instance().animationData(Resources::SpringGift), Direction::Down, m_sprite),
-	Unmovable(Resources::instance().animationData(Resources::SpringGift), Direction::Down, m_sprite),
-	GameObject(Resources::instance().animationData(Resources::SpringGift), Direction::Down, m_sprite)
+JetPack::JetPack(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos)
+	:Gift(Resources::instance().animationData(Resources::JetPack), Direction::Stay, m_sprite),
+	GameObject(Resources::instance().animationData(Resources::JetPack), Direction::Stay, m_sprite),
+	Movable(Resources::instance().animationData(Resources::JetPack), Direction::Stay, m_sprite)
 {
 	bodydef.type = b2_staticBody;
 	bodydef.position.Set(sfmlToBox2D(pos.x), sfmlToBox2D(pos.y));
@@ -15,26 +15,29 @@ SpringGift::SpringGift(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, cons
 
 //----------------------------------------
 
-void SpringGift::handleCollision(Player& obj)
+void JetPack::handleCollision(Player& obj)
 {
-	m_animation.direction(Direction::Up);
+	m_animation.direction(Direction::Left);
+	m_isInUse = true;
+	
 	obj.handleCollision(*this);
-}
+	m_playerGlobalBounds = obj.getGlobalBounds();
 
+}
 
 //----------------------------------------
 
-static auto registerIt = Factory<Unmovable>::instance().registerType(
-	"SpringGift",
-	[](std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) -> std::unique_ptr<Unmovable>
+static auto registerIt = Factory<Movable>::instance().registerType(
+	"JetPack",
+	[](std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos) -> std::unique_ptr<Movable>
 	{
-		return std::make_unique<SpringGift>(world, bodydef, pos);
+		return std::make_unique<JetPack>(world, bodydef, pos);
 	}
 );
 
 //----------------------------------------
 
-void SpringGift::loadObject()
+void JetPack::loadObject()
 {
 	b2PolygonShape playerBox;
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);

@@ -10,7 +10,7 @@ public:
 	void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) override {};
 
 
-
+	//virtual void attachTo(const sf::Vector2f& position) {};
 private:
 
 };

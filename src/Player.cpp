@@ -10,15 +10,38 @@ Player::Player()
 
 //------------------------------------------------------------
 
+void Player::animate(const sf::Time & deltaTime)
+{
+	if (m_isDying)
+		playDyingBehavior();
+	else
+		matchSptitePosToBody();
+
+	if (!m_isAlive)
+		deathAnimation(deltaTime);
+
+	if (m_objectBody->GetLinearVelocity().y == 0.f)
+		m_animation.updateBasedOnCommand();
+
+
+	//move to a diff func
+	if (m_isUsingPropellerHat)
+		if (m_clock.getElapsedTime().asSeconds() > PROPELLER_HAT_TIME)
+			m_isUsingPropellerHat = false;
+	if(m_isUsingPropellerHat)
+		m_objectBody->ApplyLinearImpulseToCenter({ 0,-1.1 }, true);
+	//if (m_giftPTR)
+	//	m_giftPTR->attachTo(getPosition());
+}
+
+//------------------------------------------------------------
+
 bool Player::isMovingUp() const
 {
 	return (m_objectBody->GetLinearVelocity().y < 0.0f);
 }
 
 //------------------------------------------------------------
-
-//------------------------------------------------------------
-
 
 void Player::handleCollision(GameObject& obj)
 {
@@ -55,11 +78,21 @@ void Player::handleCollision(BlackHoleEnemy& obj)
 	m_sprite.setPosition(obj.getPosition());
 	m_isDying = true;
 
-}//------------------------------------------------------------
+}
+
+//------------------------------------------------------------
 
 void Player::handleCollision(FlyingEnemy& obj)
 {
 	if(!m_isInvulnerable)
+		m_isAlive = false;
+}
+
+//------------------------------------------------------------
+
+void Player::handleCollision(FireMonster& obj)
+{
+	if (!m_isInvulnerable)
 		m_isAlive = false;
 }
 
@@ -70,6 +103,22 @@ void Player::handleCollision(SpringGift& obj)
 	jump(2.5f);
 	m_isInvulnerable = true;
 	m_animation.updateBasedOnCommand();
+}
+
+void Player::handleCollision(JetPack& obj)
+{
+	if (m_isUsingPropellerHat) return;
+	m_direction == Direction::Left;
+	m_objectBody->ApplyLinearImpulseToCenter({ 0,-180 }, true);
+	m_isInvulnerable = true;
+}
+
+void Player::handleCollision(PropellerHat& obj)
+{
+	m_clock.restart();
+	m_isUsingPropellerHat = true;
+	m_isInvulnerable = true;
+	m_objectBody->ApplyLinearImpulseToCenter({0,-10}, true);
 }
 
 //------------------------------------------------------------
@@ -94,8 +143,6 @@ void Player::loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef)
 
 	m_spriteDeathStars.setOrigin(m_spriteDeathStars.getGlobalBounds().width / 2, m_spriteDeathStars.getGlobalBounds().height / 2);
 	m_spriteDeathStars.setScale({ 2.f,2.f });
-
-	
 }
 
 //------------------------------------------------------------
@@ -119,10 +166,10 @@ void Player::step(const sf::Time& deltaTime)
 		case Direction::Right: desiredVelocity.x = 6.0f;       break;
 		case Direction::Left:  desiredVelocity.x = -6.0f;      break;
 		case Direction::Stay:  desiredVelocity.x = 0.0f;       break;
-		default:                                             break;
+		default:                                               break;
 	}
 	updatePositionX(desiredVelocity.x);
-	
+	crossWindow();
 }
 
 //------------------------------------------------------------
@@ -141,4 +188,22 @@ void Player::processKeyInput(const sf::Event& event, const sf::Time& deltaTime)
 	}
 	m_direction = Direction::Stay;
 	step(deltaTime);
+}
+
+//------------------------------------------------------------
+
+void Player::crossWindow()
+{
+	auto newPos = b2Vec2();
+	if (getPosition().x < 0)
+	{
+		newPos = b2Vec2(sfmlToBox2D(WIN_SIZE_X), m_objectBody->GetPosition().y);
+		m_objectBody->SetTransform(newPos, m_objectBody->GetAngle());
+	}
+
+	if (getPosition().x > WIN_SIZE_X) 
+	{
+		newPos = b2Vec2(0, m_objectBody->GetPosition().y);
+		m_objectBody->SetTransform(newPos, m_objectBody->GetAngle());
+	}
 }

@@ -8,6 +8,8 @@
 #include "StaticPlatform.h"
 #include "ContactListener.h"
 #include <vector>
+#include "ViewManager.h"
+#include "Gift.h"
 
 class Level
 {
@@ -38,13 +40,21 @@ public:
 			m_platformVec.push_back(std::move(platform));
 			return;
 		}
+
+
 		throw std::runtime_error(std::string("No factory handles " + type));
 	}
 	
 
 private:
 
-	void adjustView(sf::View&);
+	//return the cur global cords. the top of the window.
+	float getGlobalCordsY();
+	void stepWorld(const sf::Time& deltaTime);
+	void animateObjects(const sf::Time& deltaTime);
+	void loadLevelData(ContactListener& contactListener);
+	void isPlayerInWindow();
+	void adjustView(ViewManager&);
 	void processEvent(const sf::Time&);
 	void drawGraphics();
 

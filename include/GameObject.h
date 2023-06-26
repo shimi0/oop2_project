@@ -17,6 +17,9 @@ class BlackHoleEnemy;
 class Enemy;
 class FlyingEnemy;
 class SpringGift;
+class FireMonster;
+class JetPack;
+class PropellerHat;
 
 class GameObject
 {
@@ -28,13 +31,16 @@ public:
 	virtual void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) = 0;
 	virtual void handleCollision(GameObject& obj) {};
 	virtual void handleCollision(Movable& obj) {};
+	virtual void handleCollision(JetPack& obj) {};
 	virtual void handleCollision(Unmovable& obj) {};
+	virtual void handleCollision(FireMonster& obj) {};
 	virtual void handleCollision(Player& obj) {};
 	virtual void handleCollision(Platform& obj) {};
 	virtual void handleCollision(SpringGift& obj) {};
 	//virtual void handleCollision(Enemy& obj) {};
 	virtual void handleCollision(BlackHoleEnemy& obj) {};
 	virtual void handleCollision(FlyingEnemy& obj) {};
+	virtual void handleCollision(PropellerHat& obj) {};
 
 	bool isSameBody(const b2Body* other) const
 	{
@@ -50,6 +56,11 @@ public:
 	{
 		return m_sprite.getGlobalBounds();
 	}
+
+	virtual void animate(const sf::Time& deltaTime)
+	{
+		m_animation.updateBasedOnTime(deltaTime);
+	};
 
 protected:
 

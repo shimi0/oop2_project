@@ -8,93 +8,115 @@ Level::Level(sf::RenderWindow& window, Board& board)
 	m_world = std::make_unique<b2World>(gravity);
 }
 
-//------------------------------
+//-------------------------------------------
 
 void Level::run()
 {
 	//collision detection
 	auto contactListener = ContactListener(m_player, m_unmovableObjVec, m_movableObjVec, m_platformVec);
-	m_world->SetContactListener(&contactListener);
-
-	//auto bodyDef = b2BodyDef();
-	m_player.loadObject(m_world, m_bodyDef);
-
+	auto gameView = ViewManager();
 	auto clock = sf::Clock();
 	auto deltaTime = clock.restart();
-
-	sf::View gameView;
-
-	gameView.setSize(sf::Vector2f(m_window.getSize()));
-	gameView.setCenter(sf::Vector2f(m_window.getSize().x / 2, m_window.getSize().y / 2));
+	loadLevelData(contactListener);
 
 	while (m_lvlRunnig)
 	{
 		deltaTime = clock.restart();
-		m_world->Step(1.0f / 60.0f, 10, 5);
 		adjustView(gameView);
 		drawGraphics();
-		if(!m_player.isDying())
-			m_player.matchSptitePosToBody();
-		m_player.updateAnimation();
-		for (auto& item : m_movableObjVec)
-			item->step(deltaTime);
+		stepWorld(deltaTime);
 		processEvent(deltaTime);
-
+		isPlayerInWindow();
+		animateObjects(deltaTime);
 		
-		if (m_player.isDying())
-			m_player.playDyingBehavior();
-		if (!m_player.isAlive())
-		{ 
-			m_player.starsAnimation(deltaTime);
-			//m_window.close();
+		for (auto& obj : m_movableObjVec)
+		{
+			obj->setPosition(m_player.getPosition());
 		}
-			
-
 	}
 }
 
 //-------------------------------------------
 
-void Level::adjustView(sf::View& gameView)
+float Level::getGlobalCordsY()
 {
-	sf::FloatRect viewPort = gameView.getViewport();
+	sf::FloatRect viewPort = m_window.getView().getViewport();
+	sf::Vector2f topLeft = m_window.mapPixelToCoords(sf::Vector2i(viewPort.left * WIN_SIZE_X, viewPort.top * WIN_SIZE_Y));
+	return topLeft.y;
+}
 
-	sf::Vector2u windowSize = m_window.getSize();
+//-------------------------------------------
 
-	//calc global coordinates view
-	sf::Vector2f topLeft = m_window.mapPixelToCoords(sf::Vector2i(viewPort.left * windowSize.x, viewPort.top * windowSize.y));
+void Level::stepWorld(const sf::Time& deltaTime)
+{
+	if (!m_board.isPaused())
+		m_world->Step(1.0f / 60.0f, 10, 5);
 
+	for (auto& item : m_movableObjVec)
+		item->step(deltaTime);
+}
+
+//-------------------------------------------
+
+void Level::animateObjects(const sf::Time& deltaTime)
+{
+	if (m_board.isPaused()) return;
+
+	m_player.animate(deltaTime);
+	//dont animate before seen in the window(some objects only animate once!
+	auto globalChordsY = getGlobalCordsY();
+	for (auto& platform : m_platformVec)
+		if (platform->getPosition().y < globalChordsY + WIN_SIZE_Y && platform->getPosition().y > globalChordsY)
+			platform->animate(deltaTime);
+
+	for (auto& object : m_unmovableObjVec)
+		object->animate(deltaTime);
+	for (auto& object : m_movableObjVec)
+		object->animate(deltaTime);
+}
+
+//-------------------------------------------
+
+void Level::loadLevelData(ContactListener& contactListener)
+{
+	m_world->SetContactListener(&contactListener);
+	m_player.loadObject(m_world, m_bodyDef);
+}
+
+//-------------------------------------------
+
+void Level::isPlayerInWindow()
+{
+	auto globalChordsY = getGlobalCordsY();
+	//is player position bellow the view port
+	if (m_player.getPosition().y + m_player.getGlobalBounds().height / 2 > globalChordsY + WIN_SIZE_Y)
+		m_player.kill();
+}
+
+//-------------------------------------------
+
+void Level::adjustView(ViewManager& gameView)
+{
+	auto globalChordsY = getGlobalCordsY();
 	float PlayerBasePos = m_player.getBasePosition().y;
-
-	if (!m_player.isAlive())	//Playing the falling down illusion after collidong with an enemy
+	
+	//Playing the falling down illusion after collidong with an enemy
+	if (!m_player.isAlive())
 	{
-		m_windowDropAssister++;
-		if (m_windowDropAssister * 18 < WIN_SIZE_Y * 2)	//TO_DO: he update is +18. so it should be until a*18 > WIN_SIZE
-		{
-			gameView.move(0, 18);
-			//	gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + 17);
-				//gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + 20);
-			m_board.updateBGPos(sf::Vector2f(topLeft.x, topLeft.y + 18));
-		}
-		else
+		if(!gameView.fallDownAdjustment(m_board, globalChordsY))
 			m_lvlRunnig = false;
 	}
-	else if (WIN_SIZE_Y - 350 + topLeft.y > PlayerBasePos)	//set 2000 and 200, 10 as global macro //move the window up every time the player steps on a new platform
-	{
-		gameView.setCenter(gameView.getCenter().x, gameView.getCenter().y + ((PlayerBasePos - WIN_SIZE_Y - topLeft.y + 350) / 10));
-		m_board.updateBGPos(sf::Vector2f(topLeft.x, topLeft.y + ((PlayerBasePos - WIN_SIZE_Y - topLeft.y + 350) / 10)));
-	}
+	//move the window up every time the player steps on a new platform
+	else if (WIN_SIZE_Y - 350 + globalChordsY > PlayerBasePos)	//set  350 and 10 as global macro 
+		gameView.basePointAdjustment(m_board, ((PlayerBasePos - WIN_SIZE_Y - globalChordsY + 350) / 10),
+												globalChordsY + ((PlayerBasePos - WIN_SIZE_Y - globalChordsY + 350) / 10));
 
 	//will be used in a case the player reached the middle of the screen without landing on any new base platform.
 	//(may accure by jumping off a spring etc.) in this case, the windoe will move up with him.
-	if (m_player.getPosition().y < topLeft.y + WIN_SIZE_Y/2 && m_player.isAlive())
-	{
-		 auto playerP = m_player.getPosition().y;
-		 //if(playerP +)
-		gameView.setCenter(gameView.getCenter().x, m_player.getPosition().y);
-		m_board.updateBGPos(sf::Vector2f(topLeft.x,m_player.getPosition().y - WIN_SIZE_Y/2));
-	}
-	m_window.setView(gameView);
+	if (m_player.getPosition().y < globalChordsY + WIN_SIZE_Y/2 && m_player.isAlive())
+		gameView.reachedLimitAdjustment(m_board, m_player.getPosition().y);
+
+	gameView.setView(m_window);
 }
 
 //-------------------------------------------
@@ -107,6 +129,8 @@ void Level::processEvent(const sf::Time& deltaTime)
 		if (event.type == sf::Event::Closed)
 			m_window.close();
 		m_player.processKeyInput(event, deltaTime);
+		if(!m_player.isDying() && m_player.isAlive())
+			m_board.processKeyInput(event);
 	}
 }
 
@@ -115,22 +139,29 @@ void Level::processEvent(const sf::Time& deltaTime)
 void Level::drawGraphics()
 {
 	m_window.clear(sf::Color::Black);
-	m_board.draw();
 
-	for (auto& platform : m_platformVec)
+	if (m_board.isPaused())
+		m_board.drawPauseScreen();
+	else
 	{
-		//if he died wo dont wanna see the platform while falling down
-		if(platform->getPosition().y < m_player.getBasePosition().y + 650)	//650 shold ne the size under the base platform * 2 or *3
+		m_board.draw();
+		for (auto& platform : m_platformVec)
 			platform->draw(m_window);
+		for (auto& staticObj : m_unmovableObjVec)
+			staticObj->draw(m_window);
+		for (auto& movableObj : m_movableObjVec)
+			movableObj->draw(m_window);
+		m_player.draw(m_window);
+
+		//we wanna draw the propellot above the player
+		for (auto& movableObj : m_movableObjVec)
+			if(typeid(*movableObj) == typeid(PropellerHat))
+				movableObj->draw(m_window);
+
+		if (!m_player.isAlive())
+			m_player.drawStars(m_window);
+		m_board.drawScoreTop();
 	}
-	for (auto& staticObj : m_unmovableObjVec)
-		staticObj->draw(m_window);
-	for (auto& movableObj : m_movableObjVec)
-		movableObj->draw(m_window);
-	
-	m_player.draw(m_window);
-	if (!m_player.isAlive())
-		m_player.drawStars(m_window);
 	m_window.display();
 }
 

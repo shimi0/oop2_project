@@ -22,6 +22,15 @@ public:
         MenuButton,
         PlayAgainButton,
         SpringGift,
+        ExplodingPlatform,
+        ScoreTopClassic,
+        ScoreNumFont,
+        PauseButton,
+        PauseScreen,
+        FireMonster,
+        JetPack,
+        PropellerHat,
+        Shild,
         Max,
     };
 

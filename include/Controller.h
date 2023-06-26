@@ -18,5 +18,7 @@ public:
 
 private:
 
+	void setIcon();
+
 	sf::RenderWindow m_window;
 };

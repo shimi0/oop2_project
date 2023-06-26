@@ -14,7 +14,9 @@
 #include "BlackHoleEnemy.h"
 #include "FlyingEnemy.h"
 #include "SpringGift.h"
-
+#include "Gift.h"
+#include "JetPack.h"
+#include "PropellerHat.h"
 
 class Player : public Movable
 {
@@ -22,14 +24,7 @@ public:
 
     Player();
 
-    void updateAnimation()
-    {
-        if (m_objectBody->GetLinearVelocity().y == 0.f)
-        {
-            m_animation.updateBasedOnCommand();
-        }
-    }
-
+    void animate(const sf::Time& deltaTime) override;
 
     virtual void handleCollision(GameObject& obj);
  //   virtual void handleCollision(Movable& obj);
@@ -37,9 +32,12 @@ public:
     virtual void handleCollision(Platform& obj);
     virtual void handleCollision(BlackHoleEnemy& obj);
     virtual void handleCollision(FlyingEnemy& obj);
+    virtual void handleCollision(FireMonster& obj);
     virtual void handleCollision(SpringGift& obj);
+    virtual void handleCollision(JetPack& obj);
+    virtual void handleCollision(PropellerHat& obj);
 
-    void starsAnimation(const sf::Time& deltaTime)
+    void deathAnimation(const sf::Time& deltaTime)
     {
         m_animationDeathStars.updateBasedOnTime(deltaTime);
         m_spriteDeathStars.setPosition(m_sprite.getPosition().x, m_sprite.getGlobalBounds().top);
@@ -53,8 +51,14 @@ public:
     bool isMovingUp() const;
 	void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) override;
     void jump(const float jumpHeightAmount);
-    void step(const sf::Time& deltaTime);
+    void step(const sf::Time& deltaTime) override;
 	void processKeyInput(const sf::Event& event, const sf::Time& deltaTime);
+    void kill()
+    {
+        if (!m_isAlive) return;
+        jump(0.5);
+        m_isAlive = false;
+    }
 
     sf::Vector2f getBasePosition() const
     {
@@ -85,7 +89,9 @@ public:
  
 private:
 
+    void crossWindow();
     bool m_isJumpinAllowed = true;
+
     //lower number = higher platform
     sf::Vector2f m_basePosition;
     bool a = false;
@@ -94,7 +100,9 @@ private:
     bool m_isDying = false;
     bool m_wasDying = false;
     bool m_isInvulnerable = false;
+    bool m_isUsingPropellerHat = false;
 
+    sf::Clock m_clock;
     sf::Sprite m_spriteDeathStars;
     Animation m_animationDeathStars;
 };

@@ -45,6 +45,11 @@ public:
 		m_animation.direction(Direction::Down);
 	}
 
+	void setPosition(const sf::Vector2f& position)
+	{
+		m_sprite.setPosition(position);
+	}
+
 protected:
 
 	sf::Sprite m_sprite;

@@ -11,7 +11,8 @@ public:
 
 	void matchSptitePosToBody();
 	virtual void step(const sf::Time& deltaTime) = 0;
-	
+	virtual void setPosition(const sf::Vector2f& pos ) {}
+	virtual void attach(std::unique_ptr<b2World>& world, GameObject& obj) {}
 
 protected:
 
