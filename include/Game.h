@@ -6,6 +6,7 @@
 #include <fstream>
 #include "Factory.h"
 #include "GameOver.h"
+#include <iostream>
 
 class Game
 {

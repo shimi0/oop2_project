@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 #include "Movable.h"
 #include "Unmovable.h"
 #include "Resources.h"
@@ -36,70 +34,24 @@ public:
     virtual void handleCollision(JetPack& obj);
     virtual void handleCollision(PropellerHat& obj);
 
-    void deathAnimation(const sf::Time& deltaTime)
-    {
-        m_animationDeathStars.updateBasedOnTime(deltaTime);
-        m_spriteDeathStars.setPosition(m_sprite.getPosition().x, m_sprite.getGlobalBounds().top);
-    }
+    void deathAnimation(const sf::Time& deltaTime);
 
-    void drawStars(sf::RenderWindow& window)
-    {
-        if(m_wasDying) return;
-        window.draw(m_spriteDeathStars);
-    }
+    void drawStars(sf::RenderWindow& window);
     bool isMovingUp() const;
 	void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) override;
     void jump(const float jumpHeightAmount);
     void step(const sf::Time& deltaTime) override;
 	void processKeyInput(const sf::Event& event, const sf::Time& deltaTime);
-    void kill()
-    {
-        if (!m_isAlive) return;
-        jump(0.5);
-        m_isAlive = false;
-    }
+    void kill();
+   
+    sf::Vector2f getBasePosition() const;
+    bool isAlive() const;
+    bool isDying() const;
+    void playDyingBehavior();
+    bool hasShotBullet() const;
+    void useBullet();
+    bool isAllowedToUseGift() const;
 
-    sf::Vector2f getBasePosition() const
-    {
-        return m_basePosition;
-    }
-
-    bool isAlive() const
-    {
-        return m_isAlive;
-    }
-
-    bool isDying() const
-    {
-        return m_isDying;
-    }
-    
-    void playDyingBehavior()
-    {
-        m_sprite.rotate(5);
-        m_sprite.scale({ 0.98,0.98 });
-
-        if (m_sprite.getScale().x < 0.1)
-        {
-            m_isAlive = false;
-            m_wasDying = true;
-        }
-    }
-
-    bool hasShotBullet() const
-    {
-        return m_hasShotBullet;
-    }
-
-    void useBullet()
-    {
-        m_hasShotBullet = false;
-    }
-
-    bool isAllowedToUseGift() const
-    {
-        return !m_isUsingJetPack && !m_isUsingPropellerHat;
-    }
 private:
 
     void crossWindow();
@@ -110,6 +62,8 @@ private:
     bool a = false;
 
     bool m_isAlive = true;
+
+    //in use for a specific death behavior
     bool m_isDying = false;
     bool m_wasDying = false;
     bool m_isInvulnerable = false;

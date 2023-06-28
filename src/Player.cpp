@@ -38,6 +38,14 @@ void Player::animate(const sf::Time & deltaTime)
 
 //------------------------------------------------------------
 
+void Player::drawStars(sf::RenderWindow& window)
+{
+	if (m_wasDying) return;
+	window.draw(m_spriteDeathStars);
+}
+
+//------------------------------------------------------------
+
 bool Player::isMovingUp() const
 {
 	return (m_objectBody->GetLinearVelocity().y < 0.0f);
@@ -61,13 +69,11 @@ void Player::handleCollision(Unmovable& obj)
 
 void Player::handleCollision(Platform& obj)
 {
-	if (isMovingUp())
-		return;
+	if (isMovingUp()) return;
 
 	jump(1);
 	m_animation.updateBasedOnCommand();
 	m_basePosition = sf::Vector2f(obj.getPosition());
-	//set to false once the player landed on a platform
 	m_isInvulnerable = false;
 }
 
@@ -129,6 +135,14 @@ void Player::handleCollision(PropellerHat& obj)
 	m_isUsingPropellerHat = true;
 	m_isInvulnerable = true;
 	jump(0.5);
+}
+
+//------------------------------------------------------------
+
+void Player::deathAnimation(const sf::Time& deltaTime)
+{
+	m_animationDeathStars.updateBasedOnTime(deltaTime);
+	m_spriteDeathStars.setPosition(m_sprite.getPosition().x, m_sprite.getGlobalBounds().top);
 }
 
 //------------------------------------------------------------
@@ -199,8 +213,7 @@ void Player::processKeyInput(const sf::Event& event, const sf::Time& deltaTime)
 					m_animation.direction(Direction::Up);	    
 					m_direction = Direction::Up;
 					m_hasShotBullet = true;
-				}
-				return;
+				}																														return;
 			default:																													return;
 		}		
 	}
@@ -215,18 +228,78 @@ void Player::processKeyInput(const sf::Event& event, const sf::Time& deltaTime)
 
 //------------------------------------------------------------
 
+void Player::kill()
+{
+	if (!m_isAlive) return;
+	jump(0.5);
+	m_isAlive = false;
+}
+
+//------------------------------------------------------------
+
+sf::Vector2f Player::getBasePosition() const
+{
+	return m_basePosition;
+}
+
+//------------------------------------------------------------
+
+bool Player::isAlive() const
+{
+	return m_isAlive;
+}
+
+//------------------------------------------------------------
+
+bool Player::isDying() const
+{
+	return m_isDying;
+}
+
+//------------------------------------------------------------
+
+void Player::playDyingBehavior()
+{
+	m_sprite.rotate(5);
+	m_sprite.scale({ 0.98,0.98 });
+
+	if (m_sprite.getScale().x < 0.1) {
+		m_isAlive = false;
+		m_wasDying = true;
+	}
+}
+
+//------------------------------------------------------------
+
+bool Player::hasShotBullet() const
+{
+	return m_hasShotBullet;
+}
+
+//------------------------------------------------------------
+
+void Player::useBullet()
+{
+	m_hasShotBullet = false;
+}
+
+//------------------------------------------------------------
+
+bool Player::isAllowedToUseGift() const
+{
+	return !m_isUsingJetPack && !m_isUsingPropellerHat;
+}
+
+//------------------------------------------------------------
+
 void Player::crossWindow()
 {
-	auto newPos = b2Vec2();
+	auto newPos = m_objectBody->GetPosition();
 	if (getPosition().x < 0)
-	{
 		newPos = b2Vec2(sfmlToBox2D(WIN_SIZE_X), m_objectBody->GetPosition().y);
-		m_objectBody->SetTransform(newPos, m_objectBody->GetAngle());
-	}
 
-	if (getPosition().x > WIN_SIZE_X) 
-	{
+	if (getPosition().x > WIN_SIZE_X)
 		newPos = b2Vec2(0, m_objectBody->GetPosition().y);
-		m_objectBody->SetTransform(newPos, m_objectBody->GetAngle());
-	}
+
+	m_objectBody->SetTransform(newPos, m_objectBody->GetAngle());
 }

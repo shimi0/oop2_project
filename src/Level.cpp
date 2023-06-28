@@ -25,7 +25,6 @@ void Level::run()
 		adjustView(gameView);
 		stepWorld(deltaTime);
 		drawGraphics();
-		
 		processEvent(deltaTime);
 		isPlayerInWindow();
 		animateObjects(deltaTime);

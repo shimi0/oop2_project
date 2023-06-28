@@ -44,6 +44,6 @@ void StaticPlatform::loadObject()
 	m_objectBody->CreateFixture(&fixtureDef);
 
 	m_sprite.setPosition(box2DToSFML(m_objectBody->GetPosition()));
-
+	m_objectBody->SetGravityScale(0.0f);
 	
 }

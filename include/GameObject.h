@@ -6,7 +6,6 @@
 #include "SFML/Graphics.hpp"
 #include "box2d/box2d.h"
 #include "CordinatesConverter.h"
-#include <iostream>
 
 class Platform;
 class Player;

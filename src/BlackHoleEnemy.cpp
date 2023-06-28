@@ -48,6 +48,5 @@ void BlackHoleEnemy::loadObject()
 
 void BlackHoleEnemy::handleCollision(Player& obj)
 {
-	std::cout << "d";
 	obj.handleCollision(*this);
 }

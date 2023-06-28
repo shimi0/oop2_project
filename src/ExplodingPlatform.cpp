@@ -55,6 +55,6 @@ void ExplodingPlatform::loadObject()
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 10.0f;
 	m_objectBody->CreateFixture(&fixtureDef);
-
+	m_objectBody->SetGravityScale(0.0f);
 	m_sprite.setPosition(box2DToSFML(m_objectBody->GetPosition()));
 }
