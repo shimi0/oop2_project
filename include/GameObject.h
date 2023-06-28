@@ -20,6 +20,7 @@ class SpringGift;
 class FireMonster;
 class JetPack;
 class PropellerHat;
+class Bullet;
 
 class GameObject
 {
@@ -41,6 +42,7 @@ public:
 	virtual void handleCollision(BlackHoleEnemy& obj) {};
 	virtual void handleCollision(FlyingEnemy& obj) {};
 	virtual void handleCollision(PropellerHat& obj) {};
+	virtual void handleCollision(Bullet& obj) {};
 
 	bool isSameBody(const b2Body* other) const
 	{
@@ -69,6 +71,6 @@ protected:
 	b2Body* m_objectBody;
 private:
 
-	
+
 	
 };

@@ -27,7 +27,6 @@ public:
     void animate(const sf::Time& deltaTime) override;
 
     virtual void handleCollision(GameObject& obj);
- //   virtual void handleCollision(Movable& obj);
     virtual void handleCollision(Unmovable& obj);
     virtual void handleCollision(Platform& obj);
     virtual void handleCollision(BlackHoleEnemy& obj);
@@ -86,7 +85,21 @@ public:
             m_wasDying = true;
         }
     }
- 
+
+    bool hasShotBullet() const
+    {
+        return m_hasShotBullet;
+    }
+
+    void useBullet()
+    {
+        m_hasShotBullet = false;
+    }
+
+    bool isAllowedToUseGift() const
+    {
+        return !m_isUsingJetPack && !m_isUsingPropellerHat;
+    }
 private:
 
     void crossWindow();
@@ -101,7 +114,8 @@ private:
     bool m_wasDying = false;
     bool m_isInvulnerable = false;
     bool m_isUsingPropellerHat = false;
-
+    bool m_isUsingJetPack = false;
+    bool m_hasShotBullet = false;
     sf::Clock m_clock;
     sf::Sprite m_spriteDeathStars;
     Animation m_animationDeathStars;

@@ -7,6 +7,7 @@
 #include "Unmovable.h"
 #include "Movable.h"
 #include "GameObject.h"
+#include "Bullet.h"
 #include <vector>
 
 class ContactListener : public b2ContactListener
@@ -14,9 +15,10 @@ class ContactListener : public b2ContactListener
 public:
 	ContactListener(Player& player, std::vector<std::unique_ptr<Unmovable>>& unmovableObjVec,
 									std::vector<std::unique_ptr<Movable>>& movableObjVec,
-									std::vector<std::unique_ptr<Platform>>& platformVec)
+									std::vector<std::unique_ptr<Platform>>& platformVec,
+									std::vector<std::unique_ptr<Bullet>>& m_bullets)
 									
-	:m_player(player), m_unmovableObjVec(unmovableObjVec), m_movableObjVec(movableObjVec), m_platformVec(platformVec)
+	:m_player(player), m_unmovableObjVec(unmovableObjVec), m_movableObjVec(movableObjVec), m_platformVec(platformVec), m_bullets(m_bullets)
 	{}		
 
 	//NOTICE: had to comment out	"m_flags |= e_enabledFlag;" in "b2_contact.cpp" to avoid multy sub collisions
@@ -68,6 +70,30 @@ public:
 			}
 		}
 
+		for (auto& bullet : m_bullets)
+		{
+			if(bullet->isSameBody(fixtureBodyA) || bullet->isSameBody(fixtureBodyB))
+			{
+				for (auto& movableObj : m_movableObjVec)
+				{
+					if (movableObj->isSameBody(fixtureBodyA) || movableObj->isSameBody(fixtureBodyB))
+					{
+						bullet->handleCollision(*movableObj);
+					}
+				}
+
+				for (auto& unmovableObj : m_unmovableObjVec)
+				{
+					if (unmovableObj->isSameBody(fixtureBodyA) || unmovableObj->isSameBody(fixtureBodyB))
+					{
+						bullet->handleCollision(*unmovableObj);
+					}
+				}
+			}
+
+			
+		}
+
 
 
 		contact->SetEnabled(false);		//for any other unexpected collision - ignore it. currently for 2 platfroms collision.
@@ -85,6 +111,7 @@ private:
 	std::vector<std::unique_ptr<Unmovable>>& m_unmovableObjVec;
 	std::vector<std::unique_ptr<Movable>>& m_movableObjVec;
 	std::vector<std::unique_ptr<Platform>>& m_platformVec;
+	std::vector<std::unique_ptr<Bullet>>& m_bullets;
 };
 
 //---------------------------------------------------------------

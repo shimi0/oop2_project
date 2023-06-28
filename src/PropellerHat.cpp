@@ -17,6 +17,8 @@ PropellerHat::PropellerHat(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, 
 
 void PropellerHat::handleCollision(Player& obj)
 {
+	if (!obj.isAllowedToUseGift())
+		return;
 	m_animation.direction(Direction::Up);
 	m_isInUse = true;
 	m_clock.restart();

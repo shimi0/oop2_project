@@ -17,12 +17,13 @@ JetPack::JetPack(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::
 
 void JetPack::handleCollision(Player& obj)
 {
+	if (!obj.isAllowedToUseGift())
+		return;
 	m_animation.direction(Direction::Left);
 	m_isInUse = true;
-	
+	m_clock.restart();
 	obj.handleCollision(*this);
 	m_playerGlobalBounds = obj.getGlobalBounds();
-
 }
 
 //----------------------------------------

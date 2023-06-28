@@ -13,7 +13,7 @@ Level::Level(sf::RenderWindow& window, Board& board)
 void Level::run()
 {
 	//collision detection
-	auto contactListener = ContactListener(m_player, m_unmovableObjVec, m_movableObjVec, m_platformVec);
+	auto contactListener = ContactListener(m_player, m_unmovableObjVec, m_movableObjVec, m_platformVec, m_bullers);
 	auto gameView = ViewManager();
 	auto clock = sf::Clock();
 	auto deltaTime = clock.restart();
@@ -28,11 +28,18 @@ void Level::run()
 		processEvent(deltaTime);
 		isPlayerInWindow();
 		animateObjects(deltaTime);
-		
-		for (auto& obj : m_movableObjVec)
+		if (m_player.hasShotBullet())
 		{
-			obj->setPosition(m_player.getPosition());
+			m_player.useBullet();
+
+			addBullet();
+			for (auto& bullet : m_bullers)
+				bullet->shoot();
 		}
+		
+		
+		
+		//if has fallen - delete. dont over use the vector.is a vector a good data stucture
 	}
 }
 
@@ -54,6 +61,15 @@ void Level::stepWorld(const sf::Time& deltaTime)
 
 	for (auto& item : m_movableObjVec)
 		item->step(deltaTime);
+
+	//there  are some objects that should get the players cur position.
+	for (auto& obj : m_movableObjVec)
+	{
+		obj->setPosition(m_player.getPosition());
+	}
+
+	for (auto& bullet : m_bullers)
+		bullet->step(deltaTime);
 }
 
 //-------------------------------------------
@@ -151,6 +167,8 @@ void Level::drawGraphics()
 			staticObj->draw(m_window);
 		for (auto& movableObj : m_movableObjVec)
 			movableObj->draw(m_window);
+		for (auto& bullet : m_bullers)
+			bullet->draw(m_window);
 		m_player.draw(m_window);
 
 		//we wanna draw the propellot above the player

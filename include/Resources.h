@@ -31,6 +31,7 @@ public:
         JetPack,
         PropellerHat,
         Shild,
+        Bullet,
         Max,
     };
 

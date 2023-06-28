@@ -28,10 +28,12 @@ void Player::animate(const sf::Time & deltaTime)
 	if (m_isUsingPropellerHat)
 		if (m_clock.getElapsedTime().asSeconds() > PROPELLER_HAT_TIME)
 			m_isUsingPropellerHat = false;
+
+	if (m_isUsingJetPack)
+		if (m_clock.getElapsedTime().asSeconds() > JETPACK_TIME)
+			m_isUsingJetPack = false;
 	if(m_isUsingPropellerHat)
-		m_objectBody->ApplyLinearImpulseToCenter({ 0,-1.1 }, true);
-	//if (m_giftPTR)
-	//	m_giftPTR->attachTo(getPosition());
+		jump(0.5);
 }
 
 //------------------------------------------------------------
@@ -105,20 +107,28 @@ void Player::handleCollision(SpringGift& obj)
 	m_animation.updateBasedOnCommand();
 }
 
+//------------------------------------------------------------
+
 void Player::handleCollision(JetPack& obj)
 {
-	if (m_isUsingPropellerHat) return;
+	if (m_isUsingJetPack || m_isUsingPropellerHat) return;
+	m_clock.restart();
 	m_direction == Direction::Left;
-	m_objectBody->ApplyLinearImpulseToCenter({ 0,-180 }, true);
+	jump(5);
+	m_isUsingJetPack = true;
 	m_isInvulnerable = true;
 }
 
+//------------------------------------------------------------
+
 void Player::handleCollision(PropellerHat& obj)
 {
+	if (m_isUsingJetPack || m_isUsingPropellerHat) return;
+
 	m_clock.restart();
 	m_isUsingPropellerHat = true;
 	m_isInvulnerable = true;
-	m_objectBody->ApplyLinearImpulseToCenter({0,-10}, true);
+	jump(0.5);
 }
 
 //------------------------------------------------------------
@@ -176,16 +186,29 @@ void Player::step(const sf::Time& deltaTime)
 
 void Player::processKeyInput(const sf::Event& event, const sf::Time& deltaTime)
 {
+
 	if (event.type == sf::Event::KeyPressed) {
-		switch (event.key.code)
+ 		switch (event.key.code)
 		{
 			case sf::Keyboard::Right:
-			case sf::Keyboard::D: m_animation.direction(Direction::Right);	m_direction = Direction::Right; step(deltaTime);	return;
+			case sf::Keyboard::D:       m_animation.direction(Direction::Right);	m_direction = Direction::Right; step(deltaTime);	return;
 			case sf::Keyboard::Left:
-			case sf::Keyboard::A: m_animation.direction(Direction::Left);	m_direction = Direction::Left; step(deltaTime);		return;
-			default:																											return;
+			case sf::Keyboard::A:       m_animation.direction(Direction::Left);	    m_direction = Direction::Left; step(deltaTime);		return;
+			case sf::Keyboard::Space:	
+				if (!m_isUsingJetPack && !m_isUsingPropellerHat) {
+					m_animation.direction(Direction::Up);	    
+					m_direction = Direction::Up;
+					m_hasShotBullet = true;
+				}
+				return;
+			default:																													return;
 		}		
 	}
+	//dont stay with the nose up
+	if (event.type == sf::Event::KeyReleased)
+		if(event.key.code == sf::Keyboard::Space)
+			m_animation.direction(Direction::Left);
+
 	m_direction = Direction::Stay;
 	step(deltaTime);
 }

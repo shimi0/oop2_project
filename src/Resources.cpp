@@ -46,7 +46,8 @@ namespace
         doodleClassic.m_data[Direction::Right].emplace_back(nextStart(), size);
         doodleClassic.m_data[Direction::Left].emplace_back(nextStart(), size);
         doodleClassic.m_data[Direction::Left].emplace_back(nextStart(), size);
-        doodleClassic.m_data[Direction::Up].emplace_back(nextStart(), size);
+        doodleClassic.m_data[Direction::Up].emplace_back(sf::Vector2i(8058, 0), size);
+        doodleClassic.m_data[Direction::Up].emplace_back(sf::Vector2i(8058, 0), size);
 
         return doodleClassic;
     }
@@ -280,6 +281,20 @@ namespace
         jetPack.m_data[Direction::Stay].emplace_back(sf::Vector2i(1684, 530), sf::Vector2i(48,74));
 
         jetPack.m_data[Direction::Left].emplace_back(initSpace, size);
+        jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(6919, 0), size);//64
+        jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(6983, 0), size);
+        jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(7047, 0), size);
+
+        
+        for (int i = 0; i < 9; i++) {
+            jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(6855, 128), size);
+            jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(6919, 128), size);
+        }
+        jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(6983, 128), size);
+        jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(7047, 128), size);
+
+        jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(6855, 256), size);
+        jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(6919, 256), size);
         //add more
         return jetPack;
     }
@@ -291,10 +306,19 @@ namespace
 
         propellerHat.m_data[Direction::Stay].emplace_back(sf::Vector2i(7108, 0), size);
         propellerHat.m_data[Direction::Up].emplace_back(sf::Vector2i(7173, 0), size);
-        propellerHat.m_data[Direction::Up].emplace_back(sf::Vector2i(7108, 72), size);
-        propellerHat.m_data[Direction::Up].emplace_back(sf::Vector2i(7173, 72), size);
+        propellerHat.m_data[Direction::Up].emplace_back(sf::Vector2i(7108, 64), size);
+        propellerHat.m_data[Direction::Up].emplace_back(sf::Vector2i(7173, 64), size);
         //add more
         return propellerHat;
+    }
+
+    AnimationData bullet()
+    {
+        const auto size = sf::Vector2i(42, 45);
+        auto bullet = AnimationData{};
+
+        bullet.m_data[Direction::Up].emplace_back(sf::Vector2i(7954, 0), size);
+        return bullet;
     }
 }
 
@@ -331,4 +355,5 @@ Resources::Resources()
     m_data[FireMonster] = fireMonster();
     m_data[JetPack] = jetPack();
     m_data[PropellerHat] = propellerHat();
+    m_data[Bullet] = bullet();
 }

@@ -3,6 +3,7 @@
 #include "SFML/Graphics.hpp"
 #include "Board.h"
 #include "Player.h"
+#include "Bullet.h"
 #include "macros.h"
 #include "box2d/box2d.h"
 #include "StaticPlatform.h"
@@ -44,8 +45,27 @@ public:
 
 		throw std::runtime_error(std::string("No factory handles " + type));
 	}
-	
 
+	void addBullet()
+	{
+		index++;
+		index %= 20;
+
+		//replacing the oldest bullet with a new one. (instead of deleting and inserting a new one...)
+		if (m_bullers.size() >= MAX_BULLETS)
+		{
+			m_bullers[index] = std::make_unique<Bullet>(m_player.getPosition());
+			m_bullers[index]->loadObject(m_world, m_bodyDef);
+		}
+		else //first 20 bullet - "init" the vector
+		{
+			auto bullet = std::make_unique<Bullet>(m_player.getPosition());
+			m_bullers.emplace_back(std::move(bullet));
+			m_bullers[m_bullers.size() - 1]->loadObject(m_world, m_bodyDef);
+		}
+	}
+	
+	int index = 0;
 private:
 
 	//return the cur global cords. the top of the window.
@@ -65,10 +85,11 @@ private:
 	Player m_player;
 	std::unique_ptr<b2World> m_world;
 	b2BodyDef m_bodyDef;
-	std::vector<std::unique_ptr<Movable>> m_movableObjVec;	//uniqe_ptr???
-	std::vector<std::unique_ptr<Unmovable>> m_unmovableObjVec;	//uniqe_ptr???
+	std::vector<std::unique_ptr<Movable>> m_movableObjVec;
+	std::vector<std::unique_ptr<Unmovable>> m_unmovableObjVec;
 	std::vector<std::unique_ptr<Platform>> m_platformVec;	
 
+	std::vector<std::unique_ptr<Bullet>>  m_bullers;
 
 	//in use for a specific operation!
 	int m_windowDropAssister = 0;
