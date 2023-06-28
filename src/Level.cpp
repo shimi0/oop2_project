@@ -23,8 +23,9 @@ void Level::run()
 	{
 		deltaTime = clock.restart();
 		adjustView(gameView);
-		drawGraphics();
 		stepWorld(deltaTime);
+		drawGraphics();
+		
 		processEvent(deltaTime);
 		isPlayerInWindow();
 		animateObjects(deltaTime);
