@@ -22,26 +22,24 @@ public:
 
     Player();
 
-    void animate(const sf::Time& deltaTime) override;
+    void animate(const sf::Time&) override;
 
-    virtual void handleCollision(GameObject& obj);
-    virtual void handleCollision(Unmovable& obj);
-    virtual void handleCollision(Platform& obj);
-    virtual void handleCollision(BlackHoleEnemy& obj);
-    virtual void handleCollision(FlyingEnemy& obj);
-    virtual void handleCollision(FireMonster& obj);
-    virtual void handleCollision(SpringGift& obj);
-    virtual void handleCollision(JetPack& obj);
-    virtual void handleCollision(PropellerHat& obj);
+    virtual void handleCollision(GameObject&);
+    virtual void handleCollision(Platform&);
+    virtual void handleCollision(BlackHoleEnemy&);
+    virtual void handleCollision(Enemy&);
+    virtual void handleCollision(SpringGift&);
+    virtual void handleCollision(JetPack&);
+    virtual void handleCollision(PropellerHat&);
 
-    void deathAnimation(const sf::Time& deltaTime);
+    void deathAnimation(const sf::Time&);
 
-    void drawStars(sf::RenderWindow& window);
+    void drawStars(sf::RenderWindow&);
     bool isMovingUp() const;
-	void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) override;
-    void jump(const float jumpHeightAmount);
-    void step(const sf::Time& deltaTime) override;
-	void processKeyInput(const sf::Event& event, const sf::Time& deltaTime);
+	void loadObject(std::unique_ptr<b2World>&, b2BodyDef&) override;
+    void jump(const float);
+    void step(const sf::Time&) override;
+	void processKeyInput(const sf::Event&, const sf::Time&);
     void kill();
    
     sf::Vector2f getBasePosition() const;
@@ -70,6 +68,7 @@ private:
     bool m_isUsingPropellerHat = false;
     bool m_isUsingJetPack = false;
     bool m_hasShotBullet = false;
+
     sf::Clock m_clock;
     sf::Sprite m_spriteDeathStars;
     Animation m_animationDeathStars;

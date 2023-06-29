@@ -17,11 +17,8 @@ class FireMonster : public Enemy, public Unmovable
 public:
 
     FireMonster(std::unique_ptr<b2World>&, b2BodyDef&, const sf::Vector2f&);
-
-
     virtual void handleCollision(Player& obj);
 
 private:
 
-    void loadObject();
 };

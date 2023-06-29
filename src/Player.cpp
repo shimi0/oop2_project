@@ -23,7 +23,6 @@ void Player::animate(const sf::Time & deltaTime)
 	if (m_objectBody->GetLinearVelocity().y == 0.f)
 		m_animation.updateBasedOnCommand();
 
-
 	//move to a diff func
 	if (m_isUsingPropellerHat)
 		if (m_clock.getElapsedTime().asSeconds() > PROPELLER_HAT_TIME)
@@ -60,13 +59,6 @@ void Player::handleCollision(GameObject& obj)
 
 //------------------------------------------------------------
 
-void Player::handleCollision(Unmovable& obj)
-{
-	obj.handleCollision(*this);
-}
-
-//------------------------------------------------------------
-
 void Player::handleCollision(Platform& obj)
 {
 	if (isMovingUp()) return;
@@ -90,17 +82,9 @@ void Player::handleCollision(BlackHoleEnemy& obj)
 
 //------------------------------------------------------------
 
-void Player::handleCollision(FlyingEnemy& obj)
+void Player::handleCollision(Enemy& obj)
 {
 	if(!m_isInvulnerable)
-		m_isAlive = false;
-}
-
-//------------------------------------------------------------
-
-void Player::handleCollision(FireMonster& obj)
-{
-	if (!m_isInvulnerable)
 		m_isAlive = false;
 }
 

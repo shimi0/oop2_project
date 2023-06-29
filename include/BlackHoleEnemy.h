@@ -19,7 +19,7 @@ public:
     BlackHoleEnemy(std::unique_ptr<b2World>&, b2BodyDef&, const sf::Vector2f&);
 
     virtual void handleCollision(Player& obj) override;
-
+    virtual void handleCollision(Bullet& obj) override {};
 private:
 
     void loadObject();

@@ -12,7 +12,5 @@ public:
 	virtual void handleCollision(Player& obj) override;
 
 private:
-	void loadObject();
-
 
 };

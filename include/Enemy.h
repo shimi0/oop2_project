@@ -28,6 +28,8 @@ protected:
 
     int m_lives = 1;
     bool m_isAlive = true;
+
+    void loadObject();
 private:
 
     

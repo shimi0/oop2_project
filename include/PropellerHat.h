@@ -10,10 +10,7 @@ public:
 	PropellerHat(std::unique_ptr<b2World>&, b2BodyDef&, const sf::Vector2f&);
 
 	virtual void handleCollision(Player& obj) override;
-	void step(const sf::Time& deltaTime)
-	{
-
-	}
+	void step(const sf::Time& deltaTime) {}
 
 	virtual void animate(const sf::Time& deltaTime)
 	{
@@ -37,13 +34,7 @@ public:
 		m_sprite.setPosition(box2DToSFML(m_objectBody->GetPosition()));
 	}
 
-	virtual void attach(std::unique_ptr<b2World>& world, GameObject& obj)
-	{
-		if (!m_isInUse) return;
-	}
-
 private:
-	void loadObject();
 
 	sf::FloatRect m_playerGlobalBounds;
 	sf::Clock m_clock;

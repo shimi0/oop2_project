@@ -27,49 +27,28 @@ public:
 
 	GameObject(const AnimationData& data, Direction dir, sf::Sprite& sprite);
 	virtual ~GameObject() = 0 {}
-	void draw(sf::RenderWindow& m_window);
+	void draw(sf::RenderWindow& m_window) const;
 	virtual void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) = 0;
 	virtual void handleCollision(GameObject& obj) {};
-	virtual void handleCollision(Movable& obj) {};
 	virtual void handleCollision(JetPack& obj) {};
-	virtual void handleCollision(Unmovable& obj) {};
-	virtual void handleCollision(FireMonster& obj) {};
 	virtual void handleCollision(Player& obj) {};
 	virtual void handleCollision(Platform& obj) {};
 	virtual void handleCollision(SpringGift& obj) {};
-	//virtual void handleCollision(Enemy& obj) {};
 	virtual void handleCollision(BlackHoleEnemy& obj) {};
-	virtual void handleCollision(FlyingEnemy& obj) {};
 	virtual void handleCollision(PropellerHat& obj) {};
 	virtual void handleCollision(Bullet& obj) {};
+	virtual void handleCollision(Enemy& obj) {};
 
-	bool isSameBody(const b2Body* other) const
-	{
-		return m_objectBody == other;
-	}
-
-	sf::Vector2f getPosition() const
-	{
-		return m_sprite.getPosition();
-	}
-
-	sf::FloatRect getGlobalBounds() const
-	{
-		return m_sprite.getGlobalBounds();
-	}
-
-	virtual void animate(const sf::Time& deltaTime)
-	{
-		m_animation.updateBasedOnTime(deltaTime);
-	};
+	bool isSameBody(const b2Body* other) const;
+	sf::Vector2f getPosition() const;
+	sf::FloatRect getGlobalBounds() const;
+	virtual void animate(const sf::Time& deltaTime);
 
 protected:
 
 	sf::Sprite m_sprite;
 	Animation m_animation;
 	b2Body* m_objectBody;
+
 private:
-
-
-	
 };

@@ -18,9 +18,6 @@ class StaticPlatform : public Platform, public Unmovable
 public:
 	StaticPlatform(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
 
-
-
 private:
-	void loadObject();
 	
 };

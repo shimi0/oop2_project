@@ -24,8 +24,6 @@ public:
 
 private:
 
-    void loadObject();
-
     void movementBlockingRect();
     void randomMovement();
     void setVelocity(const Direction& dir, const char);

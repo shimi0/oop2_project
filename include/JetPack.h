@@ -44,7 +44,6 @@ public:
 
 private:
 
-	void loadObject();
 	sf::Clock m_clock;
 	sf::FloatRect m_playerGlobalBounds;
 };

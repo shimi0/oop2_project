@@ -15,14 +15,12 @@
 class ExplodingPlatform : public Platform, public Unmovable
 {
 public:
+
 	ExplodingPlatform(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
 
 	virtual void animate(const sf::Time&) override;
 
-
 private:
-	void loadObject();
 
 	bool m_explode = false;
-
 };

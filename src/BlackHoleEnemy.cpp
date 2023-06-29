@@ -30,10 +30,6 @@ void BlackHoleEnemy::loadObject()
 	b2PolygonShape playerBox;
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
 	m_sprite.setScale({ 1.3f, 1.3f });
-
-	//NOTICE: should be divided by 2. not by 6. but turns out to be too big. dont know why... 
-
-	//Y should be m_sprite.getGlobalBounds().height / 2 for the full platform. curentlly it 0.01
 	auto box = sfmlToBox2D(m_sprite.getGlobalBounds().width / 20.0f, m_sprite.getGlobalBounds().height / 20.f);
 	playerBox.SetAsBox(box.x, box.y);
 	b2FixtureDef fixtureDef;

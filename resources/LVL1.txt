@@ -18,6 +18,7 @@ StaticPlatform 1100 300
 ExplodingPlatform 500 -400
 StaticPlatform 900 300
 StaticPlatform 700 300
+SpringGift 600 220
 BlackHoleEnemy 800 -100
 StaticPlatform 1200 -400
 StaticPlatform 300 -800
