@@ -32,6 +32,7 @@ public:
         PropellerHat,
         Shild,
         Bullet,
+        OneJumpPlatform,
         Max,
     };
 

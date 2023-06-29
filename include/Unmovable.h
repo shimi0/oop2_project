@@ -9,8 +9,11 @@ public:
 	virtual ~Unmovable() = 0 {}
 	void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) override {};
 
+protected:
 
-	//virtual void attachTo(const sf::Vector2f& position) {};
+	void defineBody(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
+
 private:
+
 
 };

@@ -67,6 +67,7 @@ void Player::handleCollision(Platform& obj)
 	m_animation.updateBasedOnCommand();
 	m_basePosition = sf::Vector2f(obj.getPosition());
 	m_isInvulnerable = false;
+	obj.handleCollision(*this);
 }
 
 //------------------------------------------------------------

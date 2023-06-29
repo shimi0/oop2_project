@@ -13,12 +13,14 @@
 
 
 
-class StaticPlatform : public Platform, public Unmovable
+class OneJumpPlatform : public Platform, public Unmovable
 {
 public:
-	StaticPlatform(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
+	OneJumpPlatform(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
 	virtual bool isMovable() const override;
 
+	virtual void animate(const sf::Time& deltaTime) override;
+
 private:
-	
+
 };

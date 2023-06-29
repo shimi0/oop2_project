@@ -5,11 +5,7 @@ SpringGift::SpringGift(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, cons
 	Unmovable(Resources::instance().animationData(Resources::SpringGift), Direction::Down, m_sprite),
 	GameObject(Resources::instance().animationData(Resources::SpringGift), Direction::Down, m_sprite)
 {
-	bodydef.type = b2_staticBody;
-	bodydef.position.Set(sfmlToBox2D(pos.x), sfmlToBox2D(pos.y));
-
-	m_objectBody = world->CreateBody(&bodydef);
-
+	defineBody(world, bodydef, pos);
 	Gift::loadObject();
 }
 

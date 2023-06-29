@@ -28,18 +28,7 @@ void Level::run()
 		processEvent(deltaTime);
 		isPlayerInWindow();
 		animateObjects(deltaTime);
-		if (m_player.hasShotBullet())
-		{
-			m_player.useBullet();
-
-			addBullet();
-			for (auto& bullet : m_bullers)
-				bullet->shoot();
-		}
-		
-		
-		
-		//if has fallen - delete. dont over use the vector.is a vector a good data stucture
+		handleBulletShooting();
 	}
 }
 
@@ -61,6 +50,12 @@ void Level::stepWorld(const sf::Time& deltaTime)
 
 	for (auto& item : m_movableObjVec)
 		item->step(deltaTime);
+
+	//not so pretty but instead od using 2 different vectors(moving platform and unmonable) 
+	//step is only working for movable platforms so should be safe to use
+	for (auto& item : m_platformVec)
+		if(item->isMovable())
+			item->step(deltaTime);
 
 	//there  are some objects that should get the players cur position.
 	for (auto& obj : m_movableObjVec)
@@ -184,3 +179,15 @@ void Level::drawGraphics()
 }
 
 //--------------------------------------------
+
+void Level::handleBulletShooting()
+{
+	if (m_player.hasShotBullet())
+	{
+		m_player.useBullet();
+
+		addBullet();
+		for (auto& bullet : m_bullers)
+			bullet->shoot();
+	}
+}

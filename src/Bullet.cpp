@@ -10,10 +10,7 @@ Bullet::Bullet(const sf::Vector2f& position)
 
 void Bullet::loadObject(std::unique_ptr<b2World>&world, b2BodyDef & bodydef)
 {
-	bodydef.type = b2_dynamicBody;
-	bodydef.position.Set(sfmlToBox2D(m_position.x), sfmlToBox2D(m_position.y));
-
-	m_objectBody = world->CreateBody(&bodydef);
+	defineBody(world, bodydef, m_position);
 
 	b2PolygonShape playerBox;
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);

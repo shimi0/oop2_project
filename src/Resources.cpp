@@ -122,7 +122,6 @@ namespace
     {
         const auto size = sf::Vector2i(116, 34);
         const auto initSpace = sf::Vector2i(1288, 34);
-        const auto middleSpace = sf::Vector2i(0, 0);
 
         auto greenPlatform = AnimationData{};
         auto currentStart = initSpace;
@@ -320,13 +319,21 @@ namespace
         bullet.m_data[Direction::Up].emplace_back(sf::Vector2i(7954, 0), size);
         return bullet;
     }
+
+    AnimationData oneJumpPlatform()
+    {
+        const auto size = sf::Vector2i(116, 34);
+        auto oneJumpPlatform = AnimationData{};
+
+        oneJumpPlatform.m_data[Direction::Stay].emplace_back(sf::Vector2i(1288, 105), size);
+        return oneJumpPlatform;
+    }
 }
 
 Resources& Resources::instance()
 {
     static Resources instance = Resources();//:)
     return instance;
-
 }
 
 Resources::Resources()
@@ -356,4 +363,5 @@ Resources::Resources()
     m_data[JetPack] = jetPack();
     m_data[PropellerHat] = propellerHat();
     m_data[Bullet] = bullet();
+    m_data[OneJumpPlatform] = oneJumpPlatform();
 }

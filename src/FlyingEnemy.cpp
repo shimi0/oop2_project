@@ -4,10 +4,7 @@ FlyingEnemy::FlyingEnemy(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, co
 	:Movable(Resources::instance().animationData(Resources::FlyingEnemy), Direction::Stay, m_sprite),
 	GameObject(Resources::instance().animationData(Resources::FlyingEnemy), Direction::Stay, m_sprite), m_statrPosition(pos)
 {
-	bodydef.type = b2_dynamicBody;
-	bodydef.position.Set(sfmlToBox2D(pos.x), sfmlToBox2D(pos.y));
-
-	m_objectBody = world->CreateBody(&bodydef);
+	defineBody(world, bodydef, pos);
 
 	Enemy::loadObject();
 }

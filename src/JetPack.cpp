@@ -5,11 +5,7 @@ JetPack::JetPack(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::
 	GameObject(Resources::instance().animationData(Resources::JetPack), Direction::Stay, m_sprite),
 	Movable(Resources::instance().animationData(Resources::JetPack), Direction::Stay, m_sprite)
 {
-	bodydef.type = b2_staticBody;
-	bodydef.position.Set(sfmlToBox2D(pos.x), sfmlToBox2D(pos.y));
-
-	m_objectBody = world->CreateBody(&bodydef);
-
+	defineBody(world, bodydef, pos);
 	Gift::loadObject();
 }
 

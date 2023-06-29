@@ -77,18 +77,19 @@ private:
 	void adjustView(ViewManager&);
 	void processEvent(const sf::Time&);
 	void drawGraphics();
+	void handleBulletShooting();
+
+	std::unique_ptr<b2World> m_world;
+	b2BodyDef m_bodyDef;
 
 	bool m_lvlRunnig = true;
 	sf::RenderWindow& m_window;
 	Board& m_board;
-	//SimplePlatform m_platform;		//temp
+
 	Player m_player;
-	std::unique_ptr<b2World> m_world;
-	b2BodyDef m_bodyDef;
 	std::vector<std::unique_ptr<Movable>> m_movableObjVec;
 	std::vector<std::unique_ptr<Unmovable>> m_unmovableObjVec;
 	std::vector<std::unique_ptr<Platform>> m_platformVec;	
-
 	std::vector<std::unique_ptr<Bullet>>  m_bullers;
 
 	//in use for a specific operation!

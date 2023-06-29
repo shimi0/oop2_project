@@ -19,7 +19,7 @@ public:
 	ExplodingPlatform(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
 
 	virtual void animate(const sf::Time&) override;
-
+	virtual bool isMovable() const override;
 private:
 
 	bool m_explode = false;

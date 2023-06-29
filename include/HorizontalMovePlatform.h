@@ -19,7 +19,7 @@ public:
 	HorizontalMovePlatform(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
 
 	void step(const sf::Time& deltaTime) override;
-
+	virtual bool isMovable() const override;
 private:
 
 };

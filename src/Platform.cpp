@@ -28,5 +28,5 @@ void Platform::loadObject()
 
  void Platform::handleCollision(Player& player)
 {
-	player.handleCollision(*this);
+	m_hasBeenUsed = true;
 }

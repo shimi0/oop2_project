@@ -38,7 +38,7 @@ void Game::run()
 
 void Game::readGameData(Level& level)
 {
-	auto dataReader = DataReader("LVL1.txt");
+	auto dataReader = DataReader("LVL2.txt");
 	dataReader.openFile();
 	Object object;
 

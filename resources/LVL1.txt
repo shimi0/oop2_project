@@ -8,7 +8,7 @@ PropellerHat 300 520
 SpringGift 600 1220
 StaticPlatform 400 1300
 ExplodingPlatform 200 1000
-StaticPlatform 1000 900
+OneJumpPlatform 1000 900
 StaticPlatform 400 600
 FireMonster 400 300
 StaticPlatform 400 0

@@ -4,13 +4,10 @@ HorizontalMovePlatform::HorizontalMovePlatform(std::unique_ptr<b2World>& world, 
 	: GameObject(Resources::instance().animationData(Resources::BluePlatform), Direction::Stay, m_sprite), Platform(),
 	  Movable(Resources::instance().animationData(Resources::BluePlatform), Direction::Stay, m_sprite)
 {
-	bodydef.type = b2_dynamicBody;
-	bodydef.position.Set(sfmlToBox2D(pos.x), sfmlToBox2D(pos.y));
-
-	m_objectBody = world->CreateBody(&bodydef);
+	defineBody(world, bodydef, pos);
 
 	Platform::loadObject();
-	m_direction == Direction::Right;
+	m_direction = Direction::Right;
 }
 
 //----------------------------------------
@@ -34,6 +31,13 @@ void HorizontalMovePlatform::step(const sf::Time& deltaTime)
 	}
 	updatePositionX(desiredVelocity);
 	matchSptitePosToBody();
+}
+
+//----------------------------------------
+
+bool HorizontalMovePlatform::isMovable() const
+{
+	return true;
 }
 
 //----------------------------------------

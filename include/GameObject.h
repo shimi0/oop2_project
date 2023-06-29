@@ -9,14 +9,11 @@
 
 class Platform;
 class Player;
-class Movable;
-class Unmovable;
 class Platform;
 class BlackHoleEnemy;
 class Enemy;
-class FlyingEnemy;
 class SpringGift;
-class FireMonster;
+
 class JetPack;
 class PropellerHat;
 class Bullet;

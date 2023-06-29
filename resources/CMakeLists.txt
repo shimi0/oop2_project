@@ -3,4 +3,5 @@
 configure_file ("ClassicBG.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("spritesheet.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("LVL1.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("LVL2.txt" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Icon.png" ${CMAKE_BINARY_DIR} COPYONLY)

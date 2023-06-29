@@ -13,6 +13,15 @@ void Movable::matchSptitePosToBody()
 
 //-------------------------------------------
 
+void Movable::defineBody(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos)
+{
+	bodydef.type = b2_dynamicBody;
+	bodydef.position.Set(sfmlToBox2D(pos.x), sfmlToBox2D(pos.y));
+	m_objectBody = world->CreateBody(&bodydef);
+}
+
+//-------------------------------------------
+
 void Movable::updatePositionX(const float& desiredVelocity)
 {
 	b2Vec2 currentVelocity = m_objectBody->GetLinearVelocity();

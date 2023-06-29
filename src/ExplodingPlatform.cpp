@@ -4,10 +4,7 @@ ExplodingPlatform::ExplodingPlatform(std::unique_ptr<b2World>& world, b2BodyDef&
 	: GameObject(Resources::instance().animationData(Resources::ExplodingPlatform), Direction::Stay, m_sprite), Platform(),
 	Unmovable(Resources::instance().animationData(Resources::ExplodingPlatform), Direction::Stay, m_sprite)
 {
-	bodydef.type = b2_staticBody;
-	bodydef.position.Set(sfmlToBox2D(pos.x), sfmlToBox2D(pos.y));
-
-	m_objectBody = world->CreateBody(&bodydef);
+	defineBody(world, bodydef, pos);
 
 	Platform::loadObject();
 }
@@ -23,6 +20,13 @@ void ExplodingPlatform::animate(const sf::Time& deltaTime)
 		return;
 	}
 	m_animation.updateBasedOnTime(deltaTime);
+}
+
+//----------------------------------------
+
+bool ExplodingPlatform::isMovable() const
+{
+	return false;
 }
 
 //----------------------------------------
