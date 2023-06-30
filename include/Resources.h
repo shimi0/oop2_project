@@ -33,6 +33,7 @@ public:
         Shild,
         Bullet,
         OneJumpPlatform,
+        MultyLifeEnemy,
         Max,
     };
 

@@ -271,6 +271,22 @@ namespace
         return fireMonster;
     }
 
+    AnimationData multyLifeEnemy()
+    {
+        const auto size = sf::Vector2i(186, 68);
+        auto multyLifeEnemy = AnimationData{};
+
+        multyLifeEnemy.m_data[Direction::Down].emplace_back(sf::Vector2i(2310, 0), size);
+        multyLifeEnemy.m_data[Direction::Down].emplace_back(sf::Vector2i(2312, 2), size);
+        multyLifeEnemy.m_data[Direction::Down].emplace_back(sf::Vector2i(2310, 4), size);
+        multyLifeEnemy.m_data[Direction::Down].emplace_back(sf::Vector2i(2312, 2), size);
+        multyLifeEnemy.m_data[Direction::Up].emplace_back(sf::Vector2i(2310, 68), size);
+        multyLifeEnemy.m_data[Direction::Up].emplace_back(sf::Vector2i(2314, 71), size);
+        multyLifeEnemy.m_data[Direction::Up].emplace_back(sf::Vector2i(2312, 74), size);
+        multyLifeEnemy.m_data[Direction::Up].emplace_back(sf::Vector2i(2314, 71), size);
+        return multyLifeEnemy;
+    }
+
     AnimationData jetPack()
     {
         const auto size = sf::Vector2i(54, 123);
@@ -294,7 +310,6 @@ namespace
 
         jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(6855, 256), size);
         jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(6919, 256), size);
-        //add more
         return jetPack;
     }
 
@@ -307,7 +322,6 @@ namespace
         propellerHat.m_data[Direction::Up].emplace_back(sf::Vector2i(7173, 0), size);
         propellerHat.m_data[Direction::Up].emplace_back(sf::Vector2i(7108, 64), size);
         propellerHat.m_data[Direction::Up].emplace_back(sf::Vector2i(7173, 64), size);
-        //add more
         return propellerHat;
     }
 
@@ -364,4 +378,5 @@ Resources::Resources()
     m_data[PropellerHat] = propellerHat();
     m_data[Bullet] = bullet();
     m_data[OneJumpPlatform] = oneJumpPlatform();
+    m_data[MultyLifeEnemy] = multyLifeEnemy();
 }

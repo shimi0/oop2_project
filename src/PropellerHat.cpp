@@ -7,6 +7,7 @@ PropellerHat::PropellerHat(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, 
 {
 	defineBody(world, bodydef, pos);
 	Gift::loadObject();
+	m_sound.setBuffer(AudioResources::Instance().getSound("propeller3.wav"));
 }
 
 //----------------------------------------
@@ -15,6 +16,7 @@ void PropellerHat::handleCollision(Player& obj)
 {
 	if (!obj.isAllowedToUseGift())
 		return;
+	m_sound.play();
 	m_animation.direction(Direction::Up);
 	m_isInUse = true;
 	m_clock.restart();

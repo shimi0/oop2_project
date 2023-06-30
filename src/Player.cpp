@@ -6,7 +6,10 @@ Player::Player()
 	GameObject(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite),
 	m_basePosition(sf::Vector2f(WIN_SIZE_X,WIN_SIZE_Y)),
 	m_animationDeathStars(Resources::instance().animationData(Resources::DeathStars), Direction::Stay, m_spriteDeathStars)
-{}
+{
+	m_sound.setBuffer(AudioResources::Instance().getSound("jump.wav"));
+	m_soundDeath.setBuffer(AudioResources::Instance().getSound("death_fall.wav"));
+}
 
 //------------------------------------------------------------
 
@@ -63,6 +66,7 @@ void Player::handleCollision(Platform& obj)
 {
 	if (isMovingUp()) return;
 
+	m_sound.play();
 	jump(1);
 	m_animation.updateBasedOnCommand();
 	m_basePosition = sf::Vector2f(obj.getPosition());
@@ -126,6 +130,11 @@ void Player::handleCollision(PropellerHat& obj)
 
 void Player::deathAnimation(const sf::Time& deltaTime)
 {
+	if (m_soundDeath.getStatus() != sf::Sound::Playing && !m_wasDying && !m_hasSoundBeenPlayed)
+	{
+		m_soundDeath.play();
+		m_hasSoundBeenPlayed = true;
+	}
 	m_animationDeathStars.updateBasedOnTime(deltaTime);
 	m_spriteDeathStars.setPosition(m_sprite.getPosition().x, m_sprite.getGlobalBounds().top);
 }
@@ -146,7 +155,7 @@ void Player::loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef)
 	playerBox.SetAsBox(box.x, box.y);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &playerBox;
-	fixtureDef.density = 2.5f;
+	fixtureDef.density = 9.5f;
 	m_objectBody->CreateFixture(&fixtureDef);
 	matchSptitePosToBody();
 
@@ -195,6 +204,8 @@ void Player::processKeyInput(const sf::Event& event, const sf::Time& deltaTime)
 			case sf::Keyboard::A:       m_animation.direction(Direction::Left);	    m_direction = Direction::Left; step(deltaTime);		return;
 			case sf::Keyboard::Space:	
 				if (!m_isUsingJetPack && !m_isUsingPropellerHat) {
+					if (m_bulletsClock.getElapsedTime().asMilliseconds() < 500) return;
+					m_bulletsClock.restart();
 					m_animation.direction(Direction::Up);	    
 					m_direction = Direction::Up;
 					m_hasShotBullet = true;

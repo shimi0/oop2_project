@@ -23,6 +23,6 @@ public:
 private:
 
     void loadObject();
-
+    sf::Sound m_sound;
 
 };

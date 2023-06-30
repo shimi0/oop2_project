@@ -4,7 +4,9 @@ Bullet::Bullet(const sf::Vector2f& position)
 	:Movable(Resources::instance().animationData(Resources::Bullet), Direction::Up, m_sprite),
 	 GameObject(Resources::instance().animationData(Resources::Bullet), Direction::Up, m_sprite),
 	 m_position(position)
-{}
+{
+	m_sound.setBuffer(AudioResources::Instance().getSound("bullet.wav"));
+}
 
 //------------------------------------
 
@@ -14,7 +16,6 @@ void Bullet::loadObject(std::unique_ptr<b2World>&world, b2BodyDef & bodydef)
 
 	b2PolygonShape playerBox;
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
-	//m_sprite.setScale({ 2.f,2.f });
 	auto box = sfmlToBox2D(m_sprite.getGlobalBounds().width / 2.7, m_sprite.getGlobalBounds().height / 2);
 	playerBox.SetAsBox(box.x, box.y);
 	b2FixtureDef fixtureDef;
@@ -28,6 +29,7 @@ void Bullet::loadObject(std::unique_ptr<b2World>&world, b2BodyDef & bodydef)
 
 void Bullet::handleCollision(GameObject& obj)
 {
+	
 	if(isMovingUp())
 		obj.handleCollision(*this);
 }
@@ -36,6 +38,7 @@ void Bullet::handleCollision(GameObject& obj)
 
 void Bullet::step(const sf::Time&)
 {
+
 	matchSptitePosToBody();
 	if (m_hasBeenshot)
 		if (m_timeSinceShot.getElapsedTime().asSeconds() > BULLET_LIFE_TIME)
@@ -49,7 +52,7 @@ void Bullet::shoot()
 	if (m_hasBeenshot) return;
 
 	m_hasBeenshot = true;
-
+	m_sound.play();
 	m_timeSinceShot.restart();
 	float sideAngle = 0;
 	int num = rand() % 7;

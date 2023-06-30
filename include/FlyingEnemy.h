@@ -22,6 +22,19 @@ public:
     virtual void step(const sf::Time& deltaTime) override;
     virtual void handleCollision(Player& obj);
 
+    virtual void animate(const sf::Time& deltaTime)
+    {
+        if (!m_isAlive) {
+            //animation
+            m_objectBody->ApplyLinearImpulse({ 4, -4 }, m_objectBody->GetWorldCenter(), true);
+            m_sprite.setRotation(15);
+            //remove from world and screen
+            if (m_clock.getElapsedTime().asSeconds() > 4)
+                Enemy::animate(deltaTime);
+        }
+        m_animation.updateBasedOnTime(deltaTime);
+    }
+
 private:
 
     void movementBlockingRect();
@@ -29,6 +42,4 @@ private:
     void setVelocity(const Direction& dir, const char);
 
     sf::Vector2f m_statrPosition;
-
-
 };

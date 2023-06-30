@@ -20,14 +20,17 @@ public:
 
     virtual void animate(const sf::Time& deltaTime)
     {
-        if(!m_isAlive)
+        if (!m_isAlive) {
             m_objectBody->SetEnabled(false);
+            m_sprite.setColor(sf::Color::Transparent);
+        }
         m_animation.updateBasedOnTime(deltaTime);
     }
 protected:
 
     int m_lives = 1;
     bool m_isAlive = true;
+    sf::Clock m_clock;
 
     void loadObject();
 private:

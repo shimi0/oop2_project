@@ -12,14 +12,13 @@
 #include "Enemy.h"
 #include "Player.h"
 
-class FireMonster : public Enemy, public Unmovable
+class MultyLifeEnemy : public Enemy, public Unmovable
 {
 public:
 
-    FireMonster(std::unique_ptr<b2World>&, b2BodyDef&, const sf::Vector2f&);
+    MultyLifeEnemy(std::unique_ptr<b2World>&, b2BodyDef&, const sf::Vector2f&);
     virtual void handleCollision(Player& obj);
-
-   
+    virtual void handleCollision(Bullet& obj) override;
 
 private:
 

@@ -7,6 +7,7 @@ JetPack::JetPack(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::
 {
 	defineBody(world, bodydef, pos);
 	Gift::loadObject();
+	m_sound.setBuffer(AudioResources::Instance().getSound("jetpack2.wav"));
 }
 
 //----------------------------------------
@@ -15,6 +16,8 @@ void JetPack::handleCollision(Player& obj)
 {
 	if (!obj.isAllowedToUseGift())
 		return;
+
+	m_sound.play();
 	m_animation.direction(Direction::Left);
 	m_isInUse = true;
 	m_clock.restart();

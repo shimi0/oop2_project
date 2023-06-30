@@ -43,7 +43,7 @@ public:
 	}
 
 private:
-
+	sf::Sound m_sound;
 	sf::Clock m_clock;
 	sf::FloatRect m_playerGlobalBounds;
 };

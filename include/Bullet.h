@@ -2,6 +2,7 @@
 
 #include "Movable.h"
 #include "Unmovable.h"
+#include "SFML/Audio.hpp"
 
 class Bullet : public Movable
 {
@@ -20,7 +21,7 @@ public:
 	bool hasFallen() const;
 
 private:
-
+	sf::Sound m_sound;
 	sf::Vector2f m_position;
 
 	bool m_hasBeenshot = false;

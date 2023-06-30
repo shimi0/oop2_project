@@ -7,6 +7,7 @@ SpringGift::SpringGift(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, cons
 {
 	defineBody(world, bodydef, pos);
 	Gift::loadObject();
+	m_sound.setBuffer(AudioResources::Instance().getSound("spring.wav"));
 }
 
 //----------------------------------------
@@ -14,7 +15,9 @@ SpringGift::SpringGift(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, cons
 void SpringGift::handleCollision(Player& obj)
 {
 	if (!obj.isAllowedToUseGift()) return;
+	if (obj.isMovingUp()) return;
 
+	m_sound.play();
 	m_animation.direction(Direction::Up);
 	obj.handleCollision(*this);
 }

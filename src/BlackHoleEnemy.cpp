@@ -6,6 +6,7 @@ BlackHoleEnemy::BlackHoleEnemy(std::unique_ptr<b2World>& world, b2BodyDef& bodyd
 {
 	defineBody(world, bodydef, pos);
 	loadObject();
+	m_sound.setBuffer(AudioResources::Instance().getSound("blackHole.wav"));
 }
 
 //----------------------------------------
@@ -40,4 +41,5 @@ void BlackHoleEnemy::loadObject()
 void BlackHoleEnemy::handleCollision(Player& obj)
 {
 	obj.handleCollision(*this);
+	m_sound.play();
 }

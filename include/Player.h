@@ -2,6 +2,7 @@
 
 #include "Movable.h"
 #include "Unmovable.h"
+#include "AudioResources.h"
 #include "Resources.h"
 #include "Platform.h"
 #include "Animation.h"
@@ -52,6 +53,8 @@ public:
 
 private:
 
+    sf::Sound m_sound;
+    sf::Sound m_soundDeath;
     void crossWindow();
     bool m_isJumpinAllowed = true;
 
@@ -68,7 +71,9 @@ private:
     bool m_isUsingPropellerHat = false;
     bool m_isUsingJetPack = false;
     bool m_hasShotBullet = false;
+    bool m_hasSoundBeenPlayed = false;
 
+    sf::Clock m_bulletsClock;
     sf::Clock m_clock;
     sf::Sprite m_spriteDeathStars;
     Animation m_animationDeathStars;

@@ -12,5 +12,6 @@ public:
 	virtual void handleCollision(Player& obj) override;
 
 private:
+	sf::Sound m_sound;
 
 };

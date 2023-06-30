@@ -21,6 +21,7 @@ public:
 	virtual void animate(const sf::Time&) override;
 	virtual bool isMovable() const override;
 private:
-
+	sf::Sound m_sound;
 	bool m_explode = false;
+	bool m_hasSoundBeenPlayed = false;
 };

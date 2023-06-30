@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Resources.h"
+#include "AudioResources.h"
 #include "Animation.h"
 #include "Direction.h"
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include "box2d/box2d.h"
 #include "CordinatesConverter.h"
 
@@ -43,6 +45,7 @@ public:
 
 protected:
 
+	
 	sf::Sprite m_sprite;
 	Animation m_animation;
 	b2Body* m_objectBody;
