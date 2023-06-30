@@ -26,6 +26,8 @@ public:
         }
         m_animation.updateBasedOnTime(deltaTime);
     }
+
+
 protected:
 
     int m_lives = 1;

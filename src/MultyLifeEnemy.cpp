@@ -8,6 +8,7 @@ MultyLifeEnemy::MultyLifeEnemy(std::unique_ptr<b2World>& world, b2BodyDef& bodyd
 	defineBody(world, bodydef, pos);
 	m_lives = 2;
 	Enemy::loadObject();
+	m_scoreWorth = 10000;
 }
 
 //----------------------------------------

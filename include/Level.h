@@ -18,6 +18,7 @@ public:
 
 	Level(sf::RenderWindow& window, Board& board);
 
+	void updateScore();
 	void run();
 	void addObject(std::string type, sf::Vector2f pos)
 	{

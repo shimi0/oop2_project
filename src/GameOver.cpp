@@ -2,6 +2,7 @@
 
 GameOver::GameOver(sf::RenderWindow& window, Board& board)
 	:m_gameOverTXT(Resources::instance().animationData(Resources::GameOver), Direction::Stay, m_spriteGameOverTXT),
+	 m_highScoreAnimation(Resources::instance().animationData(Resources::HighScore), Direction::Stay, m_highScore),
 	m_window(window), m_board(board), m_menuButton(), m_playAgainButton()
 {}
 
@@ -10,12 +11,16 @@ GameOver::GameOver(sf::RenderWindow& window, Board& board)
 
 chosenButton GameOver::run()
 {
+
 	loadData();
+	setScore();
 	while (m_window.isOpen())
 	{
 		m_window.clear(sf::Color::Black);
 		m_board.draw();
 		m_window.draw(m_spriteGameOverTXT);
+		m_window.draw(m_highScore);
+		m_window.draw(m_scoreTxt);
 		m_menuButton.draw(m_window);
 		m_playAgainButton.draw(m_window);
 		m_window.display();
@@ -89,6 +94,21 @@ void GameOver::loadData()
 	m_spriteGameOverTXT.setOrigin(m_spriteGameOverTXT.getGlobalBounds().width / 2, m_spriteGameOverTXT.getGlobalBounds().height / 2);
 	m_spriteGameOverTXT.scale(2, 2);
 	m_spriteGameOverTXT.setPosition(WIN_SIZE_X / 2, WIN_SIZE_Y / 3);
+
+	m_highScore.setOrigin(m_highScore.getGlobalBounds().width / 2, m_highScore.getGlobalBounds().height / 2);
+	m_highScore.scale(2, 2);
+	m_highScore.setPosition(WIN_SIZE_X / 2, WIN_SIZE_Y /2);
+
+
+	if (!m_font.loadFromFile("c:/Windows/Fonts/Arial.ttf"))
+		throw std::runtime_error("unable to load font");
+
+	m_scoreTxt.setFont(m_font);
+	m_scoreTxt.setFillColor(sf::Color::Black);
+	m_scoreTxt.setOrigin(m_scoreTxt.getGlobalBounds().width / 2, m_scoreTxt.getGlobalBounds().height / 2);
+	m_scoreTxt.setPosition(m_highScore.getPosition().x + m_highScore.getGlobalBounds().width /2 + 10, m_highScore.getPosition().y - m_highScore.getGlobalBounds().height/2 + 10);
+	m_scoreTxt.scale({ 1.5,1.5 });
+	m_scoreTxt.setString("0");
 }
 
 //--------------------------------------------

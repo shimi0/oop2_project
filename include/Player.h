@@ -50,9 +50,10 @@ public:
     bool hasShotBullet() const;
     void useBullet();
     bool isAllowedToUseGift() const;
-
+    int getScore() const;
 private:
 
+    int m_score = 0;
     sf::Sound m_sound;
     sf::Sound m_soundDeath;
     void crossWindow();

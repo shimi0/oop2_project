@@ -53,10 +53,18 @@ public:
 		m_window.draw(m_PauseScreen);
 	}
 
+	void updateScore(const int score);
+
+	int getScore() const
+	{
+		return m_score;
+	}
+
 private:
 
 	void drawBG();
-	
+	void loadScoreTxt();
+	int m_score = 0;
 
 	sf::RenderWindow& m_window;
 	sf::Sprite m_spriteBG;
@@ -68,6 +76,7 @@ private:
 	sf::Sprite m_PauseScreen;
 	Animation m_pauseScreenAnimation;
 
-	Font m_font;
+	sf::Text m_scoreTxt;
+	sf::Font m_font;
 	PauseButton m_pauseButton;
 };

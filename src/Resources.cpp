@@ -342,6 +342,14 @@ namespace
         oneJumpPlatform.m_data[Direction::Stay].emplace_back(sf::Vector2i(1288, 105), size);
         return oneJumpPlatform;
     }
+    AnimationData highScore()
+    {
+        const auto size = sf::Vector2i(343, 175);
+        auto highScore = AnimationData{};
+
+        highScore.m_data[Direction::Stay].emplace_back(sf::Vector2i(4051, 336), size);
+        return highScore;
+    }
 }
 
 Resources& Resources::instance()
@@ -379,4 +387,5 @@ Resources::Resources()
     m_data[Bullet] = bullet();
     m_data[OneJumpPlatform] = oneJumpPlatform();
     m_data[MultyLifeEnemy] = multyLifeEnemy();
+    m_data[HighScore] = highScore();
 }

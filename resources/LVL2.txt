@@ -20,6 +20,7 @@ StaticPlatform 1000 220
 StaticPlatform 700 220
 SpringGift 700 140
 BlackHoleEnemy 700 -180
+JetPack 800 0
 StaticPlatform 700 -480
 StaticPlatform 300 -880
 StaticPlatform 300 -880

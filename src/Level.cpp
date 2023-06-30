@@ -10,6 +10,22 @@ Level::Level(sf::RenderWindow& window, Board& board)
 
 //-------------------------------------------
 
+void Level::updateScore()
+{
+	int score = 0;
+	score += m_player.getScore();
+	for (auto& item : m_movableObjVec)
+		score += item->getScoreWorth();
+
+	for (auto& item : m_unmovableObjVec)
+		score += item->getScoreWorth();
+
+	
+	m_board.updateScore( score);
+}
+
+//-------------------------------------------
+
 void Level::run()
 {
 	//collision detection
@@ -29,6 +45,7 @@ void Level::run()
 		isPlayerInWindow();
 		animateObjects(deltaTime);
 		handleBulletShooting();
+		updateScore();
 	}
 }
 

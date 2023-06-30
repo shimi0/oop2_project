@@ -18,7 +18,6 @@ protected:
 
 	bool m_hasBeenUsed = false;
 	bool m_isInUse = false;
-
 private:
 
 	

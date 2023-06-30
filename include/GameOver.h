@@ -22,7 +22,10 @@ public:
 	GameOver(sf::RenderWindow&, Board&);
 
 	chosenButton run();
-
+	void setScore()
+	{
+		m_scoreTxt.setString(std::to_string(m_board.getScore()));
+	}
 
 private:
 
@@ -31,9 +34,15 @@ private:
 	sf::Sprite m_spriteGameOverTXT;
 	Animation m_gameOverTXT;
 
+	sf::Sprite m_highScore;
+	Animation m_highScoreAnimation;
+
 	sf::RenderWindow& m_window;
 	MenuButton m_menuButton;
 	PlayAgainButton m_playAgainButton;
+
+	sf::Font m_font;
+	sf::Text m_scoreTxt;
 	
 	Board& m_board;
 };

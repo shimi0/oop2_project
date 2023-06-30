@@ -7,6 +7,7 @@ FlyingEnemy::FlyingEnemy(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, co
 	defineBody(world, bodydef, pos);
 
 	Enemy::loadObject();
+	m_scoreWorth = 7000;
 }
 
 //----------------------------------------

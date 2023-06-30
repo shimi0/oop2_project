@@ -70,6 +70,7 @@ void Player::handleCollision(Platform& obj)
 	jump(1);
 	m_animation.updateBasedOnCommand();
 	m_basePosition = sf::Vector2f(obj.getPosition());
+	m_score = std::abs(obj.getPosition().y - WIN_SIZE_Y);
 	m_isInvulnerable = false;
 	obj.handleCollision(*this);
 }
@@ -204,7 +205,7 @@ void Player::processKeyInput(const sf::Event& event, const sf::Time& deltaTime)
 			case sf::Keyboard::A:       m_animation.direction(Direction::Left);	    m_direction = Direction::Left; step(deltaTime);		return;
 			case sf::Keyboard::Space:	
 				if (!m_isUsingJetPack && !m_isUsingPropellerHat) {
-					if (m_bulletsClock.getElapsedTime().asMilliseconds() < 500) return;
+					if (m_bulletsClock.getElapsedTime().asMilliseconds() < 150) return;
 					m_bulletsClock.restart();
 					m_animation.direction(Direction::Up);	    
 					m_direction = Direction::Up;
@@ -284,6 +285,11 @@ void Player::useBullet()
 bool Player::isAllowedToUseGift() const
 {
 	return !m_isUsingJetPack && !m_isUsingPropellerHat;
+}
+
+int Player::getScore() const
+{
+	return m_score;
 }
 
 //------------------------------------------------------------

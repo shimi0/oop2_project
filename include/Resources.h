@@ -34,6 +34,7 @@ public:
         Bullet,
         OneJumpPlatform,
         MultyLifeEnemy,
+        HighScore,
         Max,
     };
 
