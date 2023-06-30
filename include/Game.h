@@ -13,16 +13,11 @@ class Game
 public:
 
 	Game(sf::RenderWindow& window);
-
 	void run();
-
 
 private:
 
 	void readGameData(Level& level);
-
 	sf::RenderWindow& m_window;
-
 	Board m_board;
-
 };

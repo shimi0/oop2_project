@@ -33,4 +33,5 @@ void MultyLifeEnemy::handleCollision(Bullet& obj)
 {
 	Enemy::handleCollision(obj);
 	m_animation.direction(Direction::Up);
+	m_sprite.scale(1.1, 1.1);
 }

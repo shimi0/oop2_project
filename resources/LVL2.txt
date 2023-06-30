@@ -42,7 +42,6 @@ HorizontalMovePlatform 1000 -4280
 HorizontalMovePlatform 1000 -4480
 HorizontalMovePlatform 1000 -4480
 StaticPlatform 600 -4880
-SpringGift 600 -4960
 StaticPlatform 600 -4960
 StaticPlatform 600 -5280
 StaticPlatform 600 -5280
@@ -55,7 +54,7 @@ OneJumpPlatform 900 -6880
 OneJumpPlatform 700 -7280
 OneJumpPlatform 600 -7560
 OneJumpPlatform 1000 -7760
-OneJumpPlatform 400 -8160
+FlyingEnemy 400 -8160
 OneJumpPlatform 600 -8160
 OneJumpPlatform 600 -8560
 OneJumpPlatform 1200 -8960
@@ -138,7 +137,7 @@ ExplodingPlatform 600 -22320
 StaticPlatform 600 -22520
 StaticPlatform 600 -22520
 StaticPlatform 600 -22920
-StaticPlatform 600 -22920
+FireMonster 600 -22920
 StaticPlatform 1100 -23320
 StaticPlatform 1100 -23320
 StaticPlatform 600 -23720
