@@ -1,6 +1,5 @@
 #include "Player.h"
 
-
 Player::Player()
 	:Movable(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite),
 	GameObject(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_sprite),
@@ -15,27 +14,20 @@ Player::Player()
 
 void Player::animate(const sf::Time & deltaTime)
 {
-	if (m_isDying)
-		playDyingBehavior();
-	else
-		matchSptitePosToBody();
+	m_isDying ? playDyingBehavior() : matchSptitePosToBody();
 
-	if (!m_isAlive)
-		deathAnimation(deltaTime);
-
-	if (m_objectBody->GetLinearVelocity().y == 0.f)
-		m_animation.updateBasedOnCommand();
+	if (!m_isAlive) deathAnimation(deltaTime);
+	if (m_objectBody->GetLinearVelocity().y == 0.f) m_animation.updateBasedOnCommand();
 
 	//move to a diff func
-	if (m_isUsingPropellerHat)
+	if (m_isUsingPropellerHat) {
+		jump(0.5);
 		if (m_clock.getElapsedTime().asSeconds() > PROPELLER_HAT_TIME)
 			m_isUsingPropellerHat = false;
-
+	}
 	if (m_isUsingJetPack)
 		if (m_clock.getElapsedTime().asSeconds() > JETPACK_TIME)
 			m_isUsingJetPack = false;
-	if(m_isUsingPropellerHat)
-		jump(0.5);
 }
 
 //------------------------------------------------------------
@@ -79,11 +71,9 @@ void Player::handleCollision(Platform& obj)
 
 void Player::handleCollision(BlackHoleEnemy& obj)
 {
-	if (m_isInvulnerable)
-		return;
+	if (m_isInvulnerable) return;
 	m_sprite.setPosition(obj.getPosition());
 	m_isDying = true;
-
 }
 
 //------------------------------------------------------------
@@ -109,7 +99,7 @@ void Player::handleCollision(JetPack& obj)
 {
 	if (m_isUsingJetPack || m_isUsingPropellerHat) return;
 	m_clock.restart();
-	m_direction == Direction::Left;
+	m_animation.direction(Direction::Left);
 	jump(5);
 	m_isUsingJetPack = true;
 	m_isInvulnerable = true;
@@ -131,8 +121,7 @@ void Player::handleCollision(PropellerHat& obj)
 
 void Player::deathAnimation(const sf::Time& deltaTime)
 {
-	if (m_soundDeath.getStatus() != sf::Sound::Playing && !m_wasDying && !m_hasSoundBeenPlayed)
-	{
+	if (m_soundDeath.getStatus() != sf::Sound::Playing && !m_wasDying && !m_hasSoundBeenPlayed) {
 		m_soundDeath.play();
 		m_hasSoundBeenPlayed = true;
 	}
@@ -144,11 +133,7 @@ void Player::deathAnimation(const sf::Time& deltaTime)
 
 void Player::loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef)
 {
-	bodydef.type = b2_dynamicBody;
-	bodydef.position.Set(sfmlToBox2D(400.0f), sfmlToBox2D(1500.f));
-	
-	m_objectBody = world->CreateBody(&bodydef);
-
+	Movable::defineBody(world, bodydef, { 400.0f, 1500.0f });
 	b2PolygonShape playerBox;
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
 	m_sprite.setScale({ 2.f,2.f });
@@ -195,29 +180,20 @@ void Player::step(const sf::Time& deltaTime)
 
 void Player::processKeyInput(const sf::Event& event, const sf::Time& deltaTime)
 {
-
 	if (event.type == sf::Event::KeyPressed) {
  		switch (event.key.code)
 		{
 			case sf::Keyboard::Right:
 			case sf::Keyboard::D:       m_animation.direction(Direction::Right);	m_direction = Direction::Right; step(deltaTime);	return;
-			case sf::Keyboard::Left:
+			case sf::Keyboard::Left:	
 			case sf::Keyboard::A:       m_animation.direction(Direction::Left);	    m_direction = Direction::Left; step(deltaTime);		return;
-			case sf::Keyboard::Space:	
-				if (!m_isUsingJetPack && !m_isUsingPropellerHat) {
-					if (m_bulletsClock.getElapsedTime().asMilliseconds() < 150) return;
-					m_bulletsClock.restart();
-					m_animation.direction(Direction::Up);	    
-					m_direction = Direction::Up;
-					m_hasShotBullet = true;
-				}																														return;
+			case sf::Keyboard::Space:	shootBullet();																					return;
 			default:																													return;
 		}		
 	}
 	//dont stay with the nose up
-	if (event.type == sf::Event::KeyReleased)
-		if(event.key.code == sf::Keyboard::Space)
-			m_animation.direction(Direction::Left);
+	if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
+		m_animation.direction(Direction::Left);
 
 	m_direction = Direction::Stay;
 	step(deltaTime);
@@ -287,6 +263,8 @@ bool Player::isAllowedToUseGift() const
 	return !m_isUsingJetPack && !m_isUsingPropellerHat;
 }
 
+//------------------------------------------------------------
+
 int Player::getScore() const
 {
 	return m_score;
@@ -304,4 +282,17 @@ void Player::crossWindow()
 		newPos = b2Vec2(0, m_objectBody->GetPosition().y);
 
 	m_objectBody->SetTransform(newPos, m_objectBody->GetAngle());
+}
+
+//------------------------------------------------------------
+
+void Player::shootBullet()
+{
+	if (!m_isUsingJetPack && !m_isUsingPropellerHat && !m_isDying && m_isAlive) {
+		if (m_bulletsClock.getElapsedTime().asMilliseconds() < SHOOTING_FREQUENCY_MIN) return;
+		m_bulletsClock.restart();
+		m_animation.direction(Direction::Up);
+		m_direction = Direction::Up;
+		m_hasShotBullet = true;
+	}
 }

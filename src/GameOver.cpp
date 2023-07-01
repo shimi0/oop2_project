@@ -84,6 +84,8 @@ chosenButton GameOver::run()
 	}
 }
 
+//----------------------------------------
+
 void GameOver::loadData()
 {
 	auto view = m_window.getView();
@@ -107,7 +109,7 @@ void GameOver::loadData()
 	m_scoreTxt.setFillColor(sf::Color::Black);
 	m_scoreTxt.setOrigin(m_scoreTxt.getGlobalBounds().width / 2, m_scoreTxt.getGlobalBounds().height / 2);
 	m_scoreTxt.setPosition(m_highScore.getPosition().x + m_highScore.getGlobalBounds().width /2 + 10, m_highScore.getPosition().y - m_highScore.getGlobalBounds().height/2 + 10);
-	m_scoreTxt.scale({ 1.5,1.5 });
+	m_scoreTxt.scale({ 1.7,1.7 });
 	m_scoreTxt.setString("0");
 }
 

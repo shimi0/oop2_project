@@ -11,7 +11,6 @@
 #include "SFML/Graphics.hpp"
 #include "CordinatesConverter.h"
 #include "BlackHoleEnemy.h"
-#include "FlyingEnemy.h"
 #include "SpringGift.h"
 #include "Gift.h"
 #include "JetPack.h"
@@ -51,17 +50,19 @@ public:
     void useBullet();
     bool isAllowedToUseGift() const;
     int getScore() const;
+
 private:
 
     int m_score = 0;
     sf::Sound m_sound;
     sf::Sound m_soundDeath;
     void crossWindow();
+    void shootBullet();
+    
     bool m_isJumpinAllowed = true;
 
     //lower number = higher platform
     sf::Vector2f m_basePosition;
-    bool a = false;
 
     bool m_isAlive = true;
 

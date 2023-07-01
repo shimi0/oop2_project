@@ -3,6 +3,7 @@
 #include "Movable.h"
 #include "Resources.h"
 #include "Animation.h"
+//#include "Player.h"
 #include "macros.h"
 #include "box2d/box2d.h"
 #include "GameObject.h"
@@ -27,7 +28,10 @@ public:
         m_animation.updateBasedOnTime(deltaTime);
     }
 
-
+  /*  virtual void handleCollision(Player& obj)
+    {
+        obj.handleCollision(*this);
+    }*/
 protected:
 
     int m_lives = 1;

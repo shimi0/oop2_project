@@ -46,6 +46,9 @@ void Level::run()
 		animateObjects(deltaTime);
 		handleBulletShooting();
 		updateScore();
+
+		//reduce high power usage --
+		sf::sleep(sf::milliseconds(10));
 	}
 }
 

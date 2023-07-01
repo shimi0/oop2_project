@@ -30,6 +30,4 @@ void Enemy::handleCollision(Bullet& obj)
 		m_clock.restart();
 
 	}
-
-	
 }
