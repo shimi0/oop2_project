@@ -8,20 +8,27 @@
 #include "Board.h"
 #include "MenuButton.h"
 #include "PlayAgainButton.h"
+#include "ScoresManager.h"
 
-enum chosenButton
+//----------------------
+
+enum choseButtons
 {
-	MenuB_,
-	PlayAgainB_,
+	MenuButton_,
+	PlayAgainButton_,
+	Max
 };
+
+//----------------------
 
 class GameOver
 {
 
 public:
-	GameOver(sf::RenderWindow&, Board&);
+	GameOver(sf::RenderWindow&, Board&, ScoresManager& scoresManager);
 
-	chosenButton run();
+	choseButtons run();
+	
 	void setScore()
 	{
 		m_scoreTxt.setString(std::to_string(m_board.getScore()));
@@ -29,7 +36,14 @@ public:
 
 private:
 
+	choseButtons getPressedButton() const;
+	void handleClick();
+
+	bool readText(const sf::Event& event);
+
 	void loadData();
+	void draw();
+	void handleEvent();
 
 	sf::Sprite m_spriteGameOverTXT;
 	Animation m_gameOverTXT;
@@ -38,11 +52,15 @@ private:
 	Animation m_highScoreAnimation;
 
 	sf::RenderWindow& m_window;
-	MenuButton m_menuButton;
-	PlayAgainButton m_playAgainButton;
+
+	std::vector<std::unique_ptr< Button>> m_buttons;
 
 	sf::Font m_font;
 	sf::Text m_scoreTxt;
-	
+	sf::Text m_nameTxt;
+	std::string m_playerName = {};
+
+	bool m_nameEnterd = false;
 	Board& m_board;
+	ScoresManager& m_scoresManager;
 };

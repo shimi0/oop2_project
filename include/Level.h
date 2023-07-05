@@ -20,51 +20,9 @@ public:
 
 	void updateScore();
 	void run();
-	void addObject(std::string type, sf::Vector2f pos)
-	{
-		auto unmovable = Factory<Unmovable>::instance().create(type, m_world, m_bodyDef, pos);
-		if (unmovable)
-		{
-			m_unmovableObjVec.push_back(std::move(unmovable));
-			return;
-		}
+	void addObject(std::string type, sf::Vector2f pos);
 
-		auto movable = Factory<Movable>::instance().create(type, m_world, m_bodyDef, pos);
-		if (movable)
-		{
-			m_movableObjVec.push_back(std::move(movable));
-			return;
-		}
-
-		auto platform = Factory<Platform>::instance().create(type, m_world, m_bodyDef, pos);
-		if (platform)
-		{
-			m_platformVec.push_back(std::move(platform));
-			return;
-		}
-
-
-		throw std::runtime_error(std::string("No factory handles " + type));
-	}
-
-	void addBullet()
-	{
-		index++;
-		index %= 20;
-
-		//replacing the oldest bullet with a new one. (instead of deleting and inserting a new one...)
-		if (m_bullers.size() >= MAX_BULLETS)
-		{
-			m_bullers[index] = std::make_unique<Bullet>(m_player.getPosition());
-			m_bullers[index]->loadObject(m_world, m_bodyDef);
-		}
-		else //first 20 bullet - "init" the vector
-		{
-			auto bullet = std::make_unique<Bullet>(m_player.getPosition());
-			m_bullers.emplace_back(std::move(bullet));
-			m_bullers[m_bullers.size() - 1]->loadObject(m_world, m_bodyDef);
-		}
-	}
+	void addBullet();
 	
 	int index = 0;
 private:
@@ -79,6 +37,7 @@ private:
 	void processEvent(const sf::Time&);
 	void drawGraphics();
 	void handleBulletShooting();
+	void endOfLevel();
 
 	std::unique_ptr<b2World> m_world;
 	b2BodyDef m_bodyDef;
@@ -95,4 +54,5 @@ private:
 
 	//in use for a specific operation!
 	int m_windowDropAssister = 0;
+	float m_endLvlPos = 2000;
 };

@@ -12,13 +12,21 @@ void Controller::run()
 	srand(time(NULL));
 	m_window.setFramerateLimit(60);
 
-	auto& resources = Resources::instance();
-	const std::multimap <int, std::string>& m_records = {};
-	
-	while (true) {
-		Menu(m_window, m_records).run();
+	//auto& resources = Resources::instance();
+	auto scores = ScoresManager();
 
-		Game(m_window).run();
+//	scores.addRecord(m_window, 500);
+	while (true) 
+	{
+		auto menu = Menu(m_window);
+		menu.run();
+
+		switch (menu.getPressedButton())
+		{
+			case ButtonIndexMenu::SCORESBUT: ScoresBoard(m_window, scores.getRecords()).run(); break;
+			case ButtonIndexMenu::PLAYBUT:	Game(m_window).run(scores); break;
+			default: break;
+		}
 	}
 }
 

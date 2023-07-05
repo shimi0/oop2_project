@@ -6,14 +6,16 @@ Game::Game(sf::RenderWindow& window)
 {}
 
 //---------------------------
-//catch exceptions
-void Game::run()
+
+void Game::run(ScoresManager& scoresManager)
 {
 	m_window.setTitle("Doodle Jump");
-	while (true)	//lvl.isOpen()
+
+	while (true)
 	{
 		auto level = Level(m_window, m_board);
-		auto gameOver = GameOver(m_window, m_board);
+		auto gameOver = GameOver(m_window, m_board, scoresManager);
+
 		try
 		{
 			readGameData(level);
@@ -23,14 +25,13 @@ void Game::run()
 			std::cerr << "Exception: " << ex.what() << '\n';
 			exit(EXIT_FAILURE);
 		}
-
+		
 		level.run();
 		auto chosenButton = gameOver.run();
-		if (chosenButton == PlayAgainB_)
+		if (chosenButton == PlayAgainButton_)
 			continue;
-		if (chosenButton == MenuB_)
+		if (chosenButton == MenuButton_)
 			break;
-
 	}
 }
 
@@ -38,7 +39,7 @@ void Game::run()
 
 void Game::readGameData(Level& level)
 {
-	auto dataReader = DataReader("LVL2.txt");
+	auto dataReader = DataReader("LVL" + std::to_string(1) + ".txt");
 	dataReader.openFile();
 	Object object;
 

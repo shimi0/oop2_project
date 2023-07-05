@@ -1,7 +1,7 @@
 #include "Menu.h"
 
-Menu::Menu(sf::RenderWindow& window, const std::multimap <int, std::string>& records)
-	:m_window(window), m_records(records),
+Menu::Menu(sf::RenderWindow& window)
+	:m_window(window),
 	m_backGroundAnimation(Resources::instance().animationData(Resources::MenuBG), Direction::Stay, m_backGround),
 	m_playerAnimation(Resources::instance().animationData(Resources::DoodleClassic), Direction::Right, m_player),
 	m_ufoAnimation(Resources::instance().animationData(Resources::Ufo), Direction::Stay, m_ufo),m_buttons(MAX)
@@ -91,21 +91,19 @@ void Menu::handleClick()
 {
 	switch (getPressedButton())
 	{
-	case MAX: break;
-
-	case PLAYBUT:m_isMenuOpen = false; break;
-
-	case SCORESBUT:  m_scoresBoard.draw(m_window, m_records); break;
+		case MAX:								 break;
+		case PLAYBUT:
+		case SCORESBUT:  m_isMenuOpen = false;   break;
 	}
 }
 //---------------------
-ButtonIndex Menu::getPressedButton()
+ButtonIndexMenu Menu::getPressedButton() const
 {
 	for (int i = 0; i < m_buttons.size(); i++)
 		if (m_buttons[i]->isPressed())
-			return ButtonIndex(i);
+			return ButtonIndexMenu(i);
 
-	return MAX;
+	return ButtonIndexMenu::MAX;
 }
 
 //-------------------------

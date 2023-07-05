@@ -10,21 +10,32 @@
 
 const int NUM_OF_RECORDS = 10;
 
-class ScoresBoard {
+enum ButtonIndexScore
+{
+	MENU_BUTTON,
+	MAX_S
+};
+
+
+class ScoresBoard 
+{
 
 public:
-
-	ScoresBoard();
+	void run();
+	ScoresBoard(sf::RenderWindow&, const std::multimap <int, std::string>&);
 	void createBackGround();
-	void draw(sf::RenderWindow& window, const std::multimap <int, std::string>& records);
-	void drawScore(const std::multimap <int, std::string>& records, sf::RenderWindow& window);
+	void draw();
+	void drawScore();
 	void handleEvent(sf::RenderWindow& window);
 	void handleClick();
-	int whoPreesed();
+	ButtonIndexScore getPressedButton();
 private:
 	std::vector<std::unique_ptr< Button>> m_buttons;
 	sf::Sprite m_bg;
 	Animation m_bgAnimation;
+
+	sf::RenderWindow& m_window;
+	const std::multimap <int, std::string>& m_recordList;
 
 	bool m_isScoresOpen = true;
 };

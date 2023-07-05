@@ -7,6 +7,7 @@
 #include "Factory.h"
 #include "GameOver.h"
 #include <iostream>
+#include "ScoresManager.h"
 
 
 
@@ -15,7 +16,7 @@ class Game
 public:
 
 	Game(sf::RenderWindow& window);
-	void run();
+	void run(ScoresManager& scoresManager);
 
 private:
 

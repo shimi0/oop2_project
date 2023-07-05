@@ -20,7 +20,7 @@ void Level::updateScore()
 	for (auto& item : m_unmovableObjVec)
 		score += item->getScoreWorth();
 	
-	m_board.updateScore( score);
+	m_board.updateScore(score);
 }
 
 //-------------------------------------------
@@ -34,6 +34,7 @@ void Level::run()
 	auto deltaTime = clock.restart();
 	loadLevelData(contactListener);
 
+	
 	while (m_lvlRunnig)
 	{
 		deltaTime = clock.restart();
@@ -46,6 +47,52 @@ void Level::run()
 		animateObjects(deltaTime);
 		handleBulletShooting();
 		updateScore();
+		endOfLevel();
+	}
+}
+
+//--------------------------------------------
+
+void Level::addObject(std::string type, sf::Vector2f pos)
+{
+	auto unmovable = Factory<Unmovable>::instance().create(type, m_world, m_bodyDef, pos);
+	if (unmovable) {
+		m_unmovableObjVec.push_back(std::move(unmovable));
+		return;
+	}
+
+	auto movable = Factory<Movable>::instance().create(type, m_world, m_bodyDef, pos);
+	if (movable) {
+		m_movableObjVec.push_back(std::move(movable));
+		return;
+	}
+
+	auto platform = Factory<Platform>::instance().create(type, m_world, m_bodyDef, pos);
+	if (platform) {
+		m_platformVec.push_back(std::move(platform));
+		return;
+	}
+	throw std::runtime_error(std::string("No factory handles " + type));
+}
+
+//--------------------------------------------
+
+void Level::addBullet()
+{
+	index++;
+	index %= 20;
+
+	//replacing the oldest bullet with a new one. (instead of deleting and inserting a new one...)
+	if (m_bullers.size() >= MAX_BULLETS)
+	{
+		m_bullers[index] = std::make_unique<Bullet>(m_player.getPosition());
+		m_bullers[index]->loadObject(m_world, m_bodyDef);
+	}
+	else //first 20 bullet - "init" the vector
+	{
+		auto bullet = std::make_unique<Bullet>(m_player.getPosition());
+		m_bullers.emplace_back(std::move(bullet));
+		m_bullers[m_bullers.size() - 1]->loadObject(m_world, m_bodyDef);
 	}
 }
 
@@ -107,6 +154,12 @@ void Level::loadLevelData(ContactListener& contactListener)
 {
 	m_world->SetContactListener(&contactListener);
 	m_player.loadObject(m_world, m_bodyDef);
+
+	//set the end of level position
+	for (auto& plat : m_platformVec)
+		if (plat->getPosition().y < m_endLvlPos)
+			m_endLvlPos = plat->getPosition().y;
+
 }
 
 //-------------------------------------------
@@ -205,4 +258,12 @@ void Level::handleBulletShooting()
 		for (auto& bullet : m_bullers)
 			bullet->shoot();
 	}
+}
+
+//--------------------------------------------
+
+void Level::endOfLevel()
+{
+	if (m_player.getPosition().y <= m_endLvlPos)
+		m_lvlRunnig = false;
 }

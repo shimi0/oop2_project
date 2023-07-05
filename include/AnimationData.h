@@ -7,6 +7,8 @@
 #include <unordered_map>
 #include <vector>
 
+//holds the animation data
+
 struct AnimationData
 {
     using ListType = std::vector<sf::IntRect>;

@@ -5,6 +5,8 @@
 #include <string>
 #include <stdexcept>
 
+//loads the audio sfml resources.  using singlton 
+
 class AudioResources {
 public:
     static AudioResources& Instance();

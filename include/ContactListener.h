@@ -10,6 +10,11 @@
 #include "Bullet.h"
 #include <vector>
 
+//handles and detects collision between box2d objects.
+//handles collision using triple dispatch
+
+//NOTICE: had to comment out	"m_flags |= e_enabledFlag;" in "b2_contact.cpp" to avoid multy sub collisions
+
 class ContactListener : public b2ContactListener
 {
 public:
@@ -18,7 +23,7 @@ public:
 							 std::vector<std::unique_ptr<Platform>>&,
 							 std::vector<std::unique_ptr<Bullet>>&);
 
-	//NOTICE: had to comment out	"m_flags |= e_enabledFlag;" in "b2_contact.cpp" to avoid multy sub collisions
+
 	void BeginContact(b2Contact*) override;
 	
 private:

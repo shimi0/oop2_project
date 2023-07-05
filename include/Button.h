@@ -5,51 +5,27 @@
 #include "macros.h"
 #include "SFML/Graphics.hpp"
 
+//a game button
+
 class Button
 {
 public:
 	Button(const AnimationData& data, Direction dir, sf::Sprite& sprite);
 	~Button() = default;
 
-	bool isPressed() const
-	{
-		return m_isPressed;
-	}
+	bool isPressed() const;
+	void press();
+	void release();
 
-	void press()
-	{
-		m_isPressed = true;
-	}
-	void release()
-	{
-		m_isPressed = false;
-	}
+	void draw(sf::RenderWindow& window) const;
 
-	void draw(sf::RenderWindow& window) const
-	{
-		window.draw(m_sprite);
-	}
-
-	bool contains(const sf::Vector2f& point) const
-	{
-		return m_sprite.getGlobalBounds().contains(point);
-	}
+	bool contains(const sf::Vector2f& point) const;
 
 	//had to make the virtual for a specific butoon(score) that i could only use diff size sprites.
-	virtual void looseFocus()
-	{
-		m_animation.direction(Direction::Up);
-	}
+	virtual void looseFocus();
+	virtual void gainFocus();
 
-	virtual void gainFocus()
-	{
-		m_animation.direction(Direction::Down);
-	}
-
-	void setPosition(const sf::Vector2f& position)
-	{
-		m_sprite.setPosition(position);
-	}
+	void setPosition(const sf::Vector2f& position);
 
 protected:
 

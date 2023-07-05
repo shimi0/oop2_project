@@ -1,86 +1,99 @@
 #include "GameOver.h"
 
-GameOver::GameOver(sf::RenderWindow& window, Board& board)
+GameOver::GameOver(sf::RenderWindow& window, Board& board, ScoresManager& scoresManager)
 	:m_gameOverTXT(Resources::instance().animationData(Resources::GameOver), Direction::Stay, m_spriteGameOverTXT),
 	 m_highScoreAnimation(Resources::instance().animationData(Resources::HighScore), Direction::Stay, m_highScore),
-	m_window(window), m_board(board), m_menuButton(), m_playAgainButton()
-{}
-
+	m_window(window), m_board(board), m_buttons(Max), m_scoresManager(scoresManager)
+{
+	auto playButton = std::make_unique<PlayAgainButton>();
+	m_buttons[PlayAgainButton_] = (std::move(playButton));
+	auto scoresButton = std::make_unique<MenuButton>();
+	m_buttons[MenuButton_] = (std::move(scoresButton));
+}
 
 //--------------------------------------------
 
-chosenButton GameOver::run()
+choseButtons GameOver::run()
 {
 	loadData();
 	setScore();
+
 	while (m_window.isOpen())
 	{
-		m_window.clear(sf::Color::Black);
-		m_board.draw();
-		m_window.draw(m_spriteGameOverTXT);
-		m_window.draw(m_highScore);
-		m_window.draw(m_scoreTxt);
-		m_menuButton.draw(m_window);
-		m_playAgainButton.draw(m_window);
-		m_window.display();
-
-		sf::Event event;
-		while (m_window.pollEvent(event))
+		draw();
+		handleEvent();
+		if (getPressedButton() != Max && m_nameEnterd)
 		{
-		
-			if (event.type == sf::Event::Closed)
-				m_window.close();
-
-			if (event.type == sf::Event::MouseButtonReleased)
-			{
-				auto location = m_window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
-
-				if (m_menuButton.contains(location))
-				{
-					m_menuButton.press();
-					m_playAgainButton.release();
-					return MenuB_;
-				}
-				else if (m_playAgainButton.contains(location))
-				{
-					m_playAgainButton.press();
-					m_menuButton.release();
-					return PlayAgainB_;
-				}
-				else
-				{
-					m_playAgainButton.release();
-					m_menuButton.release();
-				}
-
-			}
-			
-			if (event.type == sf::Event::MouseMoved)
-			{
-				auto location = m_window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
-
-				if (m_menuButton.contains(location))
-				{
-					m_menuButton.gainFocus();
-					m_playAgainButton.looseFocus();
-				}
-				else if (m_playAgainButton.contains(location))
-				{
-					m_playAgainButton.gainFocus();
-					m_menuButton.looseFocus();
-				}
-				else
-				{
-					m_menuButton.looseFocus();
-					m_playAgainButton.looseFocus();
-				}
-			}
+			if (m_scoresManager.isRecord(m_board.getScore()))
+				m_scoresManager.addRecord(m_window, m_board.getScore(), m_playerName);
+			return getPressedButton();
 		}
-
 	}
 }
 
 //----------------------------------------
+
+void GameOver::draw()
+{
+	m_window.clear(sf::Color::Black);
+	m_board.draw();
+	m_window.draw(m_spriteGameOverTXT);
+	m_window.draw(m_highScore);
+	m_window.draw(m_scoreTxt);
+	m_window.draw(m_nameTxt);
+	m_nameTxt.setString(m_playerName);
+	for (auto& button : m_buttons)
+		button->draw(m_window);
+	m_window.display();
+}
+
+//----------------------------------------
+
+void GameOver::handleEvent()
+{
+	if (auto event = sf::Event{}; m_window.pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed)  m_window.close();
+
+		if (event.type == sf::Event::MouseButtonReleased)
+		{
+			auto location = m_window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
+			for (auto& button : m_buttons) {
+				if (button->contains(location))
+					button->press();
+				else
+					button->release();
+			}
+		}
+
+		if (event.type == sf::Event::MouseMoved)
+		{
+			auto location = m_window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
+			for (auto& button : m_buttons) {
+				if (button->contains(location))
+					button->gainFocus();
+				else
+					button->looseFocus();
+			}
+		}
+		if (event.type == sf::Event::TextEntered && !m_nameEnterd) 
+			m_nameEnterd = readText(event);
+	}
+}
+
+//----------------------------------------------
+
+bool GameOver::readText(const sf::Event& event)
+{
+	if (event.text.unicode < 128 && event.text.unicode>94)
+		m_playerName += static_cast<char>(event.text.unicode);
+
+	if (event.text.unicode == 13 || m_playerName.length() == 15)
+		return true;
+	return false;
+}
+
+//----------------------------------------------
 
 void GameOver::loadData()
 {
@@ -97,25 +110,32 @@ void GameOver::loadData()
 	m_highScore.scale(2, 2);
 	m_highScore.setPosition(WIN_SIZE_X / 2, WIN_SIZE_Y /2);
 
-
 	if (!m_font.loadFromFile("PRISTINA.TTF"))
 		throw std::runtime_error("unable to load font");
 
 	m_scoreTxt.setFont(m_font);
 	m_scoreTxt.setFillColor(sf::Color::Black);
 	m_scoreTxt.setOrigin(m_scoreTxt.getGlobalBounds().width / 2, m_scoreTxt.getGlobalBounds().height / 2);
-	m_scoreTxt.setPosition(m_highScore.getPosition().x + m_highScore.getGlobalBounds().width /2 + 10, m_highScore.getPosition().y - m_highScore.getGlobalBounds().height/2 + 10);
+	m_scoreTxt.setPosition(m_highScore.getPosition().x + m_highScore.getGlobalBounds().width /2 + 20, m_highScore.getPosition().y - m_highScore.getGlobalBounds().height/2 - 10);
 	m_scoreTxt.scale({ 1.7,1.7 });
+	m_scoreTxt.setCharacterSize(40);
+	m_scoreTxt.setFillColor(sf::Color::Red);
 	m_scoreTxt.setString("0");
+
+	m_nameTxt.setFont(m_font);
+	m_nameTxt.setFillColor(sf::Color::Red);
+	m_nameTxt.setPosition(m_highScore.getPosition().x + m_highScore.getGlobalBounds().width / 2 - 100, m_highScore.getPosition().y + m_highScore.getGlobalBounds().height / 2 - 120);
+	m_nameTxt.setCharacterSize(70);
+
 }
 
-//--------------------------------------------
+//---------------------------------------------------------
 
-//sf::Texture texture;
-//texture.create(m_window.getSize().x, m_window.getSize().y);
-//
-//// Copy the contents of the window to the texture
-//texture.update(m_window);
-//
-//// Save the texture as an image
-//texture.copyToImage().saveToFile("screenshot.png");
+choseButtons GameOver::getPressedButton() const
+{
+	for (int i = 0; i < m_buttons.size(); i++)
+		if (m_buttons[i]->isPressed())
+			return choseButtons(i);
+
+	return choseButtons::Max;
+}

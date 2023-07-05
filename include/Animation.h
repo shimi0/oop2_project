@@ -5,6 +5,8 @@
 
 #include <SFML/Graphics.hpp>
 
+//Holds and animates the sfml sprites. using time and direction
+
 class Animation
 {
 public:

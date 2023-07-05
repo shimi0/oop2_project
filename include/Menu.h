@@ -4,13 +4,12 @@
 #include "Resources.h"
 #include "Button.h"
 #include "ScoreButton.h"
-#include "ScoresBoard.h"
 #include "PlayButton.h"
 #include <string>
 #include <map>
 
 
-enum ButtonIndex
+enum ButtonIndexMenu
 {
 	PLAYBUT,
 	SCORESBUT,
@@ -21,25 +20,26 @@ class Menu
 {
 public:
 
-	Menu(sf::RenderWindow& window, const std::multimap <int, std::string>& records);
+	Menu(sf::RenderWindow& window);
 
 	void run();
+
+	ButtonIndexMenu getPressedButton() const;
+	
+
+private:
+
 	void createBackGround();
 	void draw();
 	void handleEvent();
 	void handleClick();
-	ButtonIndex getPressedButton();
 	void apdateAnimateDoodle();
-
-private:
 
 	sf::RenderWindow& m_window;
 
 	std::vector<std::unique_ptr< Button>> m_buttons;
 
-	ScoresBoard m_scoresBoard;
-
-	const std::multimap <int, std::string>& m_records;
+	
 
 	sf::Sprite m_backGround;
 	Animation m_backGroundAnimation;
@@ -52,8 +52,6 @@ private:
 
 
 	bool m_playerGoesUp = true;
-	bool m_ufoGoesUp = true;
-	bool m_ufoGoesLeft = true;
 
 	//helps drawing the animations
 	int m_indexDoodle = 0;

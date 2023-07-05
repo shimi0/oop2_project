@@ -28,6 +28,34 @@ void Board::updateBGPos(const sf::Vector2f newPos)
 
 //------------------------------------------------
 
+void Board::processKeyInput(const sf::Event& event)
+{
+	if (event.type == sf::Event::MouseButtonReleased)
+	{
+		auto location = m_window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
+		if (m_pauseButton.contains(location))
+		{
+			if (m_pauseButton.isPressed())
+				m_pauseButton.release();
+			else
+			{
+				m_pauseButton.press();
+			}
+		}
+
+	}
+}
+
+//------------------------------------------------
+
+void Board::drawPauseScreen()
+{
+	m_PauseScreen.scale(640 * 2 / m_PauseScreen.getGlobalBounds().width, 1024 * 2 / m_PauseScreen.getGlobalBounds().height);
+	m_window.draw(m_PauseScreen);
+}
+
+//------------------------------------------------
+
 void Board::updateScore(const int score)
 {
 	m_score = score;

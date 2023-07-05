@@ -12,6 +12,8 @@
 #include "Enemy.h"
 #include "Player.h"
 
+//an enemy kills the player in a collision. not dying from bullets.
+
 class BlackHoleEnemy : public Enemy, public Unmovable
 {
 public:
@@ -20,9 +22,9 @@ public:
 
     virtual void handleCollision(Player& obj) override;
     virtual void handleCollision(Bullet& obj) override {};
+
 private:
 
     void loadObject();
     sf::Sound m_sound;
-
 };
