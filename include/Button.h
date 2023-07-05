@@ -25,7 +25,7 @@ public:
 		m_isPressed = false;
 	}
 
-	void draw(sf::RenderWindow& window)
+	void draw(sf::RenderWindow& window) const
 	{
 		window.draw(m_sprite);
 	}
@@ -35,12 +35,13 @@ public:
 		return m_sprite.getGlobalBounds().contains(point);
 	}
 
-	void looseFocus()
+	//had to make the virtual for a specific butoon(score) that i could only use diff size sprites.
+	virtual void looseFocus()
 	{
 		m_animation.direction(Direction::Up);
 	}
 
-	void gainFocus()
+	virtual void gainFocus()
 	{
 		m_animation.direction(Direction::Down);
 	}

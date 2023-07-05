@@ -14,7 +14,6 @@ Board::Board(sf::RenderWindow& window)
 void Board::draw()
 {
 	drawBG();
-	
 }
 
 void Board::updateBGPos(const sf::Vector2f newPos)
@@ -50,7 +49,7 @@ void Board::drawBG()																										//==|
 
 void Board::loadScoreTxt()
 {
-	if (!m_font.loadFromFile("c:/Windows/Fonts/Arial.ttf"))
+	if (!m_font.loadFromFile("PRISTINA.TTF"))
 		throw std::runtime_error("unable to load font");
 
 	m_scoreTxt.setFont(m_font);
@@ -65,7 +64,6 @@ void Board::loadScoreTxt()
 
 void Board::drawScoreTop()
 {
-	
 	m_scoreTop.scale(640 * 2 / m_scoreTop.getGlobalBounds().width, (WIN_SIZE_Y / 18) / m_scoreTop.getGlobalBounds().height);
 	m_window.draw(m_scoreTop);
 	m_pauseButton.draw(m_window);

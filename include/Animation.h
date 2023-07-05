@@ -20,7 +20,7 @@ public:
    // updates the sprite to show the next frame in the animation
     void updateBasedOnCommand();
 
-    bool isEndOfAnimation()
+    bool isEndOfAnimation() const
     {
         return m_data.m_data.find(m_dir)->second.size() - 1 == m_index;
     }

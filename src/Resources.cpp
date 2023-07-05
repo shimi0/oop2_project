@@ -3,7 +3,7 @@
 #include "Direction.h"
 
 #include <stdexcept>
-
+//1024
 namespace
 {
     AnimationData backGrounClassicdData()
@@ -350,11 +350,76 @@ namespace
         highScore.m_data[Direction::Stay].emplace_back(sf::Vector2i(4051, 336), size);
         return highScore;
     }
+
+    AnimationData ufo()
+    {
+        const auto size = sf::Vector2i(163, 240);
+        auto ufo = AnimationData{};
+
+        for (int i = 0; i < 10; i++) {
+            ufo.m_data[Direction::Stay].emplace_back(sf::Vector2i(2149, 167), size);
+            ufo.m_data[Direction::Stay].emplace_back(sf::Vector2i(2153, 416), size);
+        }
+        for (int i = 0; i < 10; i++) {
+            ufo.m_data[Direction::Stay].emplace_back(sf::Vector2i(2153, 416), size);
+            ufo.m_data[Direction::Stay].emplace_back(sf::Vector2i(2151, 415), size);
+            ufo.m_data[Direction::Stay].emplace_back(sf::Vector2i(2149, 414), size);
+            ufo.m_data[Direction::Stay].emplace_back(sf::Vector2i(2148, 415), size);
+            ufo.m_data[Direction::Stay].emplace_back(sf::Vector2i(2150, 416), size);
+            ufo.m_data[Direction::Stay].emplace_back(sf::Vector2i(2152, 417), size);
+        }
+        return ufo;
+    }
+
+    AnimationData playButton()
+    {
+        const auto size = sf::Vector2i(223, 82);
+        const auto initSpace = sf::Vector2i(1086, 1023);
+
+        auto playButton = AnimationData{};
+        auto currentStart = initSpace;
+
+        playButton.m_data[Direction::Up].emplace_back(currentStart, size);
+        playButton.m_data[Direction::Down].emplace_back(sf::Vector2i(1310, 1024), size);
+
+        return playButton;
+    }
+
+    AnimationData scoreButton()
+    {
+        const auto size = sf::Vector2i(112, 40);
+        auto scoreButton = AnimationData{};
+
+        scoreButton.m_data[Direction::Up].emplace_back(sf::Vector2i(6968, 1026), size);
+        scoreButton.m_data[Direction::Down].emplace_back(sf::Vector2i(10713, 0), sf::Vector2i(224, 80));
+
+        return scoreButton;
+    }
+
+    AnimationData menuBG()
+    {
+        const auto size = sf::Vector2i(640, 960);
+        auto menuBG = AnimationData{};
+
+        menuBG.m_data[Direction::Stay].emplace_back(sf::Vector2i(10936, 0), size);
+
+        return menuBG;
+    }
+
+    AnimationData scoresBG()
+    {
+        const auto size = sf::Vector2i(710, 1077);
+        auto scoresBG = AnimationData{};
+
+        scoresBG.m_data[Direction::Stay].emplace_back(sf::Vector2i(11578, 0), size);
+
+        return scoresBG;
+    }
 }
 
 Resources& Resources::instance()
 {
-    static Resources instance = Resources();//:)
+    static Resources instance = Resources();
     return instance;
 }
 
@@ -388,4 +453,9 @@ Resources::Resources()
     m_data[OneJumpPlatform] = oneJumpPlatform();
     m_data[MultyLifeEnemy] = multyLifeEnemy();
     m_data[HighScore] = highScore();
+    m_data[PlayButton] = playButton();
+    m_data[ScoreButton] = scoreButton();
+    m_data[Ufo] = ufo();
+    m_data[MenuBG] = menuBG();
+    m_data[ScoresBG] = scoresBG();
 }

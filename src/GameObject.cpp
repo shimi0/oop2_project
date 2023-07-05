@@ -38,3 +38,11 @@ void GameObject::animate(const sf::Time& deltaTime)
 {
 	m_animation.updateBasedOnTime(deltaTime);
 }
+
+//----------------------------------
+
+int GameObject::getScoreWorth() const
+{
+	if (!m_objectBody->IsEnabled())
+		return m_scoreWorth;
+}

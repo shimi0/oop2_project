@@ -9,9 +9,9 @@ Game::Game(sf::RenderWindow& window)
 //catch exceptions
 void Game::run()
 {
+	m_window.setTitle("Doodle Jump");
 	while (true)	//lvl.isOpen()
 	{
-		
 		auto level = Level(m_window, m_board);
 		auto gameOver = GameOver(m_window, m_board);
 		try

@@ -35,6 +35,13 @@ public:
         OneJumpPlatform,
         MultyLifeEnemy,
         HighScore,
+        PlayButton,
+        OptionsButton,
+        ScoresButton,
+        ScoreButton,
+        Ufo,
+        MenuBG,
+        ScoresBG,
         Max,
     };
 

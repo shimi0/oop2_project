@@ -2,9 +2,7 @@
 
 Controller::Controller()
 	:m_window(sf::VideoMode(0,0), "")
-{
-}
-
+{}
 //---------------------------------------------
 
 void Controller::run()
@@ -15,9 +13,13 @@ void Controller::run()
 	m_window.setFramerateLimit(60);
 
 	auto& resources = Resources::instance();
+	const std::multimap <int, std::string>& m_records = {};
+	
+	while (true) {
+		Menu(m_window, m_records).run();
 
-	Game(m_window).run();
-	Menu(m_window).run();
+		Game(m_window).run();
+	}
 }
 
 //---------------------------------------------

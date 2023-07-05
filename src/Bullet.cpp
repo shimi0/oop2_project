@@ -67,7 +67,7 @@ void Bullet::shoot()
 		case 6:	sideAngle = -0.09f;			break;
 			default: break;
 	}
-	m_objectBody->ApplyLinearImpulseToCenter({ sideAngle, -2.4f }, true);
+	m_objectBody->ApplyLinearImpulseToCenter({ sideAngle, -BULLET_FLY_DIST }, true);
 }
 //------------------------------------
 

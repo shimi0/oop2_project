@@ -19,7 +19,6 @@ void Level::updateScore()
 
 	for (auto& item : m_unmovableObjVec)
 		score += item->getScoreWorth();
-
 	
 	m_board.updateScore( score);
 }
@@ -38,6 +37,7 @@ void Level::run()
 	while (m_lvlRunnig)
 	{
 		deltaTime = clock.restart();
+
 		adjustView(gameView);
 		stepWorld(deltaTime);
 		drawGraphics();
@@ -46,9 +46,6 @@ void Level::run()
 		animateObjects(deltaTime);
 		handleBulletShooting();
 		updateScore();
-
-		//reduce high power usage --
-		sf::sleep(sf::milliseconds(10));
 	}
 }
 
@@ -77,11 +74,9 @@ void Level::stepWorld(const sf::Time& deltaTime)
 		if(item->isMovable())
 			item->step(deltaTime);
 
-	//there  are some objects that should get the players cur position.
+	//there are some objects that should get the players cur position.
 	for (auto& obj : m_movableObjVec)
-	{
 		obj->setPosition(m_player.getPosition());
-	}
 
 	for (auto& bullet : m_bullers)
 		bullet->step(deltaTime);

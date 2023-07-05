@@ -11,3 +11,5 @@ const int MAX_BULLETS = 20;
 
 const float BULLET_LIFE_TIME = 4.0f;
 const int SHOOTING_FREQUENCY_MIN = 150; //miliseconds
+
+const float BULLET_FLY_DIST = 1.8f;

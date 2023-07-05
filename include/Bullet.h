@@ -3,6 +3,7 @@
 #include "Movable.h"
 #include "Unmovable.h"
 #include "SFML/Audio.hpp"
+#include "macros.h"
 
 class Bullet : public Movable
 {

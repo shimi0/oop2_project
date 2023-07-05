@@ -42,12 +42,7 @@ public:
 	sf::Vector2f getPosition() const;
 	sf::FloatRect getGlobalBounds() const;
 	virtual void animate(const sf::Time& deltaTime);
-	int getScoreWorth()
-	{
-		if (!m_objectBody->IsEnabled())
-			return m_scoreWorth;
-		
-	}
+	int getScoreWorth() const;
 
 protected:
 	int m_scoreWorth = 0;

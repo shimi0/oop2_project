@@ -11,7 +11,6 @@ GameOver::GameOver(sf::RenderWindow& window, Board& board)
 
 chosenButton GameOver::run()
 {
-
 	loadData();
 	setScore();
 	while (m_window.isOpen())
@@ -30,10 +29,7 @@ chosenButton GameOver::run()
 		{
 		
 			if (event.type == sf::Event::Closed)
-			{
-				
 				m_window.close();
-			}
 
 			if (event.type == sf::Event::MouseButtonReleased)
 			{
@@ -102,7 +98,7 @@ void GameOver::loadData()
 	m_highScore.setPosition(WIN_SIZE_X / 2, WIN_SIZE_Y /2);
 
 
-	if (!m_font.loadFromFile("c:/Windows/Fonts/Arial.ttf"))
+	if (!m_font.loadFromFile("PRISTINA.TTF"))
 		throw std::runtime_error("unable to load font");
 
 	m_scoreTxt.setFont(m_font);
