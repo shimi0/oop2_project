@@ -142,6 +142,7 @@ void Player::loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef)
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &playerBox;
 	fixtureDef.density = 9.5f;
+	m_objectBody->SetGravityScale(1.5);
 	m_objectBody->CreateFixture(&fixtureDef);
 	matchSptitePosToBody();
 

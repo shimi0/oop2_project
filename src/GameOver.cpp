@@ -22,7 +22,7 @@ choseButtons GameOver::run()
 	{
 		draw();
 		handleEvent();
-		if (getPressedButton() != Max)
+		if (getPressedButton() != Max && m_nameEnterd)
 		{
 			if (m_scoresManager.isRecord(m_board.getScore()))
 				m_scoresManager.addRecord(m_window, m_board.getScore(), m_playerName);

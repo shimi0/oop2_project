@@ -60,7 +60,7 @@ void ScoresManager::addRecord(sf::RenderWindow& window, const int score, const s
 
 //------------------------
 
-const std::multimap<int, std::string>& ScoresManager::getRecords() const
+const std::multimap<int, std::string, std::greater<int>>& ScoresManager::getRecords() const
 {
 	return m_records;
 }

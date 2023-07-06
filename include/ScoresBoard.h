@@ -22,7 +22,7 @@ class ScoresBoard
 
 public:
 	void run();
-	ScoresBoard(sf::RenderWindow&, const std::multimap <int, std::string>&);
+	ScoresBoard(sf::RenderWindow&, const std::multimap <int, std::string, std::greater<int>>&);
 	void createBackGround();
 	void draw();
 	void drawScore();
@@ -39,7 +39,7 @@ private:
 	Animation m_bgAnimation;
 
 	sf::RenderWindow& m_window;
-	const std::multimap <int, std::string>& m_recordList;
+	const std::multimap <int, std::string, std::greater<int>>& m_recordList;
 
 	bool m_isScoresOpen = true;
 };

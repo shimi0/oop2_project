@@ -1,6 +1,6 @@
 #include "ScoresBoard.h"
 
-ScoresBoard::ScoresBoard(sf::RenderWindow& window, const std::multimap <int, std::string>& records)
+ScoresBoard::ScoresBoard(sf::RenderWindow& window, const std::multimap <int, std::string, std::greater<int>>& records)
 	:m_bgAnimation(Resources::instance().animationData(Resources::ScoresBG), Direction::Stay, m_bg),
 	m_buttons(MAX_S), m_window(window), m_recordList(records)
 {

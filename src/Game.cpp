@@ -39,7 +39,7 @@ void Game::run(ScoresManager& scoresManager)
 
 void Game::readGameData(Level& level)
 {
-	auto dataReader = DataReader("LVL" + std::to_string(1) + ".txt");
+	auto dataReader = DataReader("LVL" + std::to_string(LEVEL_FILE_NUM) + ".txt");
 	dataReader.openFile();
 	Object object;
 

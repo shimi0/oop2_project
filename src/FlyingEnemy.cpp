@@ -88,7 +88,6 @@ void FlyingEnemy::handleCollision(Player& obj)
 	obj.handleCollision(*this);
 }
 
-
 //---------------------------------------------
 
 void FlyingEnemy::step(const sf::Time& deltaTime)

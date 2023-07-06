@@ -6,13 +6,6 @@
 #include <memory>
 #include <unordered_map>
 
-enum class ObjectType
-{
-    Player = 'p',
-    SimplePlatform = 's',
-    Wall = '#',
-};
-
 template <typename T>
 class Factory
 {
