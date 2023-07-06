@@ -30,6 +30,10 @@ public:
 	void handleClick();
 	ButtonIndexScore getPressedButton();
 private:
+
+	void mouseMovedEvent(const sf::Event& event);
+	void mouseReleasedEvent(const sf::Event& event);
+
 	std::vector<std::unique_ptr< Button>> m_buttons;
 	sf::Sprite m_bg;
 	Animation m_bgAnimation;

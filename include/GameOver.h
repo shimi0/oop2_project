@@ -37,9 +37,11 @@ public:
 private:
 
 	choseButtons getPressedButton() const;
-	void handleClick();
 
 	bool readText(const sf::Event& event);
+	void mouseMovedEvent(const sf::Event& event);
+	void mouseReleasedEvent(const sf::Event& event);
+
 
 	void loadData();
 	void draw();

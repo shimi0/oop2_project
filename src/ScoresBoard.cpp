@@ -52,28 +52,10 @@ void ScoresBoard::handleEvent(sf::RenderWindow& window)
 		if (event.type == sf::Event::Closed)  window.close();
 
 		if (event.type == sf::Event::MouseButtonReleased)
-		{
-			auto location = window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
-			for (auto& button : m_buttons) 
-			{
-				if (button->contains(location))
-					button->press();
-				else
-					button->release();
-			}
-		}
+			mouseReleasedEvent(event);
 
 		if (event.type == sf::Event::MouseMoved)
-		{
-			auto location = window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
-			for (auto& button : m_buttons) 
-			{
-				if (button->contains(location))
-					button->gainFocus();
-				else
-					button->looseFocus();
-			}
-		}
+			mouseMovedEvent(event);
 	}
 	handleClick();
 }
@@ -115,10 +97,38 @@ void ScoresBoard::drawScore()
 		recordText[i].setFont(font);
 		recordText[i].setString(rec->second);
 		recordText[i].setCharacterSize(70);
-		recordText[i].setPosition(WIN_SIZE_X / 5.1, WIN_SIZE_Y / 4.6 + i * WIN_SIZE_Y/ 21.5);// (250.f + i * 38.f));
+		recordText[i].setPosition(WIN_SIZE_X / 5.1, WIN_SIZE_Y / 4.6 + i * WIN_SIZE_Y/ 21.5);
 		recordText[i].setFillColor(sf::Color::Black);
 	}
 
 	for (int i = 0; i < m_recordList.size(); i++)
 		m_window.draw(recordText[i]);
 }
+
+//--------------------------------------
+
+void ScoresBoard::mouseMovedEvent(const sf::Event& event)
+{
+	auto location = m_window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
+	for (auto& button : m_buttons) {
+		if (button->contains(location))
+			button->gainFocus();
+		else
+			button->looseFocus();
+	}
+}
+
+//----------------------------------------------
+
+void ScoresBoard::mouseReleasedEvent(const sf::Event& event)
+{
+	auto location = m_window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
+	for (auto& button : m_buttons) {
+		if (button->contains(location))
+			button->press();
+		else
+			button->release();
+	}
+}
+
+//----------------------------------------------

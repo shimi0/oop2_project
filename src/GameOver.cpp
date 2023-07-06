@@ -22,7 +22,7 @@ choseButtons GameOver::run()
 	{
 		draw();
 		handleEvent();
-		if (getPressedButton() != Max && m_nameEnterd)
+		if (getPressedButton() != Max)
 		{
 			if (m_scoresManager.isRecord(m_board.getScore()))
 				m_scoresManager.addRecord(m_window, m_board.getScore(), m_playerName);
@@ -56,26 +56,11 @@ void GameOver::handleEvent()
 		if (event.type == sf::Event::Closed)  m_window.close();
 
 		if (event.type == sf::Event::MouseButtonReleased)
-		{
-			auto location = m_window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
-			for (auto& button : m_buttons) {
-				if (button->contains(location))
-					button->press();
-				else
-					button->release();
-			}
-		}
+			mouseReleasedEvent(event);
 
 		if (event.type == sf::Event::MouseMoved)
-		{
-			auto location = m_window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
-			for (auto& button : m_buttons) {
-				if (button->contains(location))
-					button->gainFocus();
-				else
-					button->looseFocus();
-			}
-		}
+			mouseMovedEvent(event);
+
 		if (event.type == sf::Event::TextEntered && !m_nameEnterd) 
 			m_nameEnterd = readText(event);
 	}
@@ -91,6 +76,32 @@ bool GameOver::readText(const sf::Event& event)
 	if (event.text.unicode == 13 || m_playerName.length() == 15)
 		return true;
 	return false;
+}
+
+//----------------------------------------------
+
+void GameOver::mouseMovedEvent(const sf::Event& event)
+{
+	auto location = m_window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
+	for (auto& button : m_buttons) {
+		if (button->contains(location))
+			button->gainFocus();
+		else
+			button->looseFocus();
+	}
+}
+
+//----------------------------------------------
+
+void GameOver::mouseReleasedEvent(const sf::Event& event)
+{
+	auto location = m_window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
+	for (auto& button : m_buttons) {
+		if (button->contains(location))
+			button->press();
+		else
+			button->release();
+	}
 }
 
 //----------------------------------------------
