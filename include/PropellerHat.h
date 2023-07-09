@@ -4,38 +4,25 @@
 #include "Player.h"
 #include "macros.h"
 
+//a gift. takes the player up for a few secpnds. moving slow.
+
 class PropellerHat : public Gift, public Movable
 {
 public:
+
 	PropellerHat(std::unique_ptr<b2World>&, b2BodyDef&, const sf::Vector2f&);
 
 	virtual void handleCollision(Player& obj) override;
 	void step(const sf::Time& deltaTime) {}
 
-	virtual void animate(const sf::Time& deltaTime)
-	{
-		if (m_clock.getElapsedTime().asSeconds() > PROPELLER_HAT_TIME && m_isInUse)
-		{
-			m_isInUse = false;
-			m_objectBody->SetEnabled(false);
-			m_sprite.setColor(sf::Color::Transparent);
-		}
-
-		if(m_isInUse)
-			m_animation.updateBasedOnTime(deltaTime);
-	};
-
-
-	virtual void setPosition(const sf::Vector2f& pos)
-	{
-		if (!m_isInUse) return;
-		sf::Vector2f positinon = { pos.x, pos.y - m_playerGlobalBounds.height / 3.2f };
-		m_objectBody->SetTransform(sfmlToBox2D(positinon), m_objectBody->GetAngle());
-		m_sprite.setPosition(box2DToSFML(m_objectBody->GetPosition()));
-	}
+	virtual void animate(const sf::Time& deltaTime) override;
+	virtual void setPosition(const sf::Vector2f& pos) override;
 
 private:
+
 	sf::Sound m_sound;
+
+	//in use to place the graphic in the right position
 	sf::FloatRect m_playerGlobalBounds;
 	sf::Clock m_clock;
 };

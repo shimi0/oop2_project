@@ -11,6 +11,8 @@
 #include "CordinatesConverter.h"
 #include "Factory.h"
 
+//an exploding platform. explodes after a few seonds.
+//currently set in Level class to explode only after shows up on the screen view
 
 class ExplodingPlatform : public Platform, public Unmovable
 {
@@ -20,7 +22,9 @@ public:
 
 	virtual void animate(const sf::Time&) override;
 	virtual bool isMovable() const override;
+
 private:
+
 	sf::Sound m_sound;
 	bool m_explode = false;
 	bool m_hasSoundBeenPlayed = false;

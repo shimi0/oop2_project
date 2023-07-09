@@ -2,6 +2,8 @@
 
 #include "GameObject.h"
 
+//a base class for all the moving objects
+
 class Movable : virtual public GameObject
 {
 public:
@@ -10,7 +12,9 @@ public:
 	virtual ~Movable() = 0 {}
 	virtual void loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef) override {};
 
+	//matching the graphic body to the box2d body
 	void matchSptitePosToBody();
+
 	virtual void step(const sf::Time& deltaTime) = 0;
 	virtual void setPosition(const sf::Vector2f& pos ) {}
 

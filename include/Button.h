@@ -21,7 +21,7 @@ public:
 
 	bool contains(const sf::Vector2f& point) const;
 
-	//had to make the virtual for a specific butoon(score) that i could only use diff size sprites.
+	//had to make tose virtual for a specific butoon(score) that i could only find diff size sprites.
 	virtual void looseFocus();
 	virtual void gainFocus();
 
@@ -32,9 +32,7 @@ protected:
 	sf::Sprite m_sprite;
 	Animation m_animation;
 
-
 private:
 
 	bool m_isPressed = false;
-
 };

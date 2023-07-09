@@ -91,7 +91,7 @@ namespace
         };
 
         //we want the explosion to take some time
-        for(int i = 0; i < 30; i++)
+        for(int i = 0; i < 22; i++)
             explodingPlatform.m_data[Direction::Stay].emplace_back(currentStart, size);
         explodingPlatform.m_data[Direction::Stay].emplace_back(nextStart(), size);
         explodingPlatform.m_data[Direction::Stay].emplace_back(nextStart(), size);
@@ -301,7 +301,7 @@ namespace
         jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(7047, 0), size);
 
         
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 7; i++) {
             jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(6855, 128), size);
             jetPack.m_data[Direction::Left].emplace_back(sf::Vector2i(6919, 128), size);
         }

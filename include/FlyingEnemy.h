@@ -12,28 +12,18 @@
 #include "Enemy.h"
 #include "Player.h"
 
+//a flying enemy. can move in a blocked area
+
 class FlyingEnemy : public Enemy, public Movable
 {
 public:
 
     FlyingEnemy(std::unique_ptr<b2World>&, b2BodyDef&, const sf::Vector2f&);
-
    
     virtual void step(const sf::Time& deltaTime) override;
     virtual void handleCollision(Player& obj);
 
-    virtual void animate(const sf::Time& deltaTime)
-    {
-        if (!m_isAlive) {
-            //animation
-            m_objectBody->ApplyLinearImpulse({ 4, -4 }, m_objectBody->GetWorldCenter(), true);
-            m_sprite.setRotation(15);
-            //remove from world and screen
-            if (m_clock.getElapsedTime().asSeconds() > 4)
-                Enemy::animate(deltaTime);
-        }
-        m_animation.updateBasedOnTime(deltaTime);
-    }
+    virtual void animate(const sf::Time& deltaTime) override;
 
 private:
 

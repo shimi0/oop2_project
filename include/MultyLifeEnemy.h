@@ -12,6 +12,8 @@
 #include "Enemy.h"
 #include "Player.h"
 
+//an enemy that should be shot twice.
+
 class MultyLifeEnemy : public Enemy, public Unmovable
 {
 public:

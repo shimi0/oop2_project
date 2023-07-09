@@ -1,7 +1,7 @@
 StaticPlatform 600 1600
 StaticPlatform 600 1300
 StaticPlatform 1100 1600
-HorizontalMovePlatform 200 1000
+HorizontalMovePlatform 200 1150
 StaticPlatform 800 1600
 StaticPlatform 400 1600
 PropellerHat 600 1520

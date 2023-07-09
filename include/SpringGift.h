@@ -4,6 +4,8 @@
 #include "Unmovable.h"
 #include "Player.h"
 
+//a gift. makes the player jump higher
+
 class SpringGift : public Gift, public Unmovable
 {
 public:

@@ -2,6 +2,8 @@
 
 #include "GameObject.h"
 
+//a base class for the static objects
+
 class Unmovable : virtual public GameObject
 {
 public:

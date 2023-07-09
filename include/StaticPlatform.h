@@ -12,7 +12,6 @@
 #include "Factory.h"
 
 
-
 class StaticPlatform : public Platform, public Unmovable
 {
 public:

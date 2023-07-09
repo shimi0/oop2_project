@@ -8,6 +8,7 @@
 #include <string>
 #include <map>
 
+//the menu screen
 
 enum ButtonIndexMenu
 {
@@ -23,9 +24,7 @@ public:
 	Menu(sf::RenderWindow& window);
 
 	void run();
-
 	ButtonIndexMenu getPressedButton() const;
-	
 
 private:
 
@@ -39,22 +38,20 @@ private:
 
 	std::vector<std::unique_ptr< Button>> m_buttons;
 
-	
-
+	//menu background
 	sf::Sprite m_backGround;
 	Animation m_backGroundAnimation;
 
+	//the menu player animation
 	sf::Sprite m_player;
 	Animation m_playerAnimation;
+	//helps drawing the animations
+	bool m_playerGoesUp = true;
+	int m_indexDoodle = 0;
 
+	//the menu's ufo animation
 	sf::Sprite m_ufo;
 	Animation m_ufoAnimation;
-
-
-	bool m_playerGoesUp = true;
-
-	//helps drawing the animations
-	int m_indexDoodle = 0;
 
 	bool m_isMenuOpen = true;
 };

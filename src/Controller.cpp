@@ -15,7 +15,6 @@ void Controller::run()
 	//auto& resources = Resources::instance();
 	auto scores = ScoresManager();
 
-//	scores.addRecord(m_window, 500);
 	while (true) 
 	{
 		auto menu = Menu(m_window);

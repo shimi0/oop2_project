@@ -22,13 +22,20 @@ choseButtons GameOver::run()
 	{
 		draw();
 		handleEvent();
-		if (getPressedButton() != Max && m_nameEnterd)
+		if (getPressedButton() != Max)
 		{
 			if (m_scoresManager.isRecord(m_board.getScore()))
 				m_scoresManager.addRecord(m_window, m_board.getScore(), m_playerName);
 			return getPressedButton();
 		}
 	}
+}
+
+//----------------------------------------
+
+void GameOver::setScore()
+{
+	m_scoreTxt.setString(std::to_string(m_board.getScore()));
 }
 
 //----------------------------------------
@@ -106,8 +113,37 @@ void GameOver::mouseReleasedEvent(const sf::Event& event)
 
 //----------------------------------------------
 
+void GameOver::loadScoreTxt()
+{
+	m_scoreTxt.setFont(m_font);
+	m_scoreTxt.setFillColor(sf::Color::Black);
+	m_scoreTxt.setOrigin(m_scoreTxt.getGlobalBounds().width / 2, m_scoreTxt.getGlobalBounds().height / 2);
+	m_scoreTxt.setPosition(m_highScore.getPosition().x + m_highScore.getGlobalBounds().width / 2 + 20,
+						   m_highScore.getPosition().y - m_highScore.getGlobalBounds().height / 2 - 10);
+	m_scoreTxt.scale({ 1.7,1.7 });
+	m_scoreTxt.setCharacterSize(40);
+	m_scoreTxt.setFillColor(sf::Color::Red);
+	m_scoreTxt.setString("0");
+}
+
+//----------------------------------------------
+
+void GameOver::loadNameTxt()
+{
+	m_nameTxt.setFont(m_font);
+	m_nameTxt.setFillColor(sf::Color::Red);
+	m_nameTxt.setPosition(m_highScore.getPosition().x + m_highScore.getGlobalBounds().width / 2 - 100,
+						  m_highScore.getPosition().y + m_highScore.getGlobalBounds().height / 2 - 120);
+	m_nameTxt.setCharacterSize(70);
+}
+
+//----------------------------------------------
+
 void GameOver::loadData()
 {
+	if (!m_font.loadFromFile("PRISTINA.TTF"))
+		throw std::runtime_error("unable to load font");
+
 	auto view = m_window.getView();
 	view.reset(sf::FloatRect(0, 0, WIN_SIZE_X, WIN_SIZE_Y));
 	m_window.setView(view);
@@ -121,23 +157,8 @@ void GameOver::loadData()
 	m_highScore.scale(2, 2);
 	m_highScore.setPosition(WIN_SIZE_X / 2, WIN_SIZE_Y /2);
 
-	if (!m_font.loadFromFile("PRISTINA.TTF"))
-		throw std::runtime_error("unable to load font");
-
-	m_scoreTxt.setFont(m_font);
-	m_scoreTxt.setFillColor(sf::Color::Black);
-	m_scoreTxt.setOrigin(m_scoreTxt.getGlobalBounds().width / 2, m_scoreTxt.getGlobalBounds().height / 2);
-	m_scoreTxt.setPosition(m_highScore.getPosition().x + m_highScore.getGlobalBounds().width /2 + 20, m_highScore.getPosition().y - m_highScore.getGlobalBounds().height/2 - 10);
-	m_scoreTxt.scale({ 1.7,1.7 });
-	m_scoreTxt.setCharacterSize(40);
-	m_scoreTxt.setFillColor(sf::Color::Red);
-	m_scoreTxt.setString("0");
-
-	m_nameTxt.setFont(m_font);
-	m_nameTxt.setFillColor(sf::Color::Red);
-	m_nameTxt.setPosition(m_highScore.getPosition().x + m_highScore.getGlobalBounds().width / 2 - 100, m_highScore.getPosition().y + m_highScore.getGlobalBounds().height / 2 - 120);
-	m_nameTxt.setCharacterSize(70);
-
+	loadScoreTxt();
+	loadNameTxt();
 }
 
 //---------------------------------------------------------

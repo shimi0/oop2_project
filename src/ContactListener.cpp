@@ -99,7 +99,6 @@ void ContactListener::playerUnmovableContact(b2Contact* contact)
 	auto fixtureBodyA = contact->GetFixtureA()->GetBody();
 	auto fixtureBodyB = contact->GetFixtureB()->GetBody();
 
-
 	for (auto& unmovableObj : m_unmovableObjVec)
 		if (m_player.isSameBody(fixtureBodyA) && unmovableObj->isSameBody(fixtureBodyB) ||
 			m_player.isSameBody(fixtureBodyB) && unmovableObj->isSameBody(fixtureBodyA))

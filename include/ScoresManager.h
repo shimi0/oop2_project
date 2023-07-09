@@ -9,14 +9,20 @@
 #include <SFML/Graphics.hpp>
 #include <filesystem>
 
+//r/w the scores from/ to a file
+
 class ScoresManager {
 
 public:
 	ScoresManager();
-	void readRecords();
 
+	void readRecords();
 	void writeRecords();
+
+	//is the score a new record
 	bool isRecord(int);
+
+	//reeturns the scores list
 	const std::multimap<int, std::string, std::greater<int>>& getRecords() const;
 
 	void addRecord(sf::RenderWindow&, const int, const std::string&);

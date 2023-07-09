@@ -133,7 +133,7 @@ void Player::deathAnimation(const sf::Time& deltaTime)
 
 void Player::loadObject(std::unique_ptr<b2World>& world, b2BodyDef& bodydef)
 {
-	Movable::defineBody(world, bodydef, { 400.0f, 1500.0f });
+	Movable::defineBody(world, bodydef, { PLAYER_STRT_POS_X, PLAYER_STRT_POS_Y });
 	b2PolygonShape playerBox;
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
 	m_sprite.setScale({ 2.f,2.f });

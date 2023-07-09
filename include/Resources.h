@@ -6,6 +6,8 @@
 
 #include <vector>
 
+//loads the game resources and sets the animation data
+
 class Resources
 {
 public:

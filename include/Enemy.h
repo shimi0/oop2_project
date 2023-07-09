@@ -11,27 +11,19 @@
 #include "CordinatesConverter.h"
 #include "Bullet.h"
 
+//the base class for an enemy object
+
 class Enemy : virtual public GameObject
 {
 public:
+
     Enemy();
     virtual ~Enemy() = 0 {}
 
     virtual void handleCollision(Bullet& obj) override;
 
-    virtual void animate(const sf::Time& deltaTime)
-    {
-        if (!m_isAlive) {
-            m_objectBody->SetEnabled(false);
-            m_sprite.setColor(sf::Color::Transparent);
-        }
-        m_animation.updateBasedOnTime(deltaTime);
-    }
+    virtual void animate(const sf::Time& deltaTime) override;
 
-  /*  virtual void handleCollision(Player& obj)
-    {
-        obj.handleCollision(*this);
-    }*/
 protected:
 
     int m_lives = 1;
@@ -39,7 +31,7 @@ protected:
     sf::Clock m_clock;
 
     void loadObject();
+
 private:
 
-    
 };

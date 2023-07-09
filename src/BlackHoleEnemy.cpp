@@ -25,8 +25,8 @@ void BlackHoleEnemy::loadObject()
 {
 	b2PolygonShape playerBox;
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
-	m_sprite.setScale({ 1.3f, 1.3f });
-	auto box = sfmlToBox2D(m_sprite.getGlobalBounds().width / 20.0f, m_sprite.getGlobalBounds().height / 20.f);
+	m_sprite.setScale({ 1.6f, 1.6f });
+	auto box = sfmlToBox2D(m_sprite.getGlobalBounds().width / 15.0f, m_sprite.getGlobalBounds().height / 15.f);
 	playerBox.SetAsBox(box.x, box.y);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &playerBox;

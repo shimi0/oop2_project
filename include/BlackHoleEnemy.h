@@ -12,7 +12,7 @@
 #include "Enemy.h"
 #include "Player.h"
 
-//an enemy kills the player in a collision. not dying from bullets.
+//an enemy. kills the player in a collision. not dying from bullets.
 
 class BlackHoleEnemy : public Enemy, public Unmovable
 {

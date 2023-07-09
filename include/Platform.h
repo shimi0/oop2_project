@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "GameObject.h"
 
+//a base class for a game platform
+
 class Player;
 
 class Platform : virtual public GameObject

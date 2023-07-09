@@ -11,14 +11,14 @@
 #include "CordinatesConverter.h"
 #include "Factory.h"
 
-
+//a platform that disapears once jumpd on
 
 class OneJumpPlatform : public Platform, public Unmovable
 {
 public:
+
 	OneJumpPlatform(std::unique_ptr<b2World>& world, b2BodyDef& bodydef, const sf::Vector2f& pos);
 	virtual bool isMovable() const override;
-
 	virtual void animate(const sf::Time& deltaTime) override;
 
 private:

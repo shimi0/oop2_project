@@ -10,6 +10,8 @@
 #include "PlayAgainButton.h"
 #include "ScoresManager.h"
 
+//game over screen
+
 //----------------------
 
 enum choseButtons
@@ -23,38 +25,40 @@ enum choseButtons
 
 class GameOver
 {
-
 public:
 	GameOver(sf::RenderWindow&, Board&, ScoresManager& scoresManager);
 
 	choseButtons run();
 	
-	void setScore()
-	{
-		m_scoreTxt.setString(std::to_string(m_board.getScore()));
-	}
+	void setScore();
 
 private:
 
 	choseButtons getPressedButton() const;
-
+	
+	//read the user name
+	void handleEvent();
 	bool readText(const sf::Event& event);
 	void mouseMovedEvent(const sf::Event& event);
 	void mouseReleasedEvent(const sf::Event& event);
 
+	void loadScoreTxt();
+	void loadNameTxt();
 
 	void loadData();
 	void draw();
-	void handleEvent();
 
+	//game over text
 	sf::Sprite m_spriteGameOverTXT;
 	Animation m_gameOverTXT;
 
+	//high score text
 	sf::Sprite m_highScore;
 	Animation m_highScoreAnimation;
 
 	sf::RenderWindow& m_window;
 
+	//game over buttons
 	std::vector<std::unique_ptr< Button>> m_buttons;
 
 	sf::Font m_font;

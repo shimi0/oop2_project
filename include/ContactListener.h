@@ -23,7 +23,7 @@ public:
 							 std::vector<std::unique_ptr<Platform>>&,
 							 std::vector<std::unique_ptr<Bullet>>&);
 
-
+	//any game contact will take us to this function
 	void BeginContact(b2Contact*) override;
 	
 private:
@@ -37,8 +37,8 @@ private:
 	void bulletMovableContact(b2Body*, b2Body*, std::unique_ptr<Bullet>&);
 	void bulletUnmovableContact(b2Body*, b2Body*, std::unique_ptr<Bullet>&);
 
+	//holding the game objects to identify the collision objects
 	Player& m_player;
-
 	std::vector<std::unique_ptr<Unmovable>>& m_unmovableObjVec;
 	std::vector<std::unique_ptr<Movable>>& m_movableObjVec;
 	std::vector<std::unique_ptr<Platform>>& m_platformVec;

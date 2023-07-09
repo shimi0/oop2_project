@@ -90,6 +90,21 @@ void FlyingEnemy::handleCollision(Player& obj)
 
 //---------------------------------------------
 
+void FlyingEnemy::animate(const sf::Time& deltaTime)
+{
+	if (!m_isAlive) {
+		//animation
+		m_objectBody->ApplyLinearImpulse({ 4, -4 }, m_objectBody->GetWorldCenter(), true);
+		m_sprite.setRotation(15);
+		//remove from world and screen
+		if (m_clock.getElapsedTime().asSeconds() > 4)
+			Enemy::animate(deltaTime);
+	}
+	m_animation.updateBasedOnTime(deltaTime);
+}
+
+//---------------------------------------------
+
 void FlyingEnemy::step(const sf::Time& deltaTime)
 {
 	movementBlockingRect();

@@ -6,6 +6,8 @@
 #include <memory>
 #include <unordered_map>
 
+//a template class. a factory design pattern.
+
 template <typename T>
 class Factory
 {

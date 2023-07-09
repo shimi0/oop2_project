@@ -7,9 +7,12 @@
 #include "Unmovable.h"
 #include "GameObject.h"
 
+//base class for a game gift
+
 class Gift : virtual public GameObject
 {
 public:
+
 	Gift(const AnimationData& data, Direction dir, sf::Sprite& sprite);
 
 protected:
@@ -18,7 +21,6 @@ protected:
 
 	bool m_hasBeenUsed = false;
 	bool m_isInUse = false;
-private:
 
-	
+private:
 };

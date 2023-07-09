@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+//in use to set an object direction and for the animation class as well.
+
 enum class Direction
 {
     Up,

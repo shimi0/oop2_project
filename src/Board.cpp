@@ -16,7 +16,9 @@ void Board::draw()
 	drawBG();
 }
 
-void Board::updateBGPos(const sf::Vector2f newPos)
+//------------------------------------------------
+
+void Board::updateBGPos(const sf::Vector2f& newPos)
 {
 	m_spriteBG.setPosition(newPos);
 	m_scoreTop.setPosition(newPos);

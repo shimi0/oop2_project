@@ -15,41 +15,44 @@ class Board
 public:
 
 	Board(sf::RenderWindow& window);
-	void draw();
-	void updateBGPos(const sf::Vector2f newPos);
-
-	void processKeyInput(const sf::Event& event);
-
+	
+	//board position based on the window-view
+	void updateBGPos(const sf::Vector2f& newPos);
 	void resetBoardPosition() { updateBGPos({ 0,0 }); }
 
-	void drawScoreTop();
-
-
+	void processKeyInput(const sf::Event& event);
 	bool isPaused() const { return m_pauseButton.isPressed(); }
-	
+
+	void draw();
+	void drawScoreTop();
 	void drawPauseScreen();
 
 	void updateScore(const int score);
-
 	int getScore() const {	return m_score; }
 
 private:
 
 	void drawBG();
 	void loadScoreTxt();
-	int m_score = 0;
 
 	sf::RenderWindow& m_window;
+
+	//background
 	sf::Sprite m_spriteBG;
 	Animation m_animationBG;
 	
+	//score background
 	sf::Sprite m_scoreTop;
 	Animation m_scoreTopAnimation;
 
+	//bause screen background
 	sf::Sprite m_PauseScreen;
 	Animation m_pauseScreenAnimation;
 
+	//score
 	sf::Text m_scoreTxt;
 	sf::Font m_font;
+	int m_score = 0;
+
 	PauseButton m_pauseButton;
 };
