@@ -45,4 +45,6 @@ int GameObject::getScoreWorth() const
 {
 	if (!m_objectBody->IsEnabled())
 		return m_scoreWorth;
+
+	return 0;
 }

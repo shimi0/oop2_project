@@ -11,6 +11,7 @@
 #include "CordinatesConverter.h"
 #include "Factory.h"
 
+//a simple platform
 
 class StaticPlatform : public Platform, public Unmovable
 {

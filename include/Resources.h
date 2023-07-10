@@ -6,7 +6,7 @@
 
 #include <vector>
 
-//loads the game resources and sets the animation data
+//loads the graphic game resources and sets the animation data
 
 class Resources
 {
@@ -44,6 +44,7 @@ public:
         Ufo,
         MenuBG,
         ScoresBG,
+        FargilePlatform,
         Max,
     };
 

@@ -14,7 +14,7 @@ const int SHOOTING_FREQUENCY_MIN = 150; //miliseconds
 
 const float BULLET_FLY_DIST = 1.8f;
 
-const int LEVEL_FILE_NUM = 3;
+const int LEVEL_FILE_NUM = 4;
 
 const float PLAYER_STRT_POS_X = 400.0f;
-const float PLAYER_STRT_POS_Y = 1300;// 1300.0f;
+const float PLAYER_STRT_POS_Y = 1300; // 1300.0f;

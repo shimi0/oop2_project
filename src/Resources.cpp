@@ -91,7 +91,7 @@ namespace
         };
 
         //we want the explosion to take some time
-        for(int i = 0; i < 22; i++)
+        for(int i = 0; i < 25; i++)
             explodingPlatform.m_data[Direction::Stay].emplace_back(currentStart, size);
         explodingPlatform.m_data[Direction::Stay].emplace_back(nextStart(), size);
         explodingPlatform.m_data[Direction::Stay].emplace_back(nextStart(), size);
@@ -324,6 +324,8 @@ namespace
         propellerHat.m_data[Direction::Up].emplace_back(sf::Vector2i(7173, 64), size);
         return propellerHat;
     }
+
+
 
     AnimationData bullet()
     {
